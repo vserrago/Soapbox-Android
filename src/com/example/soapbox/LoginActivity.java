@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class LoginActivity extends FragmentActivity implements
@@ -132,9 +133,9 @@ public class LoginActivity extends FragmentActivity implements
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
+				return getString(R.string.title_login).toUpperCase(l);
 			case 1:
-				return getString(R.string.title_section2).toUpperCase(l);
+				return getString(R.string.title_register).toUpperCase(l);
 			}
 			return null;
 		}
@@ -163,13 +164,31 @@ public class LoginActivity extends FragmentActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_login_dummy,
+			/*View rootView = inflater.inflate(R.layout.fragment_login,
 					container, false);
 			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
-			return rootView;
+					.findViewById(R.id.section_label);*/
+			
+			
+			View currentView = null;
+			
+			int section_num = getArguments().getInt(ARG_SECTION_NUMBER);
+			if (section_num == 1) {
+				
+				View login = inflater.inflate(R.layout.fragment_login, container, false);
+				EditText dummyTestEdit = (EditText) login.findViewById(R.id.text_label);
+				dummyTestEdit.setText("HELLO");
+				currentView = login;
+			
+			} else if (section_num == 2) {
+				View register = inflater.inflate(R.layout.fragment_register, container, false);
+				TextView dummyTextView = (TextView) register.findViewById(R.id.section_label);
+				dummyTextView.setText(Integer.toString(getArguments().getInt(
+						ARG_SECTION_NUMBER)));
+				currentView = register;
+			}
+
+			return currentView;
 		}
 	}
 

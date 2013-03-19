@@ -7,7 +7,7 @@
     <string name="welcome_anon">Register or Login here -&gt;</string>
     <string name="title_activity_post_shout">PostShoutActivity</string>
     <string name="title_activity_login">Login or Register</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
+    <string name="title_login">Login</string>
+    <string name="title_register">Register</string>
 
 </resources>
