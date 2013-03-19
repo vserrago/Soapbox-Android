@@ -2,7 +2,10 @@ package com.example.soapbox;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
 
 public class MainActivity extends Activity {
 
@@ -18,5 +21,10 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
+	//called when Post button is clicked
+	public void makePost(View view) {
+		Intent intent = new Intent(this, PostShoutActivity.class);
+		startActivity(intent);
+	}
 }
