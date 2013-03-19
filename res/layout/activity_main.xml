@@ -12,7 +12,7 @@
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
+        android:layout_below="@+id/login_button"
         android:layout_centerHorizontal="true" >
 
     </ListView>
@@ -22,12 +22,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/listView1"
-        android:layout_alignTop="@+id/button1"
+        android:layout_alignTop="@+id/login_button"
         android:text="&lt;Username Here>"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/login_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,11 +36,11 @@
         android:text="L/S" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/post_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/button1"
-        android:layout_toLeftOf="@+id/button1"
+        android:layout_alignRight="@+id/login_button"
+        android:layout_alignTop="@+id/login_button"
         android:text="Post" />
 
 </RelativeLayout>

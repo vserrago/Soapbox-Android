@@ -4,5 +4,6 @@
     <string name="app_name">Soapbox</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="welcome_anon">Register or Login here -&gt;</string>
 
 </resources>
