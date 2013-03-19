@@ -25,6 +25,6 @@ public class MainActivity extends Activity {
 	//called when Post button is clicked
 	public void makePost(View view) {
 		Intent intent = new Intent(this, PostShoutActivity.class);
-		startActivity(intent);
+		startActivity(intent);		
 	}
 }
