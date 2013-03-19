@@ -8,5 +8,6 @@
     <string name="title_activity_new_user">NewUser</string>
     <string name="old_user_activity_text">Old User</string>
     <string name="new_user_activity_text">New User</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>

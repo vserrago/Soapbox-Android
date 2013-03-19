@@ -2,27 +2,15 @@ package com.example.soapbox;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
-import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
+
 
 public class Login extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
-		
-
-		Intent intent = new Intent().setClass(this, NewUser.class);
-		//TabSpec tabSpecNewUser = 
-		// Android tab
-//		Intent intentAndroid = new Intent().setClass(this, AndroidActivity.class);
-//		TabSpec tabSpecAndroid = tabHost
-//		  .newTabSpec("Android")
-//		  .setIndicator("", resources.getDrawable(R.drawable.icon_android_config))
-//		  .setContent(intentAndroid);
+		setContentView(R.layout.activity_main);
 	}
 
 	@Override
