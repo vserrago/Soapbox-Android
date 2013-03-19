@@ -173,18 +173,12 @@ public class LoginActivity extends FragmentActivity implements
 			View currentView = null;
 			
 			int section_num = getArguments().getInt(ARG_SECTION_NUMBER);
-			if (section_num == 1) {
-				
+			if (section_num == 1) {				
 				View login = inflater.inflate(R.layout.fragment_login, container, false);
-				EditText dummyTestEdit = (EditText) login.findViewById(R.id.text_label);
-				dummyTestEdit.setText("HELLO");
 				currentView = login;
 			
 			} else if (section_num == 2) {
 				View register = inflater.inflate(R.layout.fragment_register, container, false);
-				TextView dummyTextView = (TextView) register.findViewById(R.id.section_label);
-				dummyTextView.setText(Integer.toString(getArguments().getInt(
-						ARG_SECTION_NUMBER)));
 				currentView = register;
 			}
 
