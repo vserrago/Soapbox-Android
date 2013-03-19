@@ -33,8 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/listView1"
-        android:text="L/S" 
-        android:visibility="gone"
+        android:text="L/S"
+        android:onClick="openLogin"
         />
 		
     <Button
@@ -44,6 +44,7 @@
         android:layout_alignRight="@+id/login_button"
         android:layout_alignTop="@+id/login_button"
         android:text="Post"
+        android:visibility="gone"
         android:onClick="makePost"
         />
 

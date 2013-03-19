@@ -27,4 +27,10 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(this, PostShoutActivity.class);
 		startActivity(intent);		
 	}
+	
+	//called when Login button is clicked
+	public void openLogin(View view) {
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
+	}
 }
