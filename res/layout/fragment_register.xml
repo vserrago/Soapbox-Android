@@ -98,6 +98,7 @@
         android:layout_below="@+id/emailregister"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="20dp"
-        android:text="Register" />
+        android:text="Register" 
+        android:onClick="register"/>
 
 </RelativeLayout>

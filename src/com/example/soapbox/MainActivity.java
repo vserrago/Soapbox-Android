@@ -20,12 +20,15 @@ import org.apache.http.protocol.HTTP;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
 public class MainActivity extends Activity {
 
+	SharedPreferences prefs;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,8 +50,8 @@ public class MainActivity extends Activity {
 	
 	//called when Login button is clicked
 	public void openLogin(View view) {
-//		Intent intent = new Intent(this, LoginActivity.class);
-//		startActivity(intent);
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
 //		new RetreiveFeedTask().execute(urlToRssFeed);
 //		new HTTPTest().execute();
 		//(String url, String method, ArrayList<NameValuePair> params)
@@ -65,19 +68,19 @@ public class MainActivity extends Activity {
 		//http://localhost:3000/api/v1/registrations -d 
 		//"{\"user\":{\"email\":\"user1@example.com\",\"name\":\"anotheruser\",\"password\":\"secret\",\"password_confirmation\":\"secret\"}}"
 		
-		String url ="http://acx0.dyndns.org:3000/api/v1/registrations";
-		String method = HttpBackgroundTask.POST;
-		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		BasicNameValuePair name = new BasicNameValuePair(HttpBackgroundTask.USERNAMEKEY,"jpanarj");
-		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY,"jpanar@example.com");
-		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY,"8characters");
-		BasicNameValuePair passwordC = new BasicNameValuePair(HttpBackgroundTask.PASSWORD_CKEY,"8characters");
-		params.add(name);
-		params.add(email);
-		params.add(password);
-		params.add(passwordC);
+//		String url ="http://acx0.dyndns.org:3000/api/v1/registrations";
+//		String method = HttpBackgroundTask.POST;
+//		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+//		BasicNameValuePair name = new BasicNameValuePair(HttpBackgroundTask.USERNAMEKEY,"jpanarj");
+//		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY,"jpanar@example.com");
+//		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY,"8characters");
+//		BasicNameValuePair passwordC = new BasicNameValuePair(HttpBackgroundTask.PASSWORD_CKEY,"8characters");
+//		params.add(name);
+//		params.add(email);
+//		params.add(password);
+//		params.add(passwordC);
 		//if this pops up {"success":false,"info"... } pops up then email is already taken
-		System.out.println(new HttpBackgroundTask(url, method, params).execute().toString());
+//		System.out.println(new HttpBackgroundTask(url, method, params).execute().toString());
 	}
 	
 

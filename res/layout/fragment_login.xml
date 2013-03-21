@@ -59,6 +59,7 @@
         android:layout_alignRight="@+id/passwordlabel"
         android:layout_below="@+id/passwordlogin"
         android:layout_marginTop="35dp"
-        android:text="@string/login_label" />
+        android:text="@string/login_label" 
+        android:onClick="login"/>
 
 </RelativeLayout>

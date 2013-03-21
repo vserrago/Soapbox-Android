@@ -1,6 +1,10 @@
 package com.example.soapbox;
 
+import java.util.ArrayList;
 import java.util.Locale;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -104,7 +108,44 @@ public class LoginActivity extends FragmentActivity implements
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
+	
+	public void login(View view)
+	{
+		String url ="http://acx0.dyndns.org:3000/api/v1/sessions";
+		String method = "POST";
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		
+		EditText editText = (EditText) findViewById(R.id.usernamelogin);
+		System.out.println(editText.toString());
+		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY,editText.getText().toString());
+		
+		editText = (EditText) findViewById(R.id.passwordlogin);
+		System.out.println(editText.toString());
+		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY,editText.getText().toString());
+		params.add(email);
+		params.add(password);
+		
+		HttpBackgroundTask t = new HttpBackgroundTask(url, method, params);
+		t.execute();
+		//TODO: if login success, finish, else, stay
+		finish();
+	}
 
+	public void register(View view)
+	{
+//		String url ="http://acx0.dyndns.org:3000/api/v1/registrations";
+//		String method = HttpBackgroundTask.POST;
+//		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+//		BasicNameValuePair name = new BasicNameValuePair(HttpBackgroundTask.USERNAMEKEY,"jpanarj");
+//		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY,"jpanar@example.com");
+//		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY,"8characters");
+//		BasicNameValuePair passwordC = new BasicNameValuePair(HttpBackgroundTask.PASSWORD_CKEY,"8characters");
+//		params.add(name);
+//		params.add(email);
+//		params.add(password);
+//		params.add(passwordC);
+	}
+	
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
@@ -181,6 +222,6 @@ public class LoginActivity extends FragmentActivity implements
 
 			return currentView;
 		}
-	}
+	}	
 
 }
