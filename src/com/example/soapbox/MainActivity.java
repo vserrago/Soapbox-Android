@@ -52,13 +52,30 @@ public class MainActivity extends Activity {
 //		new RetreiveFeedTask().execute(urlToRssFeed);
 //		new HTTPTest().execute();
 		//(String url, String method, ArrayList<NameValuePair> params)
-		String url ="http://acx0.dyndns.org:3000/api/v1/sessions";
+		
+		
+//		String url ="http://acx0.dyndns.org:3000/api/v1/sessions";
+//		String method = "POST";
+//		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+//		BasicNameValuePair email = new BasicNameValuePair("[user][email]","jpanar@example.com");
+//		BasicNameValuePair password = new BasicNameValuePair("[user][password]","verylongpassword");
+//		params.add(email);
+//		params.add(password);
+		
+		//http://localhost:3000/api/v1/registrations -d 
+		//"{\"user\":{\"email\":\"user1@example.com\",\"name\":\"anotheruser\",\"password\":\"secret\",\"password_confirmation\":\"secret\"}}"
+		
+		String url ="http://acx0.dyndns.org:3000/api/v1/registrations";
 		String method = "POST";
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		BasicNameValuePair email = new BasicNameValuePair("[user][email]","jpanar@example.com");
-		BasicNameValuePair password = new BasicNameValuePair("[user][password]","verylongpassword");
+		BasicNameValuePair name = new BasicNameValuePair("[user][name]","deemaugee");
+		BasicNameValuePair email = new BasicNameValuePair("[user][email]","dmgee@yourmom.com");
+		BasicNameValuePair password = new BasicNameValuePair("[user][password]","8characters");
+		BasicNameValuePair passwordC = new BasicNameValuePair("[user][password_confirmation]","8characters");
+		params.add(name);
 		params.add(email);
 		params.add(password);
+		params.add(passwordC);
 		
 		System.out.println(new HttpBackgroundTask(url, method, params).execute().toString());
 	}
