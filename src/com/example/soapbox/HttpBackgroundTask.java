@@ -24,9 +24,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
+	
+	public static final String GET = "GET";
+	public static final String POST = "POST";
+	
 	List<NameValuePair> postparams= new ArrayList<NameValuePair>();
 	String URL=null;
 	String method = null;
+	
 	public HttpBackgroundTask(String url, String method, ArrayList<NameValuePair> params) {
 		URL=url;
 		postparams=params;
@@ -43,7 +48,7 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 			// Making HTTP request 
 			// check for request method
 
-			if(method.equals("POST")){
+			if(method.equals(POST)){
 				// request method is POST
 				// defaultHttpClient
 				DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -54,7 +59,7 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 				HttpEntity httpEntity = httpResponse.getEntity();
 				is = httpEntity.getContent();
 
-			}else if(method.equals("GET")){
+			}else if(method.equals(GET)){
 				// request method is GET
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				String paramString = URLEncodedUtils.format(postparams, "utf-8");
@@ -95,6 +100,7 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 			jObj = new JSONObject(json);
 		} catch (JSONException e) {
 			Log.e("JSON Parser", "Error parsing data " + e.toString());
+			//say username is already taken
 		}
 
 		// return JSON String

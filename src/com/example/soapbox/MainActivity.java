@@ -68,15 +68,15 @@ public class MainActivity extends Activity {
 		String url ="http://acx0.dyndns.org:3000/api/v1/registrations";
 		String method = "POST";
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		BasicNameValuePair name = new BasicNameValuePair("[user][name]","deemaugee");
-		BasicNameValuePair email = new BasicNameValuePair("[user][email]","dmgee@yourmom.com");
+		BasicNameValuePair name = new BasicNameValuePair("[user][name]","jpanarj");
+		BasicNameValuePair email = new BasicNameValuePair("[user][email]","jpanar@example.com");
 		BasicNameValuePair password = new BasicNameValuePair("[user][password]","8characters");
 		BasicNameValuePair passwordC = new BasicNameValuePair("[user][password_confirmation]","8characters");
 		params.add(name);
 		params.add(email);
 		params.add(password);
 		params.add(passwordC);
-		
+		//if this pops up {"success":false,"info"... } pops up then email is already taken
 		System.out.println(new HttpBackgroundTask(url, method, params).execute().toString());
 	}
 	
