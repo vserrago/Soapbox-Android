@@ -57,8 +57,8 @@ public class MainActivity extends Activity {
 //		String url ="http://acx0.dyndns.org:3000/api/v1/sessions";
 //		String method = "POST";
 //		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-//		BasicNameValuePair email = new BasicNameValuePair("[user][email]","jpanar@example.com");
-//		BasicNameValuePair password = new BasicNameValuePair("[user][password]","verylongpassword");
+//		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY,"jpanar@example.com");
+//		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY,"verylongpassword");
 //		params.add(email);
 //		params.add(password);
 		
@@ -66,12 +66,12 @@ public class MainActivity extends Activity {
 		//"{\"user\":{\"email\":\"user1@example.com\",\"name\":\"anotheruser\",\"password\":\"secret\",\"password_confirmation\":\"secret\"}}"
 		
 		String url ="http://acx0.dyndns.org:3000/api/v1/registrations";
-		String method = "POST";
+		String method = HttpBackgroundTask.POST;
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		BasicNameValuePair name = new BasicNameValuePair("[user][name]","jpanarj");
-		BasicNameValuePair email = new BasicNameValuePair("[user][email]","jpanar@example.com");
-		BasicNameValuePair password = new BasicNameValuePair("[user][password]","8characters");
-		BasicNameValuePair passwordC = new BasicNameValuePair("[user][password_confirmation]","8characters");
+		BasicNameValuePair name = new BasicNameValuePair(HttpBackgroundTask.USERNAMEKEY,"jpanarj");
+		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY,"jpanar@example.com");
+		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY,"8characters");
+		BasicNameValuePair passwordC = new BasicNameValuePair(HttpBackgroundTask.PASSWORD_CKEY,"8characters");
 		params.add(name);
 		params.add(email);
 		params.add(password);

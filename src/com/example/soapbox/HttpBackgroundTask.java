@@ -28,6 +28,11 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 	public static final String GET = "GET";
 	public static final String POST = "POST";
 	
+	public static final String USERNAMEKEY = "[user][name]";
+	public static final String EMAILKEY = "[user][email]";
+	public static final String PASSWORDKEY = "[user][password]";
+	public static final String PASSWORD_CKEY = "[user][password_confirmation]";
+	
 	List<NameValuePair> postparams= new ArrayList<NameValuePair>();
 	String URL=null;
 	String method = null;
