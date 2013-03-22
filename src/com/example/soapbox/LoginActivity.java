@@ -1,5 +1,6 @@
 package com.example.soapbox;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -13,7 +14,9 @@ import com.example.soapbox.HttpBackgroundTask.MyCallbackInterface;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -260,17 +263,35 @@ public class LoginActivity extends FragmentActivity implements
 	}
 	
 	@Override
-	public void onRequestComplete(JSONObject result) {
+	public void onRequestComplete(JSONObject result) 
+	{
 		// TODO Auto-generated method stuff
-		/*try {
-			//put all shared preferences here and do error checking from json results
-			//if (!json.get(HttpBackgroundTask.SUCCESS).equals("false"))
+		SharedPreferences prefs = this.getSharedPreferences(
+			      "com.example.soapbox", Context.MODE_PRIVATE);
+		
+		try 
+		{
+			System.out.println(result);
+			
+			//If registered
+			if(result.getString(HttpBackgroundTask.INFO).equals(HttpBackgroundTask.INFOREGISTER))
 			{
-				System.out.println("logged in successful: " + result.get(HttpBackgroundTask.SUCCESS));
+				prefs.edit().putString(HttpBackgroundTask.EMAIL, result.getJSONObject(HttpBackgroundTask.DATA).getJSONObject(HttpBackgroundTask.USER).getString(HttpBackgroundTask.EMAIL));
+				prefs.edit().putString(HttpBackgroundTask.NAME, result.getJSONObject(HttpBackgroundTask.DATA).getJSONObject(HttpBackgroundTask.USER).getString(HttpBackgroundTask.NAME));
+				prefs.edit().putString(HttpBackgroundTask.AUTH, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.AUTH));
 			}
+			//else logged in
+			else
+			{
+				EditText editText = (EditText) findViewById(R.id.usernamelogin);
+				prefs.edit().putString(HttpBackgroundTask.EMAIL, editText.getText().toString());
+				prefs.edit().putString(HttpBackgroundTask.NAME, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.USER));
+				prefs.edit().putString(HttpBackgroundTask.AUTH, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.AUTH));
+			}
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}	
 	}
 }

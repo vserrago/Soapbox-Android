@@ -39,7 +39,19 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 	public static final String EMAILKEY = "[user][email]";
 	public static final String PASSWORDKEY = "[user][password]";
 	public static final String PASSWORD_CKEY = "[user][password_confirmation]";
-	private static final String INFO = "info";
+	
+	public static final String DATA = "data";
+	public static final String USER = "user";
+	public static final String EMAIL = "email";
+	public static final String NAME = "name";
+	public static final String AUTH = "auth_token";
+	
+	public static final String AUTH_KEY = "[data][auth_token]";
+	
+	public static final String INFO = "info";
+	
+	public static final String INFOLOGIN = "Logged in";
+	public static final String INFOREGISTER = "Registered";
 	
 	ProgressDialog mDialog;
 	List<NameValuePair> postparams= new ArrayList<NameValuePair>();
