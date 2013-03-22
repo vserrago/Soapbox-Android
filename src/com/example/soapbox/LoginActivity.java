@@ -7,7 +7,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -116,34 +118,63 @@ public class LoginActivity extends FragmentActivity implements
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		
 		EditText editText = (EditText) findViewById(R.id.usernamelogin);
-		System.out.println(editText.toString());
 		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY,editText.getText().toString());
 		
 		editText = (EditText) findViewById(R.id.passwordlogin);
-		System.out.println(editText.toString());
 		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY,editText.getText().toString());
 		params.add(email);
 		params.add(password);
 		
-		HttpBackgroundTask t = new HttpBackgroundTask(url, method, params);
+		HttpBackgroundTask t = new HttpBackgroundTask(url, method, params, this);
 		t.execute();
 		//TODO: if login success, finish, else, stay
-		finish();
 	}
 
 	public void register(View view)
 	{
-//		String url ="http://acx0.dyndns.org:3000/api/v1/registrations";
-//		String method = HttpBackgroundTask.POST;
-//		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-//		BasicNameValuePair name = new BasicNameValuePair(HttpBackgroundTask.USERNAMEKEY,"jpanarj");
-//		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY,"jpanar@example.com");
-//		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY,"8characters");
-//		BasicNameValuePair passwordC = new BasicNameValuePair(HttpBackgroundTask.PASSWORD_CKEY,"8characters");
-//		params.add(name);
-//		params.add(email);
-//		params.add(password);
-//		params.add(passwordC);
+		String url ="http://acx0.dyndns.org:3000/api/v1/registrations";
+		String method = HttpBackgroundTask.POST;
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		
+		EditText editText = (EditText)findViewById(R.id.password1register);
+		String password1 = editText.getText().toString();
+		
+		editText = (EditText)findViewById(R.id.password2register);
+		String password2 = editText.getText().toString();
+		
+		if (!password1.equals(password2))
+		{
+			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+			dlgAlert.setTitle("Could not register");
+			dlgAlert.setMessage("Passwords do not match.");
+			dlgAlert.setPositiveButton("Ok",
+				    new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int which) {
+				          //dismiss the dialog  
+				        }
+				    });
+			dlgAlert.setCancelable(true);
+			dlgAlert.create().show();
+			return;
+		}
+		
+		editText = (EditText) findViewById(R.id.usernameregister);
+		BasicNameValuePair name = new BasicNameValuePair(HttpBackgroundTask.USERNAMEKEY, editText.getText().toString());
+		
+		editText = (EditText)findViewById(R.id.emailregister);
+		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY, editText.getText().toString());
+		
+		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY, password1);
+		BasicNameValuePair passwordC = new BasicNameValuePair(HttpBackgroundTask.PASSWORD_CKEY, password2);
+		
+		params.add(name);
+		params.add(email);
+		params.add(password);
+		params.add(passwordC);
+		
+		HttpBackgroundTask t = new HttpBackgroundTask(url, method, params, this);
+		t.execute();
+		
 	}
 	
 	/**

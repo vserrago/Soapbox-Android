@@ -20,6 +20,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -33,11 +38,15 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 	public static final String PASSWORDKEY = "[user][password]";
 	public static final String PASSWORD_CKEY = "[user][password_confirmation]";
 	
+	ProgressDialog mDialog;
 	List<NameValuePair> postparams= new ArrayList<NameValuePair>();
 	String URL=null;
 	String method = null;
+	Context context;
+	boolean validUsername = true;
 	
-	public HttpBackgroundTask(String url, String method, ArrayList<NameValuePair> params) {
+	public HttpBackgroundTask(String url, String method, ArrayList<NameValuePair> params, Context context) {
+		this.context = context;
 		URL=url;
 		postparams=params;
 		this.method = method;
@@ -106,11 +115,41 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 		} catch (JSONException e) {
 			Log.e("JSON Parser", "Error parsing data " + e.toString());
 			//say username is already taken
+			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
+			dlgAlert.setTitle("Username already taken");
+			dlgAlert.setMessage("Please pick a different Username.");
+			dlgAlert.setPositiveButton("Ok",
+				    new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int which) {
+				          //dismiss the dialog  
+				        }
+				    });
+			dlgAlert.setCancelable(true);
+			dlgAlert.create().show();
+			validUsername = false;
 		}
 
 		// return JSON String
 		return jObj;
 
 	}
+    @Override
+    protected void onPreExecute()
+    {
+    	super.onPreExecute();
+
+    	mDialog = new ProgressDialog(context);
+    	mDialog.setMessage("Please wait...");
+    	mDialog.show();
+    }
+    
+    @Override
+    protected void onPostExecute(JSONObject reader)
+    {
+    	super.onPostExecute(reader);
+    	mDialog.dismiss();
+    	if (validUsername)
+    		((Activity)context).finish();
+    }
 }
 
