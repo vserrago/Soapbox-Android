@@ -276,17 +276,17 @@ public class LoginActivity extends FragmentActivity implements
 			//If registered
 			if(result.getString(HttpBackgroundTask.INFO).equals(HttpBackgroundTask.INFOREGISTER))
 			{
-				prefs.edit().putString(HttpBackgroundTask.EMAIL, result.getJSONObject(HttpBackgroundTask.DATA).getJSONObject(HttpBackgroundTask.USER).getString(HttpBackgroundTask.EMAIL));
-				prefs.edit().putString(HttpBackgroundTask.NAME, result.getJSONObject(HttpBackgroundTask.DATA).getJSONObject(HttpBackgroundTask.USER).getString(HttpBackgroundTask.NAME));
-				prefs.edit().putString(HttpBackgroundTask.AUTH, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.AUTH));
+				prefs.edit().putString(HttpBackgroundTask.EMAIL, result.getJSONObject(HttpBackgroundTask.DATA).getJSONObject(HttpBackgroundTask.USER).getString(HttpBackgroundTask.EMAIL)).commit();
+				prefs.edit().putString(HttpBackgroundTask.NAME, result.getJSONObject(HttpBackgroundTask.DATA).getJSONObject(HttpBackgroundTask.USER).getString(HttpBackgroundTask.NAME)).commit();
+				prefs.edit().putString(HttpBackgroundTask.AUTH, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.AUTH)).commit();
 			}
 			//else logged in
 			else
 			{
 				EditText editText = (EditText) findViewById(R.id.usernamelogin);
-				prefs.edit().putString(HttpBackgroundTask.EMAIL, editText.getText().toString());
-				prefs.edit().putString(HttpBackgroundTask.NAME, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.USER));
-				prefs.edit().putString(HttpBackgroundTask.AUTH, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.AUTH));
+				prefs.edit().putString(HttpBackgroundTask.EMAIL, editText.getText().toString()).commit();
+				prefs.edit().putString(HttpBackgroundTask.NAME, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.USER)).commit();
+				prefs.edit().putString(HttpBackgroundTask.AUTH, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.AUTH)).commit();
 			}
 			
 		} catch (JSONException e) {
