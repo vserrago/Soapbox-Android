@@ -39,6 +39,7 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 	public static final String EMAILKEY = "[user][email]";
 	public static final String PASSWORDKEY = "[user][password]";
 	public static final String PASSWORD_CKEY = "[user][password_confirmation]";
+	private static final String INFO = "info";
 	
 	ProgressDialog mDialog;
 	List<NameValuePair> postparams= new ArrayList<NameValuePair>();
@@ -105,22 +106,9 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 		}
 		// try parse the string to a JSON object
 		try {
-			System.out.println(json);
+			//System.out.println(json);
 			jObj = new JSONObject(json);
 		} catch (JSONException e) {
-			Log.e("JSON Parser", "Error parsing data " + e.toString());
-			//say username is already taken
-			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
-			dlgAlert.setTitle("Username already taken");
-			dlgAlert.setMessage("Please pick a different Username.");
-			dlgAlert.setPositiveButton("Ok",
-				    new DialogInterface.OnClickListener() {
-				        public void onClick(DialogInterface dialog, int which) {
-				          //dismiss the dialog  
-				        }
-				    });
-			dlgAlert.setCancelable(true);
-			dlgAlert.create().show();
 			validUsername = false;
 		}
 
@@ -142,10 +130,49 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
     protected void onPostExecute(JSONObject result)
     {
     	super.onPostExecute(result);
-    	mCallback.onRequestComplete(result);
     	mDialog.dismiss();
-       	if (validUsername)
-    		((Activity)context).finish();
+    	
+    	try {
+       		if (validUsername == true && result.get(HttpBackgroundTask.SUCCESS).toString().equals("false"))
+       		{
+       			System.out.println("IN IF STATEMENT");
+       			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
+       			dlgAlert.setTitle("Error");
+       			dlgAlert.setMessage("Invalid email.");
+       			dlgAlert.setPositiveButton("Ok",
+       					new DialogInterface.OnClickListener() {
+       				public void onClick(DialogInterface dialog, int which) {
+       					//dismiss the dialog  
+       				}
+       			});
+       			dlgAlert.setCancelable(true);
+       			dlgAlert.create().show();
+       			return;
+       		}
+       	} catch (JSONException e) {
+       		// TODO Auto-generated catch block
+       		e.printStackTrace();
+       	}
+    	
+       	if (validUsername == false)
+       	{
+       		AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
+    		
+    		dlgAlert.setTitle("Error");
+    		dlgAlert.setMessage("Username already taken");
+    		dlgAlert.setPositiveButton("Ok",
+    			    new DialogInterface.OnClickListener() {
+    			        public void onClick(DialogInterface dialog, int which) {
+    			          //dismiss the dialog  
+    			        }
+    			    });
+    		dlgAlert.setCancelable(true);
+    		dlgAlert.create().show();
+    		return;
+       	}
+       	mCallback.onRequestComplete(result);
+       	((Activity)context).finish();
+       	
     }
 }
 

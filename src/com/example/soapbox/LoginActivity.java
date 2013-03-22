@@ -150,8 +150,10 @@ public class LoginActivity extends FragmentActivity implements
 		
 		if (!password1.equals(password2))
 		{
+			
 			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-			dlgAlert.setTitle("Could not register");
+			
+			dlgAlert.setTitle("Error registering");
 			dlgAlert.setMessage("Passwords do not match.");
 			dlgAlert.setPositiveButton("Ok",
 				    new DialogInterface.OnClickListener() {
@@ -252,15 +254,15 @@ public class LoginActivity extends FragmentActivity implements
 				View register = inflater.inflate(R.layout.fragment_register, container, false);
 				currentView = register;
 			}
-
+			
 			return currentView;
 		}
 	}
-
+	
 	@Override
 	public void onRequestComplete(JSONObject result) {
 		// TODO Auto-generated method stuff
-		try {
+		/*try {
 			//put all shared preferences here and do error checking from json results
 			//if (!json.get(HttpBackgroundTask.SUCCESS).equals("false"))
 			{
@@ -269,7 +271,6 @@ public class LoginActivity extends FragmentActivity implements
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}	
-
+		}*/
+	}
 }
