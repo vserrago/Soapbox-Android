@@ -17,6 +17,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,6 +33,7 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 	
 	public static final String GET = "GET";
 	public static final String POST = "POST";
+	public static final String SUCCESS = "success";
 	
 	public static final String USERNAMEKEY = "[user][name]";
 	public static final String EMAILKEY = "[user][email]";
@@ -43,25 +45,32 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 	String URL=null;
 	String method = null;
 	Context context;
+	String json = null;
+	JSONObject jObj = null;
+	
 	boolean validUsername = true;
 	
-	public HttpBackgroundTask(String url, String method, ArrayList<NameValuePair> params, Context context) {
+	public interface MyCallbackInterface {
+        public void onRequestComplete(JSONObject result);
+    }
+	private MyCallbackInterface mCallback;
+	
+	public HttpBackgroundTask(String url, String method, ArrayList<NameValuePair> params, Context context, MyCallbackInterface mCallback) {
 		this.context = context;
 		URL=url;
 		postparams=params;
 		this.method = method;
+		this.mCallback = mCallback;
 	}
 	@Override
 	protected JSONObject doInBackground(String... params) {
 		// TODO Auto-generated method stub
 		// Making HTTP request
-		InputStream is = null;
-		String json = null;
-		JSONObject jObj = null;
+
 		try {
 			// Making HTTP request 
 			// check for request method
-
+			HttpEntity httpEntity = null;
 			if(method.equals(POST)){
 				// request method is POST
 				// defaultHttpClient
@@ -70,8 +79,8 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 				httpPost.setEntity(new UrlEncodedFormEntity(postparams));
 
 				HttpResponse httpResponse = httpClient.execute(httpPost);
-				HttpEntity httpEntity = httpResponse.getEntity();
-				is = httpEntity.getContent();
+				httpEntity = httpResponse.getEntity();
+			//	is = httpEntity.getContent();
 
 			}else if(method.equals(GET)){
 				// request method is GET
@@ -81,9 +90,11 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 				HttpGet httpGet = new HttpGet(URL);
 
 				HttpResponse httpResponse = httpClient.execute(httpGet);
-				HttpEntity httpEntity = httpResponse.getEntity();
-				is = httpEntity.getContent();
-			}           
+				httpEntity = httpResponse.getEntity();
+				//is = httpEntity.getContent();
+			}      
+			
+			json = EntityUtils.toString(httpEntity);
 
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -92,22 +103,6 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		try {
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			is.close();
-			json = sb.toString();
-		} catch (Exception e) {
-			Log.e("Buffer Error", "Error converting result " + e.toString());
-		}
-
 		// try parse the string to a JSON object
 		try {
 			System.out.println(json);
@@ -144,11 +139,12 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
     }
     
     @Override
-    protected void onPostExecute(JSONObject reader)
+    protected void onPostExecute(JSONObject result)
     {
-    	super.onPostExecute(reader);
+    	super.onPostExecute(result);
+    	mCallback.onRequestComplete(result);
     	mDialog.dismiss();
-    	if (validUsername)
+       	if (validUsername)
     		((Activity)context).finish();
     }
 }

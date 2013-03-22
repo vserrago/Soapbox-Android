@@ -5,6 +5,10 @@ import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.example.soapbox.HttpBackgroundTask.MyCallbackInterface;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -27,7 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class LoginActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+		ActionBar.TabListener, MyCallbackInterface {
 	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -44,7 +48,7 @@ public class LoginActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -125,8 +129,10 @@ public class LoginActivity extends FragmentActivity implements
 		params.add(email);
 		params.add(password);
 		
-		HttpBackgroundTask t = new HttpBackgroundTask(url, method, params, this);
+		HttpBackgroundTask t = new HttpBackgroundTask(url, method, params, this, this);
 		t.execute();
+		
+
 		//TODO: if login success, finish, else, stay
 	}
 
@@ -172,9 +178,9 @@ public class LoginActivity extends FragmentActivity implements
 		params.add(password);
 		params.add(passwordC);
 		
-		HttpBackgroundTask t = new HttpBackgroundTask(url, method, params, this);
+		HttpBackgroundTask t = new HttpBackgroundTask(url, method, params, this, this);
 		t.execute();
-		
+
 	}
 	
 	/**
@@ -236,10 +242,6 @@ public class LoginActivity extends FragmentActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			/*View rootView = inflater.inflate(R.layout.fragment_login,
-					container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);*/
 			View currentView = null;
 			
 			int section_num = getArguments().getInt(ARG_SECTION_NUMBER);
@@ -252,6 +254,21 @@ public class LoginActivity extends FragmentActivity implements
 			}
 
 			return currentView;
+		}
+	}
+
+	@Override
+	public void onRequestComplete(JSONObject result) {
+		// TODO Auto-generated method stuff
+		try {
+			//put all shared preferences here and do error checking from json results
+			//if (!json.get(HttpBackgroundTask.SUCCESS).equals("false"))
+			{
+				System.out.println("logged in successful: " + result.get(HttpBackgroundTask.SUCCESS));
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}	
 
