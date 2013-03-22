@@ -55,6 +55,7 @@
         android:layout_alignBottom="@+id/email_label_register"
         android:layout_alignLeft="@+id/password2register"
         android:layout_alignParentRight="true"
+        android:inputType="textEmailAddress"
         android:ems="10" />
 
     <EditText
@@ -89,6 +90,7 @@
         android:layout_alignBottom="@+id/username_label_register"
         android:layout_alignLeft="@+id/password1register"
         android:layout_alignParentRight="true"
+        android:inputType="text"
         android:ems="10" />
 
     <Button

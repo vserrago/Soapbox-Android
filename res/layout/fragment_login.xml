@@ -26,6 +26,7 @@
         android:layout_alignBottom="@+id/usernamelabellogin"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/usernamelabellogin"
+        android:inputType="textEmailAddress"
         android:ems="10" >
 
         <requestFocus />
