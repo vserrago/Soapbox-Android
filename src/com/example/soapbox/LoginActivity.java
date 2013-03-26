@@ -216,9 +216,9 @@ public class LoginActivity extends FragmentActivity implements
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return getString(R.string.title_login).toUpperCase(l);
+				return getString(R.string.login).toUpperCase(l);
 			case 1:
-				return getString(R.string.title_register).toUpperCase(l);
+				return getString(R.string.register).toUpperCase(l);
 			}
 			return null;
 		}

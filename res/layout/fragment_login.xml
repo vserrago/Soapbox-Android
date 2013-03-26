@@ -15,7 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="38dp"
-        android:text="@string/username_label"
+        android:text="@string/label_email"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -24,10 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/usernamelabellogin"
         android:layout_alignBottom="@+id/usernamelabellogin"
-        android:layout_marginLeft="20dp"
-        android:layout_toRightOf="@+id/usernamelabellogin"
-        android:inputType="textEmailAddress"
-        android:ems="10" >
+        android:layout_alignLeft="@+id/passwordlogin"
+        android:ems="10"
+        android:inputType="textEmailAddress" >
 
         <requestFocus />
     </EditText>
@@ -39,7 +38,7 @@
         android:layout_alignLeft="@+id/usernamelabellogin"
         android:layout_below="@+id/usernamelogin"
         android:layout_marginTop="48dp"
-        android:text="@string/password_label"
+        android:text="@string/label_password"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -48,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/passwordlabel"
         android:layout_alignBottom="@+id/passwordlabel"
-        android:layout_alignLeft="@+id/usernamelogin"
+        android:layout_toRightOf="@+id/passwordlabel"
         android:ems="10"
         android:inputType="textPassword" />
 
@@ -60,7 +59,7 @@
         android:layout_alignRight="@+id/passwordlabel"
         android:layout_below="@+id/passwordlogin"
         android:layout_marginTop="35dp"
-        android:text="@string/login_label" 
-        android:onClick="login"/>
+        android:onClick="login"
+        android:text="@string/login" />
 
 </RelativeLayout>

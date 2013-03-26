@@ -7,10 +7,11 @@
     <string name="welcome_anon">Register or Login here -&gt;</string>
     <string name="title_activity_post_shout">PostShoutActivity</string>
     <string name="title_activity_login">Login or Register</string>
-    <string name="title_login">Login</string>
-    <string name="title_register">Register</string>
-    <string name="username_label">Username:</string>
-    <string name="password_label">Password:</string>
-    <string name="login_label">Login</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="label_username">Username:</string>
+    <string name="label_password">Password:</string>
+    <string name="label_email">Email:</string>
+    <string name="label_verify_pass">Verify Password:</string>
 
 </resources>

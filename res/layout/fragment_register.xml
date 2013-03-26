@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="25dp"
-        android:text="Username:"
+        android:text="@string/label_username"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_below="@+id/username_label_register"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="25dp"
-        android:text="Password:"
+        android:text="@string/label_password"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_below="@+id/password1_label_register"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="25dp"
-        android:text="Verify Password:"
+        android:text="@string/label_verify_pass"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -44,7 +44,7 @@
         android:layout_below="@+id/password2_label_register"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="25dp"
-        android:text="Email:"
+        android:text="@string/label_email"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -98,9 +98,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/emailregister"
-        android:layout_marginTop="25dp"
         android:layout_marginLeft="20dp"
-        android:text="Register" 
-        android:onClick="register"/>
+        android:layout_marginTop="25dp"
+        android:onClick="register"
+        android:text="@string/register" />
 
 </RelativeLayout>
