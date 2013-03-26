@@ -45,6 +45,7 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
 	public static final String UPDATEDAT = "updated_at";
 	
 	//Instance Vars
+	ProgressDialog mDialog;
 	List<NameValuePair> postparams= new ArrayList<NameValuePair>();
 	String URL=null;
 	String method = null;
@@ -149,6 +150,10 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
     protected void onPreExecute()
     {
     	super.onPreExecute();
+    	
+    	mDialog = new ProgressDialog(context);
+    	mDialog.setMessage("Please wait...");
+    	mDialog.show();
     }
     
     @Override
@@ -157,6 +162,6 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
     	super.onPostExecute(result);
 
        	callBack.onRequestComplete(result);
-       	((Activity)context).finish();
+       	mDialog.dismiss();
     }
 }
