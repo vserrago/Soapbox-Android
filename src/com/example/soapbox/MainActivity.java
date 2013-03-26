@@ -17,6 +17,9 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONObject;
+
+import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -26,8 +29,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity implements ShoutListCallbackInterface
+{
 	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
 	public static final String SHOUTS = "shouts";
 	public static final String SLASH = "/";
@@ -61,23 +64,21 @@ public class MainActivity extends Activity {
 	
 	public void refreshShouts(View view)
 	{
-//		String url = HOSTNAME + SHOUTS;
-//		String method = DisplayShoutListTask.POST;
-//		
-//		DisplayShoutListTask t = new DisplayShoutListTask(url,method,null);
-//		try 
-//		{
-//			t.execute().get().toString();
-//		} 
-//		catch (InterruptedException e) 
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} 
-//		catch (ExecutionException e) 
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		String url = HOSTNAME + SHOUTS;
+		String method = DisplayShoutListTask.GET;
+		
+		System.out.println("Pre Execute");
+		
+		DisplayShoutListTask t = new DisplayShoutListTask(url,method,null,this,this);
+		t.execute();
+		
+		System.out.println("Post Execute");
+	}
+
+	@Override
+	public void onRequestComplete(JSONObject result) 
+	{
+		System.out.println("Complete");
+		System.out.println(result);
 	}
 }
