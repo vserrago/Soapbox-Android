@@ -142,7 +142,7 @@ public class LoginTask extends AsyncTask<String, String, JSONObject>{
     protected void onPostExecute(JSONObject result)
     {
     	super.onPostExecute(result);
-    	mDialog.dismiss();
+    	
     	
     	try {
        		if (validUsername == true && result.get(LoginTask.SUCCESS).toString().equals("false"))
@@ -159,6 +159,7 @@ public class LoginTask extends AsyncTask<String, String, JSONObject>{
        			});
        			dlgAlert.setCancelable(true);
        			dlgAlert.create().show();
+       			mDialog.dismiss();
        			return;
        		}
        	} catch (JSONException e) {
@@ -180,9 +181,11 @@ public class LoginTask extends AsyncTask<String, String, JSONObject>{
     			    });
     		dlgAlert.setCancelable(true);
     		dlgAlert.create().show();
+    		mDialog.dismiss();
     		return;
        	}
        	mCallback.onRequestComplete(result);
+       	mDialog.dismiss();
        	((Activity)context).finish();
        	
     }
