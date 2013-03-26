@@ -21,8 +21,11 @@ import org.json.JSONObject;
 
 import com.example.soapbox.LoginTask.MyCallbackInterface;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 
 public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
@@ -64,7 +67,7 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
 		this.method = method;
 		this.callBack = callBack;
 	}
-
+	
 	@Override
 	protected JSONArray doInBackground(String... params) 
 	{
@@ -123,8 +126,7 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
 			}
 			System.out.println(json.toString());
 			System.out.println("Post Execute TASK");
-			callBack.onRequestComplete(jArray);
-
+			
 		} 
 		catch (UnsupportedEncodingException e) 
 		{
@@ -142,4 +144,19 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
 		// return JSON String
 		return jArray;
 	}
+	
+    @Override
+    protected void onPreExecute()
+    {
+    	super.onPreExecute();
+    }
+    
+    @Override
+    protected void onPostExecute(JSONArray result)
+    {
+    	super.onPostExecute(result);
+
+       	callBack.onRequestComplete(result);
+       	((Activity)context).finish();
+    }
 }
