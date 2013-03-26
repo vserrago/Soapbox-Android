@@ -29,7 +29,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
+public class LoginTask extends AsyncTask<String, String, JSONObject>{
 	
 	public static final String GET = "GET";
 	public static final String POST = "POST";
@@ -68,7 +68,7 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
     }
 	private MyCallbackInterface mCallback;
 	
-	public HttpBackgroundTask(String url, String method, ArrayList<NameValuePair> params, Context context, MyCallbackInterface mCallback) {
+	public LoginTask(String url, String method, ArrayList<NameValuePair> params, Context context, MyCallbackInterface mCallback) {
 		this.context = context;
 		URL=url;
 		postparams=params;
@@ -145,7 +145,7 @@ public class HttpBackgroundTask extends AsyncTask<String, String, JSONObject>{
     	mDialog.dismiss();
     	
     	try {
-       		if (validUsername == true && result.get(HttpBackgroundTask.SUCCESS).toString().equals("false"))
+       		if (validUsername == true && result.get(LoginTask.SUCCESS).toString().equals("false"))
        		{
        			System.out.println("IN IF STATEMENT");
        			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);

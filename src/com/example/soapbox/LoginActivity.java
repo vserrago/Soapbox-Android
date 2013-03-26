@@ -9,7 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.soapbox.HttpBackgroundTask.MyCallbackInterface;
+import com.example.soapbox.LoginTask.MyCallbackInterface;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -125,14 +125,14 @@ public class LoginActivity extends FragmentActivity implements
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		
 		EditText editText = (EditText) findViewById(R.id.usernamelogin);
-		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY,editText.getText().toString());
+		BasicNameValuePair email = new BasicNameValuePair(LoginTask.EMAILKEY,editText.getText().toString());
 		
 		editText = (EditText) findViewById(R.id.passwordlogin);
-		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY,editText.getText().toString());
+		BasicNameValuePair password = new BasicNameValuePair(LoginTask.PASSWORDKEY,editText.getText().toString());
 		params.add(email);
 		params.add(password);
 		
-		HttpBackgroundTask t = new HttpBackgroundTask(url, method, params, this, this);
+		LoginTask t = new LoginTask(url, method, params, this, this);
 		t.execute();
 		
 
@@ -142,7 +142,7 @@ public class LoginActivity extends FragmentActivity implements
 	public void register(View view)
 	{
 		String url ="http://acx0.dyndns.org:3000/api/v1/registrations";
-		String method = HttpBackgroundTask.POST;
+		String method = LoginTask.POST;
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		
 		EditText editText = (EditText)findViewById(R.id.password1register);
@@ -170,20 +170,20 @@ public class LoginActivity extends FragmentActivity implements
 		}
 		
 		editText = (EditText) findViewById(R.id.usernameregister);
-		BasicNameValuePair name = new BasicNameValuePair(HttpBackgroundTask.USERNAMEKEY, editText.getText().toString());
+		BasicNameValuePair name = new BasicNameValuePair(LoginTask.USERNAMEKEY, editText.getText().toString());
 		
 		editText = (EditText)findViewById(R.id.emailregister);
-		BasicNameValuePair email = new BasicNameValuePair(HttpBackgroundTask.EMAILKEY, editText.getText().toString());
+		BasicNameValuePair email = new BasicNameValuePair(LoginTask.EMAILKEY, editText.getText().toString());
 		
-		BasicNameValuePair password = new BasicNameValuePair(HttpBackgroundTask.PASSWORDKEY, password1);
-		BasicNameValuePair passwordC = new BasicNameValuePair(HttpBackgroundTask.PASSWORD_CKEY, password2);
+		BasicNameValuePair password = new BasicNameValuePair(LoginTask.PASSWORDKEY, password1);
+		BasicNameValuePair passwordC = new BasicNameValuePair(LoginTask.PASSWORD_CKEY, password2);
 		
 		params.add(name);
 		params.add(email);
 		params.add(password);
 		params.add(passwordC);
 		
-		HttpBackgroundTask t = new HttpBackgroundTask(url, method, params, this, this);
+		LoginTask t = new LoginTask(url, method, params, this, this);
 		t.execute();
 
 	}
@@ -274,19 +274,19 @@ public class LoginActivity extends FragmentActivity implements
 			System.out.println(result);
 			
 			//If registered
-			if(result.getString(HttpBackgroundTask.INFO).equals(HttpBackgroundTask.INFOREGISTER))
+			if(result.getString(LoginTask.INFO).equals(LoginTask.INFOREGISTER))
 			{
-				prefs.edit().putString(HttpBackgroundTask.EMAIL, result.getJSONObject(HttpBackgroundTask.DATA).getJSONObject(HttpBackgroundTask.USER).getString(HttpBackgroundTask.EMAIL)).commit();
-				prefs.edit().putString(HttpBackgroundTask.NAME, result.getJSONObject(HttpBackgroundTask.DATA).getJSONObject(HttpBackgroundTask.USER).getString(HttpBackgroundTask.NAME)).commit();
-				prefs.edit().putString(HttpBackgroundTask.AUTH, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.AUTH)).commit();
+				prefs.edit().putString(LoginTask.EMAIL, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getString(LoginTask.EMAIL)).commit();
+				prefs.edit().putString(LoginTask.NAME, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getString(LoginTask.NAME)).commit();
+				prefs.edit().putString(LoginTask.AUTH, result.getJSONObject(LoginTask.DATA).getString(LoginTask.AUTH)).commit();
 			}
 			//else logged in
 			else
 			{
 				EditText editText = (EditText) findViewById(R.id.usernamelogin);
-				prefs.edit().putString(HttpBackgroundTask.EMAIL, editText.getText().toString()).commit();
-				prefs.edit().putString(HttpBackgroundTask.NAME, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.USER)).commit();
-				prefs.edit().putString(HttpBackgroundTask.AUTH, result.getJSONObject(HttpBackgroundTask.DATA).getString(HttpBackgroundTask.AUTH)).commit();
+				prefs.edit().putString(LoginTask.EMAIL, editText.getText().toString()).commit();
+				prefs.edit().putString(LoginTask.NAME, result.getJSONObject(LoginTask.DATA).getString(LoginTask.USER)).commit();
+				prefs.edit().putString(LoginTask.AUTH, result.getJSONObject(LoginTask.DATA).getString(LoginTask.AUTH)).commit();
 			}
 			
 		} catch (JSONException e) {
