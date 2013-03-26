@@ -48,4 +48,13 @@
         android:onClick="makePost"
         />
 
+    <Button
+        android:id="@+id/refresh_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/username_label_register"
+        android:layout_toLeftOf="@+id/login_button"
+        android:text="Refresh" 
+        android:onClick="refreshShouts"/>
+
 </RelativeLayout>

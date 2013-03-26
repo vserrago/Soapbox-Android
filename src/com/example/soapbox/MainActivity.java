@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -27,6 +28,10 @@ import android.widget.EditText;
 
 public class MainActivity extends Activity {
 
+	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
+	public static final String SHOUTS = "shouts";
+	public static final String SLASH = "/";
+	
 	SharedPreferences prefs;
 	
 	@Override
@@ -54,5 +59,25 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 	
-
+	public void refreshShouts(View view)
+	{
+//		String url = HOSTNAME + SHOUTS;
+//		String method = DisplayShoutListTask.POST;
+//		
+//		DisplayShoutListTask t = new DisplayShoutListTask(url,method,null);
+//		try 
+//		{
+//			t.execute().get().toString();
+//		} 
+//		catch (InterruptedException e) 
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+//		catch (ExecutionException e) 
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	}
 }
