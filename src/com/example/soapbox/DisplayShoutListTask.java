@@ -15,6 +15,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +25,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-public class DisplayShoutListTask extends AsyncTask<String, String, JSONObject>
+public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
 {
 	//HTTP Code names
 	public static final String GET = "GET";
@@ -48,11 +49,11 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONObject>
 	Context context;
 	ShoutListCallbackInterface callBack;
 	
-	JSONObject jObj = null;
+	JSONArray jArray = null;
 	
 	public interface ShoutListCallbackInterface 
 	{
-        public void onRequestComplete(JSONObject result);
+        public void onRequestComplete(JSONArray result);
     }
 	
 	public DisplayShoutListTask(String url, String method, ArrayList<NameValuePair> params, Context context, ShoutListCallbackInterface callBack) 
@@ -65,7 +66,7 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONObject>
 	}
 
 	@Override
-	protected JSONObject doInBackground(String... params) 
+	protected JSONArray doInBackground(String... params) 
 	{
 		try 
 		{
@@ -112,7 +113,8 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONObject>
 			try 
 			{
 				//TODO String json is a JSON array, not a single object
-				jObj = new JSONObject(json);
+				jArray = new JSONArray(json);
+//				jObj = new JSONObject(json);
 			} 
 			catch (JSONException e) 
 			{
@@ -121,7 +123,7 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONObject>
 			}
 			System.out.println(json.toString());
 			System.out.println("Post Execute TASK");
-			callBack.onRequestComplete(jObj);
+			callBack.onRequestComplete(jArray);
 
 		} 
 		catch (UnsupportedEncodingException e) 
@@ -137,18 +139,7 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONObject>
 			e.printStackTrace();
 		}
 		
-		// try parse the string to a JSON object
-		try 
-		{
-			//System.out.println(json);
-			jObj = new JSONObject(json);
-		} 
-		catch (JSONException e) 
-		{
-			e.printStackTrace();
-		}
-
 		// return JSON String
-		return jObj;
+		return jArray;
 	}
 }

@@ -17,6 +17,7 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
@@ -76,7 +77,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	}
 
 	@Override
-	public void onRequestComplete(JSONObject result) 
+	public void onRequestComplete(JSONArray result) 
 	{
 		System.out.println("Complete");
 		System.out.println(result);
