@@ -36,17 +36,6 @@
         android:text="L/S"
         android:onClick="openLogin"
         />
-		
-    <Button
-        android:id="@+id/post_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/login_button"
-        android:layout_alignTop="@+id/login_button"
-        android:text="Post"
-        android:visibility="gone"
-        android:onClick="makePost"
-        />
 
     <Button
         android:id="@+id/refresh_button"
@@ -56,5 +45,16 @@
         android:layout_toLeftOf="@+id/login_button"
         android:text="Refresh" 
         android:onClick="refreshShouts"/>
+
+    <Button
+        android:id="@+id/post_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/login_button"
+        android:layout_alignBottom="@+id/login_button"
+        android:layout_marginRight="18dp"
+        android:layout_toLeftOf="@+id/refresh_button"
+        android:onClick="makePost"
+        android:text="Post" />
 
 </RelativeLayout>

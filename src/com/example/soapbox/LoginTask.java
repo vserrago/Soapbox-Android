@@ -150,7 +150,7 @@ public class LoginTask extends AsyncTask<String, String, JSONObject>{
        			System.out.println("IN IF STATEMENT");
        			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
        			dlgAlert.setTitle("Error");
-       			dlgAlert.setMessage("Invalid email.");
+       			dlgAlert.setMessage("Invalid email or password.");
        			dlgAlert.setPositiveButton("Ok",
        					new DialogInterface.OnClickListener() {
        				public void onClick(DialogInterface dialog, int which) {
