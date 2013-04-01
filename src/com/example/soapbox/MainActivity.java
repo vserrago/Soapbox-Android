@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
@@ -93,7 +95,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		System.out.println(result);
 		shoutArray = result;
 		
-		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+		LinkedList<HashMap<String, String>> list = new LinkedList<HashMap<String,String>>();
 		try 
 		{
 			for(int i=0; i<shoutArray.length(); i++)
@@ -105,7 +107,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 				map.put(DisplayShoutListTask.NAME, o.getString(DisplayShoutListTask.NAME));
 				map.put(DisplayShoutListTask.MESSAGE, o.getString(DisplayShoutListTask.MESSAGE));
 				
-				list.add(map);
+				list.addFirst(map);
 			}
 		} 
 		catch (JSONException e) 
