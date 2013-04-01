@@ -97,11 +97,11 @@ public class PostShoutActivity extends Activity implements PostShoutCallbackInte
 			dlgAlert.create().show();
 			return;
 		}
-		params.add(new BasicNameValuePair("auth_token", prefs.getString(LoginTask.AUTH, "")));
-		params.add(new BasicNameValuePair("[shout][message]", editText.getText().toString()));
-		params.add(new BasicNameValuePair("[shout][name]", name));
-		params.add(new BasicNameValuePair("[shout][tag]","toronto"));
-		params.add(new BasicNameValuePair("[shout][title]", name));
+		params.add(new BasicNameValuePair(PostShoutTask.AUTH, prefs.getString(LoginTask.AUTH, "")));
+		params.add(new BasicNameValuePair(PostShoutTask.MESSAGE, editText.getText().toString()));
+		params.add(new BasicNameValuePair(PostShoutTask.NAME, name));
+		params.add(new BasicNameValuePair(PostShoutTask.TAG,"toronto"));
+		params.add(new BasicNameValuePair(PostShoutTask.NAME, name));
 		
 		
 		PostShoutTask task = new PostShoutTask(url, PostShoutTask.POST, params, this, this);

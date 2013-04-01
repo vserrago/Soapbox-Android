@@ -33,6 +33,14 @@ public class PostShoutTask extends AsyncTask<String, String, JSONObject>
 	public static final String POST = "POST";
 	public static final String SUCCESS = "success";
 	
+	//json post names
+	public static final String AUTH = "auth_token";
+	public static final String MESSAGE = "[shout][message]";
+	public static final String NAME = "[shout][name]";
+	public static final String TAG = "[shout][tag]";
+	public static final String TITLE = "[shout][title]";
+	
+	
 	//Instance Vars
 	ProgressDialog mDialog;
 	List<NameValuePair> postparams= new ArrayList<NameValuePair>();
