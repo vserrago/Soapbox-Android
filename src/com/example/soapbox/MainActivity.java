@@ -39,7 +39,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-public class MainActivity extends ListActivity implements ShoutListCallbackInterface
+public class MainActivity extends Activity implements ShoutListCallbackInterface
 {
 	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
 	public static final String SHOUTS = "shouts";
@@ -114,14 +114,16 @@ public class MainActivity extends ListActivity implements ShoutListCallbackInter
 			e.printStackTrace();
 		}
 		
+		final ListView lv = (ListView) findViewById(R.id.list);
+		
 		ListAdapter adapter = new SimpleAdapter(this, list , R.layout.activity_main,
 				new String[] {DisplayShoutListTask.MESSAGE},
 				new int[] { R.id.username_label_register });
 
 		
-		setListAdapter(adapter);
+		lv.setAdapter(adapter);
 
-		final ListView lv = getListView();
+		//final ListView lv = getListView();
 		lv.setTextFilterEnabled(true);
 //		lv.setOnItemClickListener(listener)
 		lv.setOnItemClickListener(new OnItemClickListener() 
