@@ -116,9 +116,9 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		
 		final ListView lv = (ListView) findViewById(R.id.list);
 		
-		ListAdapter adapter = new SimpleAdapter(this, list , R.layout.activity_main,
+		ListAdapter adapter = new SimpleAdapter(this, list , R.layout.shout_list_component,
 				new String[] {DisplayShoutListTask.MESSAGE},
-				new int[] { R.id.username_label_register });
+				new int[] { R.id.shout_list_component });
 
 		
 		lv.setAdapter(adapter);
