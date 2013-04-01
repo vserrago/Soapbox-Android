@@ -9,19 +9,18 @@
     tools:context=".MainActivity" >
 
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_button"
         android:layout_centerHorizontal="true" >
-
     </ListView>
 
     <TextView
         android:id="@+id/username_label_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/listView1"
+        android:layout_alignLeft="@+id/list"
         android:layout_alignTop="@+id/login_button"
         android:text="&lt;Username Here>"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -32,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/listView1"
+        android:layout_alignRight="@+id/list"
         android:text="L/S"
         android:onClick="openLogin"
         />
