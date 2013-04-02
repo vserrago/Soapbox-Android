@@ -27,6 +27,7 @@ import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
@@ -46,11 +47,15 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	public static final String SLASH = "/";
 	
 	SharedPreferences prefs;
-	JSONArray shoutArray = null;;
+	JSONArray shoutArray = null;
+	String location = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		retrieveUserInfo();
+		
 		setContentView(R.layout.activity_main);
 	}
 
@@ -59,6 +64,17 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	//gets the user's info from sharedprefs
+	public void retrieveUserInfo()
+	{
+		//Get the user's location from shared prefs if it is stored there
+		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		
+		location = prefs.getString(LoginTask.TAG, LoginTask.DEFAULT_TAG_VALUE);
+//		location = LoginTask.DEFAULT_TAG_VALUE;
+		System.out.println("Location: " + location);
 	}
 	
 	//called when Post button is clicked
@@ -77,10 +93,20 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	{
 		String url = HOSTNAME + SHOUTS;
 		String method = DisplayShoutListTask.GET;
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		
+		retrieveUserInfo(); //Get the latest values
+		
+		//If the location tag is not global
+		if(location != LoginTask.DEFAULT_TAG_VALUE)
+		{
+			BasicNameValuePair tag = new BasicNameValuePair(LoginTask.TAG, location);
+			params.add(tag);
+		}
 		
 		System.out.println("Pre Execute");
 		
-		DisplayShoutListTask t = new DisplayShoutListTask(url,method,null,this,this);
+		DisplayShoutListTask t = new DisplayShoutListTask(url,method,params,this,this);
 		t.execute();
 		
 		System.out.println("Post Execute");

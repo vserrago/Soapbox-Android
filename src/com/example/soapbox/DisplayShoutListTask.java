@@ -98,9 +98,13 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
 				{
 				// request method is GET
 				DefaultHttpClient httpClient = new DefaultHttpClient();
-//				String paramString = URLEncodedUtils.format(postparams, "utf-8");
-//				URL += "?" + paramString;
-				URL += ".json";
+				
+				URL += ".json";	//Retrieve json
+				
+				//Encode params
+				String paramString = URLEncodedUtils.format(postparams, "utf-8");
+				URL += "?" + paramString;
+				
 				HttpGet httpGet = new HttpGet(URL);
 
 				HttpResponse httpResponse = httpClient.execute(httpGet);
