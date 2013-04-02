@@ -131,8 +131,8 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 				
 				map.put(DisplayShoutListTask.ID, o.getString(DisplayShoutListTask.ID));
 				map.put(DisplayShoutListTask.NAME, o.getString(DisplayShoutListTask.NAME));
+				map.put(DisplayShoutListTask.TAG, o.getString(DisplayShoutListTask.TAG));
 				map.put(DisplayShoutListTask.MESSAGE, o.getString(DisplayShoutListTask.MESSAGE));
-				
 				list.addFirst(map);
 			}
 		} 
@@ -142,7 +142,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			e.printStackTrace();
 		}
 		
-		final ListView lv = (ListView) findViewById(R.id.list);
+		/*final ListView lv = (ListView) findViewById(R.id.list);
 		
 		ListAdapter adapter = new SimpleAdapter(this, list , R.layout.shout_list_component,
 				new String[] {DisplayShoutListTask.MESSAGE},
@@ -163,6 +163,6 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 				Toast.makeText(MainActivity.this, "ID '" + o.get("id") + "' was clicked.", Toast.LENGTH_SHORT).show(); 
 
 			}
-		});
+		});*/
 	}
 }
