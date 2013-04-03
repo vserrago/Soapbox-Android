@@ -40,6 +40,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements ShoutListCallbackInterface
@@ -50,14 +51,15 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	
 	SharedPreferences prefs;
 	JSONArray shoutArray = null;
+	String username = null;
 	String location = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 		
 		retrieveUserInfo();
-		setContentView(R.layout.activity_main);
 	}
 
 	@Override
@@ -74,6 +76,17 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
 		
 		location = prefs.getString(LoginTask.TAG, LoginTask.DEFAULT_TAG_VALUE);
+		username = prefs.getString(LoginTask.NAME, null);
+		
+		TextView usernameLabel = (TextView) findViewById(R.id.username_label_register);
+		if(username == null)
+		{
+			usernameLabel.setText("Please sign in");
+		}
+		else
+		{
+			usernameLabel.setText("Welcome, " + username);
+		}
 //		location = LoginTask.DEFAULT_TAG_VALUE;
 		System.out.println("Location: " + location);
 	}
