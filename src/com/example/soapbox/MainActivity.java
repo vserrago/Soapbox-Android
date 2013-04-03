@@ -57,7 +57,6 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		super.onCreate(savedInstanceState);
 		
 		retrieveUserInfo();
-		
 		setContentView(R.layout.activity_main);
 	}
 
@@ -142,7 +141,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			e.printStackTrace();
 		}
 		
-		ListView listView = (ListView) findViewById(R.id.list);
+		final ListView listView = (ListView) findViewById(R.id.list);
 
 		// get data from the table by the ListAdapter
 		ListAdapter adapter = new com.example.soapbox.ListAdapter
@@ -151,27 +150,16 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 				new int[] { R.id.message_component });
 
 		listView.setAdapter(adapter);
-		/*final ListView lv = (ListView) findViewById(R.id.list);
 		
-		ListAdapter adapter = new SimpleAdapter(this, list , R.layout.shout_list_component,
-				new String[] {DisplayShoutListTask.MESSAGE},
-				new int[] { R.id.shout_list_component });
-
-		
-		lv.setAdapter(adapter);
-
-		//final ListView lv = getListView();
-		lv.setTextFilterEnabled(true);
-//		lv.setOnItemClickListener(listener)
-		lv.setOnItemClickListener(new OnItemClickListener() 
+		listView.setOnItemClickListener(new OnItemClickListener() 
 		{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 			{
 //				@SuppressWarnings("unchecked")
-				HashMap<String, String> o = (HashMap<String, String>) lv.getItemAtPosition(position);	        		
+				HashMap<String, String> o = (HashMap<String, String>) listView.getItemAtPosition(position);	        		
 				Toast.makeText(MainActivity.this, "ID '" + o.get("id") + "' was clicked.", Toast.LENGTH_SHORT).show(); 
 
 			}
-		});*/
+		});
 	}
 }
