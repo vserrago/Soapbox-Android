@@ -59,6 +59,10 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		//Refresh shout list on MainActivity creation
+		View v = (View)findViewById(R.layout.activity_main);
+		refreshShouts(v);
+		
 		retrieveUserInfo();
 	}
 
