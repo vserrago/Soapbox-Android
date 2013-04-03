@@ -29,10 +29,12 @@ import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.ClipData.Item;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -82,6 +84,26 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		return true;
 	}
 	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) 
+	{
+		
+		MenuItem usernameItem =  menu.findItem(R.id.main_menu_change_username);
+		MenuItem locationItem =  menu.findItem(R.id.main_menu_change_location);
+//		MenuItem signoutItem =
+		if(Global.loginStatus == LoginStatus.LoggedOut)
+		{
+			usernameItem.setVisible(false);
+			locationItem.setVisible(false);
+		}
+		else
+		{
+			usernameItem.setVisible(true);
+			locationItem.setVisible(true);
+		}
+		return true;
+	}
+	
 	//gets the user's info from sharedprefs
 	public void retrieveUserInfo()
 	{
@@ -96,9 +118,10 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		if(username == null)
 		{
 			usernameLabel.setText("Please sign in");	
-			button.setVisibility(Button.GONE);
+			button.setVisibility(Button.INVISIBLE);
+			
 			button = (Button)findViewById(R.id.login_button);
-			button.setVisibility(Button.VISIBLE);
+			button.setText("Login or Register");
 			Global.loginStatus = LoginStatus.LoggedOut;
 		}
 		else
@@ -106,7 +129,8 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			usernameLabel.setText("Welcome, " + username);
 			button.setVisibility(Button.VISIBLE);
 			button = (Button)findViewById(R.id.login_button);
-			button.setVisibility(Button.GONE);
+			button.setText("Log Out");
+//			button.setVisibility(Button.GONE);
 			Global.loginStatus = LoginStatus.LoggedIn;
 		}
 //		location = LoginTask.DEFAULT_TAG_VALUE;
@@ -120,9 +144,26 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	}
 	
 	//called when Login button is clicked
-	public void openLogin(View view) {
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
+	public void openLogin(View view) 
+	{
+		//If no user is logged in
+		if(Global.loginStatus == LoginStatus.LoggedOut)
+		{
+			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
+		}
+		//Else user is logged in
+		else
+		{
+			prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+			prefs.edit().clear().commit(); //Delete all sharedprefs
+			
+			Global.loginStatus = LoginStatus.LoggedOut;
+			
+			retrieveUserInfo();
+			View v = (View)findViewById(R.layout.activity_main);
+			refreshShouts(v);
+		}
 	}
 	
 	public void refreshShouts(View view)
@@ -144,7 +185,6 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		
 		DisplayShoutListTask t = new DisplayShoutListTask(url,method,params,this,this);
 		t.execute();
-		
 		System.out.println("Post Execute");
 	}
 
