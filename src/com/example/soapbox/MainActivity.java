@@ -142,6 +142,15 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			e.printStackTrace();
 		}
 		
+		ListView listView = (ListView) findViewById(R.id.list);
+
+		// get data from the table by the ListAdapter
+		ListAdapter adapter = new com.example.soapbox.ListAdapter
+				(this, list , R.layout.shout_list_component,
+				new String[] {DisplayShoutListTask.MESSAGE},
+				new int[] { R.id.message_component });
+
+		listView.setAdapter(adapter);
 		/*final ListView lv = (ListView) findViewById(R.id.list);
 		
 		ListAdapter adapter = new SimpleAdapter(this, list , R.layout.shout_list_component,
