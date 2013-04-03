@@ -36,6 +36,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -59,13 +60,20 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		retrieveUserInfo();
+		//retrieveUserInfo();
 		
 		//Refresh shout list on MainActivity creation
 		View v = (View)findViewById(R.layout.activity_main);
 		refreshShouts(v);
 	}
 
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		retrieveUserInfo();
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -83,13 +91,20 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		username = prefs.getString(LoginTask.NAME, null);
 		
 		TextView usernameLabel = (TextView) findViewById(R.id.username_label_register);
+		Button button = (Button) findViewById(R.id.post_button);
 		if(username == null)
 		{
-			usernameLabel.setText("Please sign in");
+			usernameLabel.setText("Please sign in");	
+			button.setVisibility(Button.GONE);
+			button = (Button)findViewById(R.id.login_button);
+			button.setVisibility(Button.VISIBLE);
 		}
 		else
 		{
 			usernameLabel.setText("Welcome, " + username);
+			button.setVisibility(Button.VISIBLE);
+			button = (Button)findViewById(R.id.login_button);
+			button.setVisibility(Button.GONE);
 		}
 //		location = LoginTask.DEFAULT_TAG_VALUE;
 		System.out.println("Location: " + location);
