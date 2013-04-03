@@ -44,6 +44,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends Activity implements ShoutListCallbackInterface
 {
 	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
@@ -98,6 +99,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			button.setVisibility(Button.GONE);
 			button = (Button)findViewById(R.id.login_button);
 			button.setVisibility(Button.VISIBLE);
+			Global.loginStatus = LoginStatus.LoggedOut;
 		}
 		else
 		{
@@ -105,6 +107,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			button.setVisibility(Button.VISIBLE);
 			button = (Button)findViewById(R.id.login_button);
 			button.setVisibility(Button.GONE);
+			Global.loginStatus = LoginStatus.LoggedIn;
 		}
 //		location = LoginTask.DEFAULT_TAG_VALUE;
 		System.out.println("Location: " + location);
