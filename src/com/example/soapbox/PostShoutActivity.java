@@ -101,7 +101,7 @@ public class PostShoutActivity extends Activity implements PostShoutCallbackInte
 		params.add(new BasicNameValuePair(PostShoutTask.AUTH, prefs.getString(LoginTask.AUTH, "")));
 		params.add(new BasicNameValuePair(PostShoutTask.MESSAGE, editText.getText().toString()));
 		params.add(new BasicNameValuePair(PostShoutTask.NAME, name));
-		params.add(new BasicNameValuePair(PostShoutTask.TAG,"toronto"));
+		params.add(new BasicNameValuePair(PostShoutTask.TAG,prefs.getString(LoginTask.TAG, LoginTask.DEFAULT_TAG_VALUE)));
 		params.add(new BasicNameValuePair(PostShoutTask.NAME, name));
 		
 		

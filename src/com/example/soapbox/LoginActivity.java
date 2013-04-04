@@ -289,6 +289,8 @@ public class LoginActivity extends FragmentActivity implements
 				prefs.edit().putString(LoginTask.AUTH, result.getJSONObject(LoginTask.DATA).getString(LoginTask.AUTH)).commit();
 			}
 			
+			prefs.edit().putBoolean(LoginTask.LOGINSTATUSKEY, true).commit();
+			
 			prefs.edit().putString(LoginTask.TAG, "toronto").commit();
 			
 		} catch (JSONException e) {

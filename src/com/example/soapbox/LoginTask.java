@@ -56,6 +56,8 @@ public class LoginTask extends AsyncTask<String, String, JSONObject>{
 	public static final String INFOLOGIN = "Logged in";
 	public static final String INFOREGISTER = "Registered";
 	
+	public static final String LOGINSTATUSKEY = "lg";
+	
 	ProgressDialog mDialog;
 	List<NameValuePair> postparams= new ArrayList<NameValuePair>();
 	String URL=null;

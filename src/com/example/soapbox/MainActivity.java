@@ -87,11 +87,14 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) 
 	{
+		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		
+		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
 		
 		MenuItem usernameItem =  menu.findItem(R.id.main_menu_change_username);
 		MenuItem locationItem =  menu.findItem(R.id.main_menu_change_location);
 //		MenuItem signoutItem =
-		if(Global.loginStatus == LoginStatus.LoggedOut)
+		if(!loggedIn)
 		{
 			usernameItem.setVisible(false);
 			locationItem.setVisible(false);
@@ -112,17 +115,19 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		
 		location = prefs.getString(LoginTask.TAG, LoginTask.DEFAULT_TAG_VALUE);
 		username = prefs.getString(LoginTask.NAME, null);
+		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
 		
 		TextView usernameLabel = (TextView) findViewById(R.id.username_label_register);
 		Button button = (Button) findViewById(R.id.post_button);
-		if(username == null)
+		if(!loggedIn)
 		{
 			usernameLabel.setText("Please sign in");	
 			button.setVisibility(Button.INVISIBLE);
 			
 			button = (Button)findViewById(R.id.login_button);
 			button.setText("Login or Register");
-			Global.loginStatus = LoginStatus.LoggedOut;
+//			Global.loginStatus = LoginStatus.LoggedOut;
+			prefs.edit().putBoolean(LoginTask.LOGINSTATUSKEY, false).commit();
 		}
 		else
 		{
@@ -131,7 +136,6 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			button = (Button)findViewById(R.id.login_button);
 			button.setText("Log Out");
 //			button.setVisibility(Button.GONE);
-			Global.loginStatus = LoginStatus.LoggedIn;
 		}
 //		location = LoginTask.DEFAULT_TAG_VALUE;
 		System.out.println("Location: " + location);
@@ -146,8 +150,11 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	//called when Login button is clicked
 	public void openLogin(View view) 
 	{
+		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
+		
 		//If no user is logged in
-		if(Global.loginStatus == LoginStatus.LoggedOut)
+		if(!loggedIn)
 		{
 			Intent intent = new Intent(this, LoginActivity.class);
 			startActivity(intent);
@@ -158,7 +165,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
 			prefs.edit().clear().commit(); //Delete all sharedprefs
 			
-			Global.loginStatus = LoginStatus.LoggedOut;
+			prefs.edit().putBoolean(LoginTask.LOGINSTATUSKEY, false).commit();
 			
 			retrieveUserInfo();
 			View v = (View)findViewById(R.layout.activity_main);
