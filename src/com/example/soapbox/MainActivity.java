@@ -189,7 +189,28 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	
 	public void changeLocation(View view)
 	{
-		
+		// custom dialog
+		final Dialog dialog = new Dialog(this);
+		dialog.setContentView(R.layout.change_location);
+		dialog.setTitle("Change Location");
+
+		// set the custom dialog components - text, image and button
+//		final TextView text = (TextView) dialog.findViewById(R.id.change_username_textbox);
+//
+//		Button dialogButton = (Button) dialog.findViewById(R.id.change_username_ok);
+//		// if button is clicked, close the custom dialog
+//		dialogButton.setOnClickListener(new OnClickListener() 
+//		{
+//			@Override
+//			public void onClick(View v) 
+//			{
+//				username = text.getText().toString();
+//				System.out.println(username);
+//				dialog.dismiss();
+//			}
+//		});
+
+		dialog.show();
 	}
 	
 	//called when Login button is clicked
