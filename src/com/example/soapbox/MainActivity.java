@@ -94,12 +94,14 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		
 		MenuItem usernameItem =  menu.findItem(R.id.main_menu_change_username);
 		MenuItem locationItem =  menu.findItem(R.id.main_menu_change_location);
+		MenuItem signOutItem = menu.findItem(R.id.main_menu_sign_out);
 		MenuItem loginActionItem =  menu.findItem(R.id.main_menu_action_login);
 		MenuItem postShoutActionItem =  menu.findItem(R.id.main_menu_action_post);
 		if(!loggedIn)
 		{
 			usernameItem.setVisible(false);
 			locationItem.setVisible(false);
+			signOutItem.setVisible(false);
 			postShoutActionItem.setVisible(false);
 			loginActionItem.setVisible(true);
 		}
@@ -107,6 +109,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		{
 			usernameItem.setVisible(true);
 			locationItem.setVisible(true);
+			signOutItem.setVisible(true);
 			postShoutActionItem.setVisible(true);
 			loginActionItem.setVisible(false);
 		}
