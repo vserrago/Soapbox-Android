@@ -1,6 +1,7 @@
 package com.example.soapbox;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 import org.apache.http.NameValuePair;
@@ -24,12 +25,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.soapbox.LoginTask.MyCallbackInterface;
 
 public class LoginActivity extends FragmentActivity implements
 		ActionBar.TabListener, MyCallbackInterface {
+	
+	static HashMap<String,String> m;
 	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -173,10 +178,16 @@ public class LoginActivity extends FragmentActivity implements
 		BasicNameValuePair password = new BasicNameValuePair(LoginTask.PASSWORDKEY, password1);
 		BasicNameValuePair passwordC = new BasicNameValuePair(LoginTask.PASSWORD_CKEY, password2);
 		
+		Spinner spinner = (Spinner)findViewById(R.id.register_location_spinner);
+		String tag = m.get(spinner.getSelectedItem().toString());
+		
+		BasicNameValuePair location = new BasicNameValuePair(LoginTask.TAGKEY, tag);
+		
 		params.add(name);
 		params.add(email);
 		params.add(password);
 		params.add(passwordC);
+		params.add(location);
 		
 		LoginTask t = new LoginTask(url, method, params, this, this);
 		t.execute();
@@ -251,6 +262,14 @@ public class LoginActivity extends FragmentActivity implements
 			} else if (section_num == 2) {
 				View register = inflater.inflate(R.layout.fragment_register, container, false);
 				currentView = register;
+				
+//				View headerView = inflater.inflate(R.layout.fragment_register, container);
+				
+				m = Locations.constructCityMap();
+
+				final Spinner spinner = (Spinner)register.findViewById(R.id.register_location_spinner);
+				ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(register.getContext(), android.R.layout.simple_spinner_dropdown_item, Locations.cityNames);
+				spinner.setAdapter(spinnerArrayAdapter);
 			}
 			
 			return currentView;
@@ -273,20 +292,25 @@ public class LoginActivity extends FragmentActivity implements
 			{
 				prefs.edit().putString(LoginTask.EMAIL, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getString(LoginTask.EMAIL)).commit();
 				prefs.edit().putString(LoginTask.NAME, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getString(LoginTask.NAME)).commit();
+				prefs.edit().putString(LoginTask.ID, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getString(LoginTask.ID)).commit();
+				prefs.edit().putString(LoginTask.TAG, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getString(LoginTask.TAG)).commit();
 				prefs.edit().putString(LoginTask.AUTH, result.getJSONObject(LoginTask.DATA).getString(LoginTask.AUTH)).commit();
+				
 			}
 			//else logged in
 			else
 			{
 				EditText editText = (EditText) findViewById(R.id.usernamelogin);
 				prefs.edit().putString(LoginTask.EMAIL, editText.getText().toString()).commit();
+				prefs.edit().putString(LoginTask.ID, result.getJSONObject(LoginTask.DATA).getString(LoginTask.ID)).commit();
+				prefs.edit().putString(LoginTask.TAG, result.getJSONObject(LoginTask.DATA).getString(LoginTask.TAG)).commit();
 				prefs.edit().putString(LoginTask.NAME, result.getJSONObject(LoginTask.DATA).getString(LoginTask.USER)).commit();
 				prefs.edit().putString(LoginTask.AUTH, result.getJSONObject(LoginTask.DATA).getString(LoginTask.AUTH)).commit();
 			}
 			
 			prefs.edit().putBoolean(LoginTask.LOGINSTATUSKEY, true).commit();
 			
-			prefs.edit().putString(LoginTask.TAG, "toronto").commit();
+//			prefs.edit().putString(LoginTask.TAG, "toronto").commit();
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

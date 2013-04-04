@@ -34,8 +34,10 @@ public class LoginTask extends AsyncTask<String, String, JSONObject>{
 	public static final String EMAILKEY = "[user][email]";
 	public static final String PASSWORDKEY = "[user][password]";
 	public static final String PASSWORD_CKEY = "[user][password_confirmation]";
+	public static final String TAGKEY = "[user][tag]";
 	
 	public static final String DATA = "data";
+	public static final String ID = "id";
 	public static final String USER = "user";
 	public static final String EMAIL = "email";
 	public static final String NAME = "name";

@@ -103,4 +103,11 @@
         android:onClick="register"
         android:text="@string/register" />
 
+    <Spinner
+        android:id="@+id/register_location_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/registerbutton" />
+
 </RelativeLayout>

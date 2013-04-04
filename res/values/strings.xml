@@ -14,5 +14,6 @@
     <string name="label_email">Email:</string>
     <string name="label_verify_pass">Verify Password:</string>
     <string name="change_location_spinner_prompt">Choose a City</string>
+    <string name="title_activity_comment">Comment</string>
 
 </resources>
