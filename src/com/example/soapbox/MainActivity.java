@@ -267,7 +267,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		retrieveUserInfo(); //Get the latest values
 
 		//If the location tag is not global
-		if(location != LoginTask.DEFAULT_TAG_VALUE)
+		if(!location.equals(LoginTask.DEFAULT_TAG_VALUE))
 		{
 			BasicNameValuePair tag = new BasicNameValuePair(LoginTask.TAG, location);
 			params.add(tag);
