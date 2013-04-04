@@ -15,11 +15,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

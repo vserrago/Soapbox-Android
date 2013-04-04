@@ -1,6 +1,5 @@
 package com.example.soapbox;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -8,8 +7,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.example.soapbox.LoginTask.MyCallbackInterface;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -22,16 +19,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.example.soapbox.LoginTask.MyCallbackInterface;
 
 public class LoginActivity extends FragmentActivity implements
 		ActionBar.TabListener, MyCallbackInterface {
