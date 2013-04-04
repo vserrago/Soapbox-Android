@@ -1,20 +1,36 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity" >
 
     <item
         android:id="@+id/main_menu_change_username"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="Change Username"/>
-
-	<item
+    <item
         android:id="@+id/main_menu_change_location"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="Change Location"/>
-	
-		<item
+    <item
         android:id="@+id/main_menu_sign_out"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="Sign Out"/>
+    <item
+        android:id="@+id/main_menu_action_refresh"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="Refresh"/>
+    <item
+        android:id="@+id/main_menu_action_post"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="Post"/>
+    <item
+        android:id="@+id/main_menu_action_login"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="Login or Register"/>
+
 </menu>

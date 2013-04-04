@@ -59,11 +59,10 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	String location = null;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		//retrieveUserInfo();
 		
 		//Refresh shout list on MainActivity creation
 		View v = (View)findViewById(R.layout.activity_main);
@@ -75,10 +74,12 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	{
 		super.onResume();
 		retrieveUserInfo();
+		this.invalidateOptionsMenu();
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
@@ -93,16 +94,21 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		
 		MenuItem usernameItem =  menu.findItem(R.id.main_menu_change_username);
 		MenuItem locationItem =  menu.findItem(R.id.main_menu_change_location);
-//		MenuItem signoutItem =
+		MenuItem loginActionItem =  menu.findItem(R.id.main_menu_action_login);
+		MenuItem postShoutActionItem =  menu.findItem(R.id.main_menu_action_post);
 		if(!loggedIn)
 		{
 			usernameItem.setVisible(false);
 			locationItem.setVisible(false);
+			postShoutActionItem.setVisible(false);
+			loginActionItem.setVisible(true);
 		}
 		else
 		{
 			usernameItem.setVisible(true);
 			locationItem.setVisible(true);
+			postShoutActionItem.setVisible(true);
+			loginActionItem.setVisible(false);
 		}
 		return true;
 	}
@@ -118,33 +124,52 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
 		
 		TextView usernameLabel = (TextView) findViewById(R.id.username_label_register);
-		Button button = (Button) findViewById(R.id.post_button);
 		if(!loggedIn)
 		{
 			usernameLabel.setText("Please sign in");	
-			button.setVisibility(Button.INVISIBLE);
-			
-			button = (Button)findViewById(R.id.login_button);
-			button.setText("Login or Register");
-//			Global.loginStatus = LoginStatus.LoggedOut;
 			prefs.edit().putBoolean(LoginTask.LOGINSTATUSKEY, false).commit();
 		}
 		else
 		{
 			usernameLabel.setText("Welcome, " + username);
-			button.setVisibility(Button.VISIBLE);
-			button = (Button)findViewById(R.id.login_button);
-			button.setText("Log Out");
-//			button.setVisibility(Button.GONE);
 		}
-//		location = LoginTask.DEFAULT_TAG_VALUE;
 		System.out.println("Location: " + location);
 	}
 	
 	//called when Post button is clicked
-	public void makePost(View view) {
+	public void makePost(View view) 
+	{
 		Intent intent = new Intent(this, PostShoutActivity.class);
 		startActivity(intent);		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		View v = (View)findViewById(R.layout.activity_main);
+	    switch (item.getItemId()) 
+	    {
+	    	case R.id.main_menu_change_username:
+	    		break;
+	    	case R.id.main_menu_change_location:
+	    		break;
+	        case R.id.main_menu_sign_out:
+	        	openLogin(v);
+	            break;
+	        case R.id.main_menu_action_refresh:
+	        	refreshShouts(v);
+	        	break;
+	        case R.id.main_menu_action_post:
+	        	makePost(v);
+	        	break;
+	        case R.id.main_menu_action_login:
+	        	openLogin(v);
+	        	break;
+	        default:
+	            return super.onOptionsItemSelected(item);
+
+	    }
+        return true;
 	}
 	
 	//called when Login button is clicked
@@ -168,6 +193,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			prefs.edit().putBoolean(LoginTask.LOGINSTATUSKEY, false).commit();
 			
 			retrieveUserInfo();
+			this.invalidateOptionsMenu();	//Reset Action bar
 			View v = (View)findViewById(R.layout.activity_main);
 			refreshShouts(v);
 		}
