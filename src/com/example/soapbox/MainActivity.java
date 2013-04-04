@@ -22,9 +22,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -193,6 +195,12 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		final Dialog dialog = new Dialog(this);
 		dialog.setContentView(R.layout.change_location);
 		dialog.setTitle("Change Location");
+		
+		HashMap<String,String> m = Locations.constructCityMap();
+		
+		Spinner spinner = (Spinner)dialog.findViewById(R.id.change_location_spinner);
+		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Locations.cityNames);
+		spinner.setAdapter(spinnerArrayAdapter);
 
 		// set the custom dialog components - text, image and button
 //		final TextView text = (TextView) dialog.findViewById(R.id.change_username_textbox);
@@ -209,6 +217,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 //				dialog.dismiss();
 //			}
 //		});
+
 
 		dialog.show();
 	}
