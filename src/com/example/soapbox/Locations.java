@@ -6,6 +6,7 @@ public class Locations
 {
 	public static String [] cityTags = 
 		{
+		"global",
 		"barrie",
 		"calgary",
 		"charlottetown",
@@ -37,6 +38,7 @@ public class Locations
 
 	public static String [] cityNames = 
 		{
+		"All Locations",
 		"Barrie, Ontario",
 		"Calgary, Alberta",
 		"Charlottetown, PEI",

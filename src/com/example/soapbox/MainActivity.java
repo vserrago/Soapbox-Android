@@ -196,28 +196,34 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		dialog.setContentView(R.layout.change_location);
 		dialog.setTitle("Change Location");
 		
-		HashMap<String,String> m = Locations.constructCityMap();
+		final HashMap<String,String> m = Locations.constructCityMap();
 		
-		Spinner spinner = (Spinner)dialog.findViewById(R.id.change_location_spinner);
+		final Spinner spinner = (Spinner)dialog.findViewById(R.id.change_location_spinner);
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Locations.cityNames);
 		spinner.setAdapter(spinnerArrayAdapter);
 
-		// set the custom dialog components - text, image and button
-//		final TextView text = (TextView) dialog.findViewById(R.id.change_username_textbox);
-//
-//		Button dialogButton = (Button) dialog.findViewById(R.id.change_username_ok);
-//		// if button is clicked, close the custom dialog
-//		dialogButton.setOnClickListener(new OnClickListener() 
-//		{
-//			@Override
-//			public void onClick(View v) 
-//			{
-//				username = text.getText().toString();
-//				System.out.println(username);
-//				dialog.dismiss();
-//			}
-//		});
-
+		Button okButton = (Button) dialog.findViewById(R.id.change_location_ok);
+		okButton.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) 
+			{
+				String spinnerText = spinner.getSelectedItem().toString();
+				location = m.get(spinnerText);
+				System.out.println(location);
+				dialog.dismiss();
+			}
+		});
+		
+		Button cancelButton = (Button) dialog.findViewById(R.id.change_location_cancel);
+		cancelButton.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) 
+			{
+				dialog.dismiss();
+			}
+		});
 
 		dialog.show();
 	}
