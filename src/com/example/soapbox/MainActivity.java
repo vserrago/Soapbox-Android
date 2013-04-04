@@ -28,18 +28,24 @@ import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ClipData.Item;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -153,8 +159,10 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	    switch (item.getItemId()) 
 	    {
 	    	case R.id.main_menu_change_username:
+	    		changeUsername(v);
 	    		break;
 	    	case R.id.main_menu_change_location:
+	    		changeLocation(v);
 	    		break;
 	        case R.id.main_menu_sign_out:
 	        	openLogin(v);
@@ -173,6 +181,37 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 
 	    }
         return true;
+	}
+	
+	public void changeUsername(View view)
+	{
+		// custom dialog
+		final Dialog dialog = new Dialog(this);
+		dialog.setContentView(R.layout.change_username);
+		dialog.setTitle("Change Username");
+
+		// set the custom dialog components - text, image and button
+		final TextView text = (TextView) dialog.findViewById(R.id.change_username_textbox);
+
+		Button dialogButton = (Button) dialog.findViewById(R.id.change_username_ok);
+		// if button is clicked, close the custom dialog
+		dialogButton.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) 
+			{
+				username = text.getText().toString();
+				System.out.println(username);
+				dialog.dismiss();
+			}
+		});
+
+		dialog.show();
+	}
+	
+	public void changeLocation(View view)
+	{
+		
 	}
 	
 	//called when Login button is clicked
