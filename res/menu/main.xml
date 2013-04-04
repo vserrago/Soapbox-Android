@@ -31,6 +31,6 @@
         android:id="@+id/main_menu_action_login"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="Login or Register"/>
+        android:title="Log In"/>
 
 </menu>
