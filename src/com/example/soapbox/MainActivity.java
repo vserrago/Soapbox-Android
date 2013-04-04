@@ -38,18 +38,18 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
 	public static final String SHOUTS = "shouts";
 	public static final String SLASH = "/";
-	
+
 	SharedPreferences prefs;
 	JSONArray shoutArray = null;
 	String username = null;
 	String location = null;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		//Refresh shout list on MainActivity creation
 		View v = (View)findViewById(R.layout.activity_main);
 		refreshShouts(v);
@@ -62,7 +62,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		retrieveUserInfo();
 		this.invalidateOptionsMenu();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
 	{
@@ -70,14 +70,14 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) 
 	{
 		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
-		
+
 		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
-		
+
 		MenuItem usernameItem =  menu.findItem(R.id.main_menu_change_username);
 		MenuItem locationItem =  menu.findItem(R.id.main_menu_change_location);
 		MenuItem signOutItem = menu.findItem(R.id.main_menu_sign_out);
@@ -101,17 +101,17 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		}
 		return true;
 	}
-	
+
 	//gets the user's info from sharedprefs
 	public void retrieveUserInfo()
 	{
 		//Get the user's location from shared prefs if it is stored there
 		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
-		
+
 		location = prefs.getString(LoginTask.TAG, LoginTask.DEFAULT_TAG_VALUE);
 		username = prefs.getString(LoginTask.NAME, null);
 		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
-		
+
 		TextView usernameLabel = (TextView) findViewById(R.id.username_label_register);
 		if(!loggedIn)
 		{
@@ -124,45 +124,44 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		}
 		System.out.println("Location: " + location);
 	}
-	
+
 	//called when Post button is clicked
 	public void makePost(View view) 
 	{
 		Intent intent = new Intent(this, PostShoutActivity.class);
 		startActivity(intent);		
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{
 		View v = (View)findViewById(R.layout.activity_main);
-	    switch (item.getItemId()) 
-	    {
-	    	case R.id.main_menu_change_username:
-	    		changeUsername(v);
-	    		break;
-	    	case R.id.main_menu_change_location:
-	    		changeLocation(v);
-	    		break;
-	        case R.id.main_menu_sign_out:
-	        	openLogin(v);
-	            break;
-	        case R.id.main_menu_action_refresh:
-	        	refreshShouts(v);
-	        	break;
-	        case R.id.main_menu_action_post:
-	        	makePost(v);
-	        	break;
-	        case R.id.main_menu_action_login:
-	        	openLogin(v);
-	        	break;
-	        default:
-	            return super.onOptionsItemSelected(item);
-
-	    }
-        return true;
+		switch (item.getItemId()) 
+		{
+		case R.id.main_menu_change_username:
+			changeUsername(v);
+			break;
+		case R.id.main_menu_change_location:
+			changeLocation(v);
+			break;
+		case R.id.main_menu_sign_out:
+			openLogin(v);
+			break;
+		case R.id.main_menu_action_refresh:
+			refreshShouts(v);
+			break;
+		case R.id.main_menu_action_post:
+			makePost(v);
+			break;
+		case R.id.main_menu_action_login:
+			openLogin(v);
+			break;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+		return true;
 	}
-	
+
 	public void changeUsername(View view)
 	{
 		// custom dialog
@@ -186,18 +185,25 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			}
 		});
 
+		Button cancelButton = (Button) dialog.findViewById(R.id.change_username_cancel);
+		cancelButton.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) {dialog.dismiss();}
+		});
+
 		dialog.show();
 	}
-	
+
 	public void changeLocation(View view)
 	{
 		// custom dialog
 		final Dialog dialog = new Dialog(this);
 		dialog.setContentView(R.layout.change_location);
 		dialog.setTitle("Change Location");
-		
+
 		final HashMap<String,String> m = Locations.constructCityMap();
-		
+
 		final Spinner spinner = (Spinner)dialog.findViewById(R.id.change_location_spinner);
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Locations.cityNames);
 		spinner.setAdapter(spinnerArrayAdapter);
@@ -214,26 +220,23 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 				dialog.dismiss();
 			}
 		});
-		
+
 		Button cancelButton = (Button) dialog.findViewById(R.id.change_location_cancel);
 		cancelButton.setOnClickListener(new OnClickListener() 
 		{
 			@Override
-			public void onClick(View v) 
-			{
-				dialog.dismiss();
-			}
+			public void onClick(View v) {dialog.dismiss();}
 		});
 
 		dialog.show();
 	}
-	
+
 	//called when Login button is clicked
 	public void openLogin(View view) 
 	{
 		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
 		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
-		
+
 		//If no user is logged in
 		if(!loggedIn)
 		{
@@ -245,33 +248,33 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		{
 			prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
 			prefs.edit().clear().commit(); //Delete all sharedprefs
-			
+
 			prefs.edit().putBoolean(LoginTask.LOGINSTATUSKEY, false).commit();
-			
+
 			retrieveUserInfo();
 			this.invalidateOptionsMenu();	//Reset Action bar
 			View v = (View)findViewById(R.layout.activity_main);
 			refreshShouts(v);
 		}
 	}
-	
+
 	public void refreshShouts(View view)
 	{
 		String url = HOSTNAME + SHOUTS;
 		String method = DisplayShoutListTask.GET;
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		
+
 		retrieveUserInfo(); //Get the latest values
-		
+
 		//If the location tag is not global
 		if(location != LoginTask.DEFAULT_TAG_VALUE)
 		{
 			BasicNameValuePair tag = new BasicNameValuePair(LoginTask.TAG, location);
 			params.add(tag);
 		}
-		
+
 		System.out.println("Pre Execute");
-		
+
 		DisplayShoutListTask t = new DisplayShoutListTask(url,method,params,this,this);
 		t.execute();
 		System.out.println("Post Execute");
@@ -283,7 +286,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		System.out.println("Complete");
 		System.out.println(result);
 		shoutArray = result;
-		
+
 		LinkedList<HashMap<String, String>> list = new LinkedList<HashMap<String,String>>();
 		try 
 		{
@@ -291,7 +294,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			{
 				JSONObject o = shoutArray.getJSONObject(i);
 				HashMap<String, String> map = new HashMap<String, String>();
-				
+
 				map.put(DisplayShoutListTask.ID, o.getString(DisplayShoutListTask.ID));
 				map.put(DisplayShoutListTask.NAME, o.getString(DisplayShoutListTask.NAME));
 				map.put(DisplayShoutListTask.TAG, o.getString(DisplayShoutListTask.TAG));
@@ -304,17 +307,17 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		final ListView listView = (ListView) findViewById(R.id.list);
 
 		// get data from the table by the ListAdapter
 		ListAdapter adapter = new com.example.soapbox.ListAdapter
 				(this, list , R.layout.shout_list_component,
-				new String[] {DisplayShoutListTask.MESSAGE},
-				new int[] { R.id.message_component });
+						new String[] {DisplayShoutListTask.MESSAGE},
+						new int[] { R.id.message_component });
 
 		listView.setAdapter(adapter);
-		
+
 		listView.setOnItemClickListener(new OnItemClickListener() 
 		{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
