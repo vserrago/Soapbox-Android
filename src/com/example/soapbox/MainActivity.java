@@ -350,14 +350,19 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 
 		listView.setAdapter(adapter);
 
+		final MainActivity mainActivity = this;
+		
 		listView.setOnItemClickListener(new OnItemClickListener() 
 		{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 			{
 				@SuppressWarnings("unchecked")
 				HashMap<String, String> o = (HashMap<String, String>) listView.getItemAtPosition(position);	        		
-				Toast.makeText(MainActivity.this, "ID '" + o.get("id") + "' was clicked.", Toast.LENGTH_SHORT).show(); 
-
+				//Toast.makeText(MainActivity.this, "ID '" + o.get("id") + "' was clicked.", Toast.LENGTH_SHORT).show(); 
+				Intent intent = new Intent(mainActivity, CommentActivity.class);
+				intent.putExtra(DisplayShoutListTask.ID, o.get(DisplayShoutListTask.ID));
+				intent.putExtra(CommentActivity.MAP,o);
+				startActivity(intent);
 			}
 		});
 	}
