@@ -292,7 +292,7 @@ public class LoginActivity extends FragmentActivity implements
 			{
 				prefs.edit().putString(LoginTask.EMAIL, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getString(LoginTask.EMAIL)).commit();
 				prefs.edit().putString(LoginTask.NAME, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getString(LoginTask.NAME)).commit();
-				prefs.edit().putString(LoginTask.ID, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getString(LoginTask.ID)).commit();
+				prefs.edit().putInt(LoginTask.ID, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getInt(LoginTask.ID)).commit();
 				prefs.edit().putString(LoginTask.TAG, result.getJSONObject(LoginTask.DATA).getJSONObject(LoginTask.USER).getString(LoginTask.TAG)).commit();
 				prefs.edit().putString(LoginTask.AUTH, result.getJSONObject(LoginTask.DATA).getString(LoginTask.AUTH)).commit();
 				
@@ -302,7 +302,7 @@ public class LoginActivity extends FragmentActivity implements
 			{
 				EditText editText = (EditText) findViewById(R.id.usernamelogin);
 				prefs.edit().putString(LoginTask.EMAIL, editText.getText().toString()).commit();
-				prefs.edit().putString(LoginTask.ID, result.getJSONObject(LoginTask.DATA).getString(LoginTask.ID)).commit();
+				prefs.edit().putInt(LoginTask.ID, result.getJSONObject(LoginTask.DATA).getInt(LoginTask.ID)).commit();
 				prefs.edit().putString(LoginTask.TAG, result.getJSONObject(LoginTask.DATA).getString(LoginTask.TAG)).commit();
 				prefs.edit().putString(LoginTask.NAME, result.getJSONObject(LoginTask.DATA).getString(LoginTask.USER)).commit();
 				prefs.edit().putString(LoginTask.AUTH, result.getJSONObject(LoginTask.DATA).getString(LoginTask.AUTH)).commit();

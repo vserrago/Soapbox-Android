@@ -31,12 +31,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
+import com.example.soapbox.UpdateTask.UpdateCallbackInterface;
 
 
-public class MainActivity extends Activity implements ShoutListCallbackInterface
+public class MainActivity extends Activity implements ShoutListCallbackInterface, UpdateCallbackInterface
 {
 	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
 	public static final String SHOUTS = "shouts";
+	public static final String USERS = "users";
 	public static final String SLASH = "/";
 
 	SharedPreferences prefs;
@@ -164,6 +166,8 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 
 	public void changeUsername(View view)
 	{
+		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		final MainActivity context = this;
 		// custom dialog
 		final Dialog dialog = new Dialog(this);
 		dialog.setContentView(R.layout.change_username);
@@ -181,6 +185,19 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			{
 				username = text.getText().toString();
 				System.out.println(username);
+				
+				int id = prefs.getInt(LoginTask.ID, -1);
+				
+				String url = HOSTNAME + USERS + SLASH + id;
+				String method = UpdateTask.PUT;
+				
+				ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+				BasicNameValuePair tag = new BasicNameValuePair(LoginTask.NAME, username);
+				params.add(tag);
+
+				UpdateTask t = new UpdateTask(url, method, params, context, context);
+				t.execute();
+
 				dialog.dismiss();
 			}
 		});
@@ -197,6 +214,8 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 
 	public void changeLocation(View view)
 	{
+		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		final MainActivity context = this;
 		// custom dialog
 		final Dialog dialog = new Dialog(this);
 		dialog.setContentView(R.layout.change_location);
@@ -217,6 +236,19 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 				String spinnerText = spinner.getSelectedItem().toString();
 				location = m.get(spinnerText);
 				System.out.println(location);
+				
+				int id = prefs.getInt(LoginTask.ID, -1);
+				
+				String url = HOSTNAME + USERS + SLASH + id;
+				String method = UpdateTask.PUT;
+				
+				ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+				BasicNameValuePair tag = new BasicNameValuePair(LoginTask.TAG, location);
+				params.add(tag);
+
+				UpdateTask t = new UpdateTask(url, method, params, context, context);
+				t.execute();
+				
 				dialog.dismiss();
 			}
 		});
@@ -328,5 +360,17 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 
 			}
 		});
+	}
+
+	@Override
+	public void onUpdateComplete() 
+	{
+		//Store Location in sharedprefs
+		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		prefs.edit().putString(LoginTask.TAG, location).commit();
+		prefs.edit().putString(LoginTask.NAME, username).commit();
+		retrieveUserInfo();
+		View v = (View)findViewById(R.layout.activity_main);
+		refreshShouts(v);
 	}
 }
