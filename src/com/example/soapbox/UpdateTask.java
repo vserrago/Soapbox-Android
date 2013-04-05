@@ -10,14 +10,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
@@ -78,7 +72,7 @@ public class UpdateTask extends AsyncTask<String, String, JSONObject>
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				HttpPut httpPut = new HttpPut(URL);
 				httpPut.setEntity(new UrlEncodedFormEntity(postparams));
-				
+
 				HttpResponse httpResponse = httpClient.execute(httpPut);
 				httpEntity = httpResponse.getEntity();
 			}
