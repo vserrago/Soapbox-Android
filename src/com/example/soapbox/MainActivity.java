@@ -45,6 +45,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	public static final String USERS = "users";
 	public static final String SLASH = "/";
 	public static final int SHOUT_LENGTH = 140;
+	public static final String RETURN_KEY= "returnedFromLoginScreen";
 
 	SharedPreferences prefs;
 	JSONArray shoutArray = null;
@@ -66,9 +67,18 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	public void onResume()
 	{
 		super.onResume();
-		View v = (View)findViewById(R.layout.activity_main);
-		refreshShouts(v);
-		//retrieveUserInfo();
+		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		
+		if (prefs.getBoolean(RETURN_KEY, false) == true)
+		{
+			View v = (View)findViewById(R.layout.activity_main);
+			refreshShouts(v);
+			prefs.edit().putBoolean(RETURN_KEY, false);
+		}
+		else
+		{
+			retrieveUserInfo();
+		}
 		this.invalidateOptionsMenu();
 	}
 

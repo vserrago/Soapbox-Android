@@ -308,7 +308,7 @@ public class LoginActivity extends FragmentActivity implements
 			}
 			
 			prefs.edit().putBoolean(LoginTask.LOGINSTATUSKEY, true).commit();
-			
+			prefs.edit().putBoolean(MainActivity.RETURN_KEY, true).commit();
 //			prefs.edit().putString(LoginTask.TAG, "toronto").commit();
 			
 		} catch (JSONException e) {
