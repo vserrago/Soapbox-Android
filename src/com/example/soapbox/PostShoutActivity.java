@@ -20,6 +20,7 @@ import com.example.soapbox.PostShoutTask.PostShoutCallbackInterface;
 
 public class PostShoutActivity extends Activity implements PostShoutCallbackInterface{
 
+	public static final int SHOUT_LENGTH = 140;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -80,7 +81,7 @@ public class PostShoutActivity extends Activity implements PostShoutCallbackInte
 			dlgAlert.create().show();
 			return;
 		} 
-		else if (message.length() >= 140)
+		else if (message.length() >= SHOUT_LENGTH)
 		{
 			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
 			

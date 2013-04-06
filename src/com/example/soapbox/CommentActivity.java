@@ -14,9 +14,20 @@ import com.example.soapbox.CommentTask.CommentCallbackInterface;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class CommentActivity extends Activity implements CommentCallbackInterface
 {
@@ -26,17 +37,17 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 	public static final String SHOUTS = "shouts";
 	public static final String SLASH = "/";
 	public static final String COMMENTS = "comments";
-	
+	private SharedPreferences prefs;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_comment);
-		
-		refreshComments();
+		View v = (View)findViewById(R.layout.activity_comment);
+		refreshComments(v);
 	}
 	
-	public void refreshComments()
+	public void refreshComments(View view)
 	{
 //		title= getIntent().getExtras().getString("Title");
 		String id = getIntent().getExtras().getString(DisplayShoutListTask.ID);
@@ -59,6 +70,84 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.comment, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		View v = (View)findViewById(R.layout.activity_comment);
+		switch (item.getItemId()) 
+		{
+		case R.id.comment_menu_action_refresh:
+			refreshComments(v);
+			break;
+		case R.id.comment_menu_action_reply:
+			makeReply(v);
+			break;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+		return true;
+	}
+		
+	public void makeReply(View v) {
+		// TODO Auto-generated method stub
+		
+		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		
+		final Dialog dialog = new Dialog(this);
+		final CommentActivity context = this;
+		
+		dialog.setContentView(R.layout.comment_reply);
+		dialog.setTitle("Reply");
+		Button cancelReply = (Button)dialog.findViewById(R.id.cancelReply);
+		Button postReply = (Button)dialog.findViewById(R.id.postReply);
+		final EditText commentReply = (EditText)dialog.findViewById(R.id.commentReply);
+		
+		cancelReply.setOnClickListener(new OnClickListener()
+		{
+				@Override
+				public void onClick(View v) { dialog.dismiss(); }
+		});
+		
+		postReply.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				String reply = commentReply.getText().toString();
+				if (reply.isEmpty())
+				{
+					Toast.makeText(context, "Please enter a comment", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+				if (reply.length() >= PostShoutActivity.SHOUT_LENGTH)
+				{
+					Toast.makeText(context, "Comment too long", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+				String name = prefs.getString(LoginTask.NAME, "");
+				String id = getIntent().getExtras().getString(DisplayShoutListTask.ID);
+				
+				String url = HOSTNAME + SHOUTS + SLASH + id + SLASH + COMMENTS;
+				
+				ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+				BasicNameValuePair user = new BasicNameValuePair(CommentTask.NAME_CREATE, name);
+				BasicNameValuePair body = new BasicNameValuePair(CommentTask.BODY_CREATE, reply);
+				params.add(user);
+				params.add(body);
+
+				CommentTask t = new CommentTask(url, CommentTask.POST, params, context, context);
+				t.execute();
+
+				dialog.dismiss();
+				View v = (View)findViewById(R.layout.activity_comment);
+				context.refreshComments(v);
+			}	
+		});
+		dialog.show();
 	}
 
 	@Override

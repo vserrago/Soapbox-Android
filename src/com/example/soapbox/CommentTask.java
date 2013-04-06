@@ -38,6 +38,8 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
 	public static final String BODY = "body";
 	public static final String NAME = "commenter";
 	public static final String UPDATEDAT = "updated_at";
+	public static final String NAME_CREATE = "[comment][commenter]";
+	public static final String BODY_CREATE = "[comment][body]";
 	
 	//Instance Vars
 	ProgressDialog mDialog;
@@ -76,7 +78,6 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
 			{
 				// request method is POST
 				// defaultHttpClient
-				URL += ".json";
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				HttpPost httpPost = new HttpPost(URL);
 				httpPost.setEntity(new UrlEncodedFormEntity(postparams));
@@ -159,8 +160,9 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
     protected void onPostExecute(JSONArray result)
     {
     	super.onPostExecute(result);
-
-       	callBack.onRequestComplete(result);
+    	
+    	if (method.equals(GET))
+    		callBack.onRequestComplete(result);
        	mDialog.dismiss();
     }
 }
