@@ -134,7 +134,6 @@ public class LoginActivity extends FragmentActivity implements
 		
 		LoginTask t = new LoginTask(url, method, params, this, this);
 		t.execute();
-		
 
 		//TODO: if login success, finish, else, stay
 	}
@@ -277,7 +276,7 @@ public class LoginActivity extends FragmentActivity implements
 	}
 	
 	@Override
-	public void onRequestComplete(JSONObject result) 
+	public void onLoginRequestComplete(JSONObject result) 
 	{
 		// TODO Auto-generated method stuff
 		SharedPreferences prefs = this.getSharedPreferences(

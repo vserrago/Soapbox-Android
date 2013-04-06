@@ -29,7 +29,7 @@
     <EditText
         android:id="@+id/shoutbox"
         android:layout_width="wrap_content"
-        android:layout_height="360dp"
+        android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/cancelShout"

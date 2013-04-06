@@ -11,8 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -31,15 +34,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
+import com.example.soapbox.PostShoutTask.PostShoutCallbackInterface;
 import com.example.soapbox.UpdateTask.UpdateCallbackInterface;
 
 
-public class MainActivity extends Activity implements ShoutListCallbackInterface, UpdateCallbackInterface
+public class MainActivity extends Activity implements ShoutListCallbackInterface, UpdateCallbackInterface, PostShoutCallbackInterface
 {
 	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
 	public static final String SHOUTS = "shouts";
 	public static final String USERS = "users";
 	public static final String SLASH = "/";
+	public static final int SHOUT_LENGTH = 140;
 
 	SharedPreferences prefs;
 	JSONArray shoutArray = null;
@@ -61,7 +66,9 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	public void onResume()
 	{
 		super.onResume();
-		retrieveUserInfo();
+		View v = (View)findViewById(R.layout.activity_main);
+		refreshShouts(v);
+		//retrieveUserInfo();
 		this.invalidateOptionsMenu();
 	}
 
@@ -130,8 +137,68 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	//called when Post button is clicked
 	public void makePost(View view) 
 	{
-		Intent intent = new Intent(this, PostShoutActivity.class);
-		startActivity(intent);		
+		//Intent intent = new Intent(this, PostShoutActivity.class);
+		//startActivity(intent);
+		prefs = this.getSharedPreferences(
+			      "com.example.soapbox", Context.MODE_PRIVATE);
+		final MainActivity context = this;
+		final Dialog dialog = new Dialog(this);
+		
+		dialog.setContentView(R.layout.activity_post_shout);
+		dialog.setTitle("Post Shout");
+		
+		Button cancelShout = (Button)dialog.findViewById(R.id.cancelShout);
+		Button postShout = (Button)dialog.findViewById(R.id.postShout);
+		final EditText shoutbox = (EditText)dialog.findViewById(R.id.shoutbox);
+		
+		cancelShout.setOnClickListener(new OnClickListener()
+		{
+				@Override
+				public void onClick(View v) { dialog.dismiss(); }
+		});
+		
+		postShout.setOnClickListener(new OnClickListener()
+		{
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				String url ="http://acx0.dyndns.org:3000/shouts.json";
+				String name = (prefs.getString(LoginTask.NAME, ""));
+				
+				ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+				System.out.println(name);
+				String message = shoutbox.getText().toString();
+				
+				if (message.isEmpty())
+				{
+					Toast.makeText(context, "Shout cannot be empty.", Toast.LENGTH_SHORT).show();
+					return;
+				} 
+				else if (message.length() >= SHOUT_LENGTH)
+				{
+					Toast.makeText(context, "Comment too long", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				params.add(new BasicNameValuePair(PostShoutTask.AUTH, prefs.getString(LoginTask.AUTH, "")));
+				params.add(new BasicNameValuePair(PostShoutTask.MESSAGE, message));
+				params.add(new BasicNameValuePair(PostShoutTask.NAME, name));
+				String tag = prefs.getString(LoginTask.TAG, LoginTask.DEFAULT_TAG_VALUE);
+				System.out.println(tag);
+				params.add(new BasicNameValuePair(PostShoutTask.TAG, tag));
+				params.add(new BasicNameValuePair(PostShoutTask.NAME, name));
+				
+				
+				PostShoutTask task = new PostShoutTask(url, PostShoutTask.POST, params, context, context);
+				task.execute();
+				dialog.dismiss();
+				View v = (View)findViewById(R.layout.activity_main);
+				context.refreshShouts(v);
+			}
+			
+		});
+		
+		dialog.show();
 	}
 
 	@Override
@@ -274,6 +341,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		{
 			Intent intent = new Intent(this, LoginActivity.class);
 			startActivity(intent);
+			View v = (View)findViewById(R.layout.activity_main);
 		}
 		//Else user is logged in
 		else
@@ -312,8 +380,9 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		System.out.println("Post Execute");
 	}
 
+	//called after shout list task is finished
 	@Override
-	public void onRequestComplete(JSONArray result) 
+	public void onShoutRequestComplete(JSONArray result) 
 	{
 		System.out.println("Complete");
 		System.out.println(result);
@@ -367,6 +436,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		});
 	}
 
+	//called after update task is finished
 	@Override
 	public void onUpdateComplete() 
 	{
@@ -377,5 +447,12 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		retrieveUserInfo();
 		View v = (View)findViewById(R.layout.activity_main);
 		refreshShouts(v);
+	}
+
+	//called after post task is finished
+	@Override
+	public void onPostRequestComplete(JSONObject result) {
+		// TODO Auto-generated method stub
+		
 	}
 }

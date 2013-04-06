@@ -122,7 +122,7 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 					return;
 				}
 				
-				if (reply.length() >= PostShoutActivity.SHOUT_LENGTH)
+				if (reply.length() >= MainActivity.SHOUT_LENGTH)
 				{
 					Toast.makeText(context, "Comment too long", Toast.LENGTH_SHORT).show();
 					return;
@@ -151,7 +151,7 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 	}
 
 	@Override
-	public void onRequestComplete(JSONArray result) 
+	public void onCommentRequestComplete(JSONArray result) 
 	{
 //		System.out.println(result.toString());
 		LinkedList<HashMap<String, String>> list = new LinkedList<HashMap<String,String>>();
@@ -192,5 +192,4 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 
 		listView.setAdapter(adapter);
 	}
-
 }

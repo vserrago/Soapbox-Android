@@ -50,7 +50,7 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
 	
 	public interface ShoutListCallbackInterface 
 	{
-        public void onRequestComplete(JSONArray result);
+        public void onShoutRequestComplete(JSONArray result);
     }
 	
 	public DisplayShoutListTask(String url, String method, ArrayList<NameValuePair> params, Context context, ShoutListCallbackInterface callBack) 
@@ -158,7 +158,7 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
     {
     	super.onPostExecute(result);
 
-       	callBack.onRequestComplete(result);
+       	callBack.onShoutRequestComplete(result);
        	mDialog.dismiss();
     }
 }

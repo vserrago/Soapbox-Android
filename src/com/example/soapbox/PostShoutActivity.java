@@ -21,6 +21,8 @@ import com.example.soapbox.PostShoutTask.PostShoutCallbackInterface;
 public class PostShoutActivity extends Activity implements PostShoutCallbackInterface{
 
 	public static final int SHOUT_LENGTH = 140;
+
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -111,9 +113,10 @@ public class PostShoutActivity extends Activity implements PostShoutCallbackInte
 		
 	}
 
+
 	@Override
-	public void onRequestComplete(JSONObject result) {
+	public void onPostRequestComplete(JSONObject result) {
 		// TODO Auto-generated method stub
-		System.out.println(result);
+		
 	}
 }

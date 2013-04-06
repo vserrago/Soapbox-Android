@@ -66,7 +66,7 @@ public class LoginTask extends AsyncTask<String, String, JSONObject>{
 	boolean validUsername = true;
 	
 	public interface MyCallbackInterface {
-        public void onRequestComplete(JSONObject result);
+        public void onLoginRequestComplete(JSONObject result);
     }
 	private MyCallbackInterface mCallback;
 	
@@ -186,10 +186,9 @@ public class LoginTask extends AsyncTask<String, String, JSONObject>{
     		mDialog.dismiss();
     		return;
        	}
-       	mCallback.onRequestComplete(result);
+       	mCallback.onLoginRequestComplete(result);
        	mDialog.dismiss();
        	((Activity)context).finish();
-       	
     }
 }
 

@@ -54,7 +54,7 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
 	
 	public interface CommentCallbackInterface 
 	{
-        public void onRequestComplete(JSONArray result);
+        public void onCommentRequestComplete(JSONArray result);
     }
 	
 	public CommentTask(String url, String method, ArrayList<NameValuePair> params, Context context, CommentCallbackInterface callBack) 
@@ -162,7 +162,7 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
     	super.onPostExecute(result);
     	
     	if (method.equals(GET))
-    		callBack.onRequestComplete(result);
+    		callBack.onCommentRequestComplete(result);
        	mDialog.dismiss();
     }
 }

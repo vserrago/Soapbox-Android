@@ -51,7 +51,7 @@ public class PostShoutTask extends AsyncTask<String, String, JSONObject>
 	
 	public interface PostShoutCallbackInterface 
 	{
-        public void onRequestComplete(JSONObject result);
+        public void onPostRequestComplete(JSONObject result);
     }
 	
 	public PostShoutTask(String url, String method, ArrayList<NameValuePair> params, Context context, PostShoutCallbackInterface callBack) 
@@ -127,9 +127,7 @@ public class PostShoutTask extends AsyncTask<String, String, JSONObject>
     protected void onPostExecute(JSONObject result)
     {
     	super.onPostExecute(result);
-
-       	callBack.onRequestComplete(result);
-       	((Activity)context).finish();
+       	callBack.onPostRequestComplete(result);
        	mDialog.dismiss();
     }
 }
