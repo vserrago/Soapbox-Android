@@ -60,7 +60,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 	public static final int SORTBY_TIME = 0;
 	public static final int SORTBY_RATING = 1;
 	
-	public static final String VOTEMAPNAME = "votemap";
+	public static final String VOTEMAPFILENAME = "votemap";
 
 
 	SharedPreferences prefs;
@@ -84,7 +84,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		FileInputStream fis;
 		try 
 		{
-			fis = this.openFileInput(VOTEMAPNAME);
+			fis = this.openFileInput(VOTEMAPFILENAME);
 			ObjectInputStream is = new ObjectInputStream(fis);
 			votedMap = (HashMap<String, String>) is.readObject();
 			is.close();
@@ -115,7 +115,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		FileOutputStream fos;
 		try 
 		{
-			fos = this.openFileOutput(VOTEMAPNAME, Context.MODE_PRIVATE);
+			fos = this.openFileOutput(VOTEMAPFILENAME, Context.MODE_PRIVATE);
 			ObjectOutputStream os = new ObjectOutputStream(fos);
 			os.writeObject(votedMap);
 			os.close();
@@ -478,6 +478,11 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 
 			retrieveUserInfo();
 			this.invalidateOptionsMenu();	//Reset Action bar
+			
+			//Delete vote history
+			this.deleteFile(VOTEMAPFILENAME);
+			votedMap.clear();
+			
 			View v = (View)findViewById(R.layout.activity_main);
 			refreshAllShouts(v);
 		}
@@ -527,14 +532,6 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 				map.put(DisplayShoutListTask.NAME, o.getString(DisplayShoutListTask.NAME));
 				map.put(DisplayShoutListTask.TAG, o.getString(DisplayShoutListTask.TAG));
 				map.put(DisplayShoutListTask.MESSAGE, o.getString(DisplayShoutListTask.MESSAGE));
-				if(map.containsKey(o.getString(DisplayShoutListTask.ID)))
-				{
-					map.put(ShoutListAdapter.USERRATING, votedMap.get(o.getString(DisplayShoutListTask.ID)));
-				}
-				else
-				{
-					map.put(ShoutListAdapter.USERRATING, ShoutListAdapter.RATEDNEUTRAL);
-				}
 				shoutList.addFirst(map);
 			}
 		} 
@@ -582,6 +579,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 				Intent intent = new Intent(mainActivity, CommentActivity.class);
 				intent.putExtra(DisplayShoutListTask.ID, o.get(DisplayShoutListTask.ID));
 				intent.putExtra(CommentActivity.MAP,o);
+				intent.putExtra(CommentActivity.VOTEDMAP, votedMap);
 				startActivity(intent);
 				Toast.makeText(MainActivity.this, "ID '" + o.get("id") + " has " + o.get("rating") + ".", Toast.LENGTH_SHORT).show(); 
 			}

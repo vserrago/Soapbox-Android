@@ -66,11 +66,6 @@ public class ShoutListAdapter extends SimpleAdapter{
 			final ImageButton downvote = (ImageButton) view.findViewById(R.id.downvote_component);
 			final String id = (String) map.get(DisplayShoutListTask.ID);
 
-			//			if("1".equals(map.get(DisplayShoutListTask.ID)))
-			//			{
-			//				upvote.setVisibility(upvote.INVISIBLE);
-			//				this.notifyDataSetChanged();
-			//			}
 			if(votedMap.containsKey(id))
 			{
 				if(votedMap.get(id).equals(RATEDUP))
@@ -127,7 +122,6 @@ public class ShoutListAdapter extends SimpleAdapter{
 						//Revoke upvote
 						voteType = RatingsTask.DONWVOTE;
 						upvote.setSelected(false);
-						map.put(USERRATING, RATEDNEUTRAL);
 						votedMap.put(id, RATEDNEUTRAL);
 					}
 					else
@@ -140,7 +134,6 @@ public class ShoutListAdapter extends SimpleAdapter{
 							twice = true;
 						}
 						upvote.setSelected(true);
-						map.put(USERRATING, RATEDUP);
 						votedMap.put(id, RATEDUP);
 					}
 
@@ -182,7 +175,7 @@ public class ShoutListAdapter extends SimpleAdapter{
 						//revoke downvote
 						voteType = RatingsTask.UPVOTE;
 						downvote.setSelected(false);
-						map.put(USERRATING, RATEDNEUTRAL);
+
 						votedMap.put(id, RATEDNEUTRAL);
 					}
 					else
@@ -195,7 +188,6 @@ public class ShoutListAdapter extends SimpleAdapter{
 							twice = true;
 						}
 						downvote.setSelected(true);
-						map.put(USERRATING, RATEDDOWN);
 						votedMap.put(id, RATEDDOWN);
 					}
 

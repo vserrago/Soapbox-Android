@@ -33,6 +33,7 @@ import android.widget.Toast;
 public class CommentActivity extends Activity implements CommentCallbackInterface, RatingsCallbackInterface
 {
 	public static final String MAP = "object";
+	public static final String VOTEDMAP = "votedmap";
 	
 	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
 	public static final String SHOUTS = "shouts";
@@ -188,9 +189,11 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 		}
 
 		final ListView listView = (ListView) findViewById(R.id.comment_list);
-
+		
 		// get data from the table by the ListAdapter
-		CommentListAdapter adapter = new CommentListAdapter(this, list, R.layout.activity_comment, null, null);
+		@SuppressWarnings("unchecked")
+		CommentListAdapter adapter = new CommentListAdapter(this, list, R.layout.activity_comment, 
+				null, null, (HashMap<String, String>) getIntent().getExtras().getSerializable(VOTEDMAP));
 
 		listView.setAdapter(adapter);
 	}

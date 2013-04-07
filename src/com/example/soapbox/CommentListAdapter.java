@@ -1,6 +1,7 @@
 package com.example.soapbox;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,14 +23,17 @@ public class CommentListAdapter extends SimpleAdapter {
 
 	Context c;
 	List<? extends Map<String, ?>> d;
+	HashMap<String, String> votedMap; 
 
 	public CommentListAdapter(Context context, List<? extends Map<String, ?>> data,
-			int resource, String[] from, int[] to) 
+			int resource, String[] from, int[] to, HashMap<String, String> votedMap ) 
 	{
 		super(context, data, resource, from, to);
 		// TODO Auto-generated constructor stub
 		c = context;
 		d = data;
+		this.votedMap = votedMap;
+		
 	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) 
@@ -61,18 +65,25 @@ public class CommentListAdapter extends SimpleAdapter {
 			TextView locationComp = (TextView) view.findViewById(R.id.location_component);
 			final ImageButton upvote = (ImageButton) view.findViewById(R.id.upvote_component);
 			final ImageButton downvote = (ImageButton) view.findViewById(R.id.downvote_component);
+			final String id = (String) map.get(DisplayShoutListTask.ID);
 
-
-			System.out.println(map);
-			if(map.get(ShoutListAdapter.USERRATING).equals(ShoutListAdapter.RATEDUP))
+			if(votedMap.containsKey(id))
 			{
-				upvote.setSelected(true);
-				downvote.setSelected(false);
-			}
-			else if(map.get(ShoutListAdapter.USERRATING).equals(ShoutListAdapter.RATEDDOWN))
-			{
-				upvote.setSelected(false);
-				downvote.setSelected(true);
+				if(votedMap.get(id).equals(ShoutListAdapter.RATEDUP))
+				{
+					upvote.setSelected(true);
+					downvote.setSelected(false);
+				}
+				else if(votedMap.get(id).equals(ShoutListAdapter.RATEDDOWN))
+				{
+					upvote.setSelected(false);
+					downvote.setSelected(true);
+				}
+				else
+				{
+					upvote.setSelected(false);
+					downvote.setSelected(false);
+				}
 			}
 			//Rated Neutral
 			else
@@ -80,6 +91,7 @@ public class CommentListAdapter extends SimpleAdapter {
 				upvote.setSelected(false);
 				downvote.setSelected(false);
 			}
+			
 			if(messageComp != null)
 			{
 				messageComp.setText((String) map.get(DisplayShoutListTask.NAME) 
@@ -111,7 +123,7 @@ public class CommentListAdapter extends SimpleAdapter {
 						//Revoke upvote
 						voteType = RatingsTask.DONWVOTE;
 						upvote.setSelected(false);
-						map.put(ShoutListAdapter.USERRATING, ShoutListAdapter.RATEDNEUTRAL);
+						votedMap.put(id, ShoutListAdapter.RATEDNEUTRAL);
 					}
 					else
 					{
@@ -123,7 +135,7 @@ public class CommentListAdapter extends SimpleAdapter {
 							twice = true;
 						}
 						upvote.setSelected(true);
-						map.put(ShoutListAdapter.USERRATING, ShoutListAdapter.RATEDUP);
+						votedMap.put(id, ShoutListAdapter.RATEDUP);
 					}
 
 					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -164,6 +176,8 @@ public class CommentListAdapter extends SimpleAdapter {
 						//revoke downvote
 						voteType = RatingsTask.UPVOTE;
 						downvote.setSelected(false);
+
+						votedMap.put(id, ShoutListAdapter.RATEDNEUTRAL);
 					}
 					else
 					{
@@ -175,6 +189,7 @@ public class CommentListAdapter extends SimpleAdapter {
 							twice = true;
 						}
 						downvote.setSelected(true);
+						votedMap.put(id, ShoutListAdapter.RATEDDOWN);
 					}
 
 					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
