@@ -62,11 +62,11 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 	
 	public static final String VOTEMAPFILENAME = "votemap";
 
-
 	SharedPreferences prefs;
 	JSONArray shoutArray = null;
 	String username = null;
 	String location = null;
+	
 	int sortType = SORTBY_TIME;
 	LinkedList<HashMap<String, String>> shoutList;
 	HashMap<String, String> votedMap; 
@@ -162,7 +162,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 	{
 		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
 
-		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
+		boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
 
 		MenuItem usernameItem =  menu.findItem(R.id.main_menu_change_username);
 		MenuItem locationItem =  menu.findItem(R.id.main_menu_change_location);
@@ -198,7 +198,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		username = prefs.getString(LoginTask.NAME, null);
 		sortType = prefs.getInt(SORTBYKEY, SORTBY_TIME);
 
-		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
+		boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
 
 		TextView usernameLabel = (TextView) findViewById(R.id.username_label_register);
 		if(!loggedIn)
@@ -457,7 +457,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 	public void openLogin(View view) 
 	{
 		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
-		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
+		boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
 
 		//If no user is logged in
 		if(!loggedIn)
@@ -517,6 +517,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		shoutArray = result;
 
 		//LinkedList<HashMap<String, String>> list = new LinkedList<HashMap<String,String>>();
+		
 		shoutList = new LinkedList<HashMap<String,String>>();
 		try 
 		{

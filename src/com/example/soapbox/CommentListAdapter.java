@@ -66,31 +66,9 @@ public class CommentListAdapter extends SimpleAdapter {
 			final ImageButton upvote = (ImageButton) view.findViewById(R.id.upvote_component);
 			final ImageButton downvote = (ImageButton) view.findViewById(R.id.downvote_component);
 			final String id = (String) map.get(DisplayShoutListTask.ID);
-
-			if(votedMap.containsKey(id))
-			{
-				if(votedMap.get(id).equals(ShoutListAdapter.RATEDUP))
-				{
-					upvote.setSelected(true);
-					downvote.setSelected(false);
-				}
-				else if(votedMap.get(id).equals(ShoutListAdapter.RATEDDOWN))
-				{
-					upvote.setSelected(false);
-					downvote.setSelected(true);
-				}
-				else
-				{
-					upvote.setSelected(false);
-					downvote.setSelected(false);
-				}
-			}
-			//Rated Neutral
-			else
-			{
-				upvote.setSelected(false);
-				downvote.setSelected(false);
-			}
+			
+			SharedPreferences prefs = c.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+			boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
 			
 			if(messageComp != null)
 			{
@@ -111,115 +89,167 @@ public class CommentListAdapter extends SimpleAdapter {
 							map.get(DisplayShoutListTask.CREATEDAT).replace('T', ' ').replace('Z', ' '));
 				}
 			}
-
-			upvote.setOnClickListener(new OnClickListener()
+			
+			if (!loggedIn)
 			{
-				@Override
-				public void onClick(View v)
+				upvote.setOnClickListener(new OnClickListener()
 				{
-					SharedPreferences prefs = c.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
-					String id = (String) map.get(DisplayShoutListTask.ID);
 
-					// PUT /shouts/id?vote=add
-					String url = MainActivity.HOSTNAME + MainActivity.SHOUTS + MainActivity.SLASH + id;
-					String method = UpdateTask.PUT;
-
-					boolean twice = false;
-
-					String voteType;
-					if(upvote.isSelected())
-					{
-						//Revoke upvote
-						voteType = RatingsTask.DONWVOTE;
-						upvote.setSelected(false);
-						votedMap.put(id, ShoutListAdapter.RATEDNEUTRAL);
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Toast.makeText(c, "You must be logged in to perform that action!", Toast.LENGTH_SHORT).show();
 					}
-					else
+					
+				});
+				
+				downvote.setOnClickListener(new OnClickListener()
+				{
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Toast.makeText(c, "You must be logged in to perform that action!", Toast.LENGTH_SHORT).show();
+					}
+					
+				});
+			}
+			else
+			{
+				if(votedMap.containsKey(id))
+				{
+					if(votedMap.get(id).equals(ShoutListAdapter.RATEDUP))
 					{
-						//Add upvote
-						voteType = RatingsTask.UPVOTE;
-						if(downvote.isSelected())
-						{
-							downvote.setSelected(false);
-							twice = true;
-						}
 						upvote.setSelected(true);
-						votedMap.put(id, ShoutListAdapter.RATEDUP);
-					}
-
-					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-					BasicNameValuePair tag = new BasicNameValuePair(RatingsTask.VOTE, voteType);
-					params.add(tag);
-
-					CommentActivity commentActivity = (CommentActivity) c;
-
-					RatingsTask t = new RatingsTask(url, method, params, commentActivity, commentActivity);
-					t.execute();
-					if(twice)
-					{
-						t = new RatingsTask(url, method, params, commentActivity, commentActivity);
-						t.execute();
-					}
-					//					Toast.makeText(c, "One upvote for Shout ID " + 
-					//							map.get(DisplayShoutListTask.ID), Toast.LENGTH_SHORT).show();
-				}
-			});
-
-			downvote.setOnClickListener(new OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					SharedPreferences prefs = c.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
-					String id = (String) map.get(DisplayShoutListTask.ID);
-
-					// PUT /shouts/id?vote=add
-					String url = MainActivity.HOSTNAME + MainActivity.SHOUTS + MainActivity.SLASH + id;
-					String method = UpdateTask.PUT;
-
-					boolean twice = false;
-
-					String voteType;
-					if(downvote.isSelected())
-					{
-						//revoke downvote
-						voteType = RatingsTask.UPVOTE;
 						downvote.setSelected(false);
-
-						votedMap.put(id, ShoutListAdapter.RATEDNEUTRAL);
+					}
+					else if(votedMap.get(id).equals(ShoutListAdapter.RATEDDOWN))
+					{
+						upvote.setSelected(false);
+						downvote.setSelected(true);
 					}
 					else
 					{
-						//Add downvote
-						voteType = RatingsTask.DONWVOTE;
+						upvote.setSelected(false);
+						downvote.setSelected(false);
+					}
+				}
+				//Rated Neutral
+				else
+				{
+					upvote.setSelected(false);
+					downvote.setSelected(false);
+				}
+
+				upvote.setOnClickListener(new OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						SharedPreferences prefs = c.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+						String id = (String) map.get(DisplayShoutListTask.ID);
+
+						// PUT /shouts/id?vote=add
+						String url = MainActivity.HOSTNAME + MainActivity.SHOUTS + MainActivity.SLASH + id;
+						String method = UpdateTask.PUT;
+
+						boolean twice = false;
+
+						String voteType;
 						if(upvote.isSelected())
 						{
+							//Revoke upvote
+							voteType = RatingsTask.DONWVOTE;
 							upvote.setSelected(false);
-							twice = true;
+							votedMap.put(id, ShoutListAdapter.RATEDNEUTRAL);
 						}
-						downvote.setSelected(true);
-						votedMap.put(id, ShoutListAdapter.RATEDDOWN);
-					}
+						else
+						{
+							//Add upvote
+							voteType = RatingsTask.UPVOTE;
+							if(downvote.isSelected())
+							{
+								downvote.setSelected(false);
+								twice = true;
+							}
+							upvote.setSelected(true);
+							votedMap.put(id, ShoutListAdapter.RATEDUP);
+						}
 
-					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-					BasicNameValuePair tag = new BasicNameValuePair(RatingsTask.VOTE, voteType);
-					params.add(tag);
+						ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+						BasicNameValuePair tag = new BasicNameValuePair(RatingsTask.VOTE, voteType);
+						params.add(tag);
 
-					CommentActivity commentActivity = (CommentActivity) c;
+						CommentActivity commentActivity = (CommentActivity) c;
 
-					RatingsTask t = new RatingsTask(url, method, params, commentActivity, commentActivity);
-					t.execute();
-					if(twice)
-					{
-						t = new RatingsTask(url, method, params, commentActivity, commentActivity);
+						RatingsTask t = new RatingsTask(url, method, params, commentActivity, commentActivity);
 						t.execute();
+						if(twice)
+						{
+							t = new RatingsTask(url, method, params, commentActivity, commentActivity);
+							t.execute();
+						}
+						//					Toast.makeText(c, "One upvote for Shout ID " + 
+						//							map.get(DisplayShoutListTask.ID), Toast.LENGTH_SHORT).show();
 					}
-					//  Use position parameter of your getView() in this method it will current position of Clicked row button
-					// code for current Row deleted...  
-					Toast.makeText(c, "One downvote for Shout ID " + 
-							map.get(DisplayShoutListTask.ID), Toast.LENGTH_SHORT).show();
-				}
-			});
+				});
+
+				downvote.setOnClickListener(new OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						SharedPreferences prefs = c.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+						String id = (String) map.get(DisplayShoutListTask.ID);
+
+						// PUT /shouts/id?vote=add
+						String url = MainActivity.HOSTNAME + MainActivity.SHOUTS + MainActivity.SLASH + id;
+						String method = UpdateTask.PUT;
+
+						boolean twice = false;
+
+						String voteType;
+						if(downvote.isSelected())
+						{
+							//revoke downvote
+							voteType = RatingsTask.UPVOTE;
+							downvote.setSelected(false);
+
+							votedMap.put(id, ShoutListAdapter.RATEDNEUTRAL);
+						}
+						else
+						{
+							//Add downvote
+							voteType = RatingsTask.DONWVOTE;
+							if(upvote.isSelected())
+							{
+								upvote.setSelected(false);
+								twice = true;
+							}
+							downvote.setSelected(true);
+							votedMap.put(id, ShoutListAdapter.RATEDDOWN);
+						}
+
+						ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+						BasicNameValuePair tag = new BasicNameValuePair(RatingsTask.VOTE, voteType);
+						params.add(tag);
+
+						CommentActivity commentActivity = (CommentActivity) c;
+
+						RatingsTask t = new RatingsTask(url, method, params, commentActivity, commentActivity);
+						t.execute();
+						if(twice)
+						{
+							t = new RatingsTask(url, method, params, commentActivity, commentActivity);
+							t.execute();
+						}
+						//  Use position parameter of your getView() in this method it will current position of Clicked row button
+						// code for current Row deleted...  
+						Toast.makeText(c, "One downvote for Shout ID " + 
+								map.get(DisplayShoutListTask.ID), Toast.LENGTH_SHORT).show();
+					}
+				});
+			}
 		}
 		else if(map != null)
 		{
