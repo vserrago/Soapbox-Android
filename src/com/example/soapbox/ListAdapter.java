@@ -21,6 +21,11 @@ import android.widget.Toast;
 
 public class ListAdapter extends SimpleAdapter{
 
+	public static final String RATEDUP = "up";
+	public static final String RATEDDOWN = "down";
+	public static final String RATEDNEUTRAL = "neutral";
+	public static final String USERRATING = "rated";
+	
 	Context c;
 	List<? extends Map<String, ?>> d;
 
@@ -46,7 +51,8 @@ public class ListAdapter extends SimpleAdapter{
 			view = vi.inflate(R.layout.shout_list_component, null);
 		}
 
-		final Map<String, ?> map = d.get(position);
+		@SuppressWarnings("unchecked")
+		final Map<String, String> map = (Map<String, String>) d.get(position);
 		//Item p = items.get(position);
 
 		if(map != null)
@@ -61,6 +67,22 @@ public class ListAdapter extends SimpleAdapter{
 			//				upvote.setVisibility(upvote.INVISIBLE);
 			//				this.notifyDataSetChanged();
 			//			}
+			if(map.get(USERRATING).equals(RATEDUP))
+			{
+				upvote.setSelected(true);
+				downvote.setSelected(false);
+			}
+			else if(map.get(USERRATING).equals(RATEDDOWN))
+			{
+				upvote.setSelected(false);
+				downvote.setSelected(true);
+			}
+			//Rated Neutral
+			else
+			{
+				upvote.setSelected(false);
+				downvote.setSelected(false);
+			}
 
 			if(messageComp != null)
 			{
@@ -93,6 +115,7 @@ public class ListAdapter extends SimpleAdapter{
 						//Revoke upvote
 						voteType = RatingsTask.DONWVOTE;
 						upvote.setSelected(false);
+						map.put(USERRATING, RATEDNEUTRAL);
 					}
 					else
 					{
@@ -104,6 +127,7 @@ public class ListAdapter extends SimpleAdapter{
 							twice = true;
 						}
 						upvote.setSelected(true);
+						map.put(USERRATING, RATEDUP);
 					}
 
 					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -144,6 +168,7 @@ public class ListAdapter extends SimpleAdapter{
 						//revoke downvote
 						voteType = RatingsTask.UPVOTE;
 						downvote.setSelected(false);
+						map.put(USERRATING, RATEDNEUTRAL);
 					}
 					else
 					{
@@ -155,6 +180,7 @@ public class ListAdapter extends SimpleAdapter{
 							twice = true;
 						}
 						downvote.setSelected(true);
+						map.put(USERRATING, RATEDDOWN);
 					}
 
 					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();

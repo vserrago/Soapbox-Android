@@ -18,6 +18,11 @@
         android:showAsAction="never"
         android:title="Sign Out"/>
     <item
+        android:id="@+id/main_menu_sortby"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Sort By"/>
+    <item
         android:id="@+id/main_menu_action_refresh"
         android:orderInCategory="100"
         android:showAsAction="always"

@@ -36,6 +36,7 @@ public class DisplayShoutListTask extends AsyncTask<String, String, JSONArray>
 	public static final String TAG = "tag";
 	public static final String TITLE = "title";
 	public static final String UPDATEDAT = "updated_at";
+	public static final String RATING = "rating";
 	
 	//Instance Vars
 	ProgressDialog mDialog;

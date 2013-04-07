@@ -52,7 +52,8 @@ public class CommentListAdapter extends SimpleAdapter {
 			}
 		}
 
-		final Map<String, ?> map = d.get(position);
+		@SuppressWarnings("unchecked")
+		final Map<String, String> map = (Map<String, String>) d.get(position);
 		//Item p = items.get(position);
 
 		if(position == 0 && map != null)
@@ -61,7 +62,25 @@ public class CommentListAdapter extends SimpleAdapter {
 			TextView locationComp = (TextView) view.findViewById(R.id.location_component);
 			final ImageButton upvote = (ImageButton) view.findViewById(R.id.upvote_component);
 			final ImageButton downvote = (ImageButton) view.findViewById(R.id.downvote_component);
-
+			
+			
+			System.out.println(map);
+			if(map.get(ListAdapter.USERRATING).equals(ListAdapter.RATEDUP))
+			{
+				upvote.setSelected(true);
+				downvote.setSelected(false);
+			}
+			else if(map.get(ListAdapter.USERRATING).equals(ListAdapter.RATEDDOWN))
+			{
+				upvote.setSelected(false);
+				downvote.setSelected(true);
+			}
+			//Rated Neutral
+			else
+			{
+				upvote.setSelected(false);
+				downvote.setSelected(false);
+			}
 			if(messageComp != null)
 			{
 				messageComp.setText((String) map.get(DisplayShoutListTask.NAME) 
@@ -93,6 +112,7 @@ public class CommentListAdapter extends SimpleAdapter {
 						//Revoke upvote
 						voteType = RatingsTask.DONWVOTE;
 						upvote.setSelected(false);
+						map.put(ListAdapter.USERRATING, ListAdapter.RATEDNEUTRAL);
 					}
 					else
 					{
@@ -104,6 +124,7 @@ public class CommentListAdapter extends SimpleAdapter {
 							twice = true;
 						}
 						upvote.setSelected(true);
+						map.put(ListAdapter.USERRATING, ListAdapter.RATEDUP);
 					}
 
 					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -119,8 +140,8 @@ public class CommentListAdapter extends SimpleAdapter {
 						t = new RatingsTask(url, method, params, commentActivity, commentActivity);
 						t.execute();
 					}
-					Toast.makeText(c, "One upvote for Shout ID " + 
-							map.get(DisplayShoutListTask.ID), Toast.LENGTH_SHORT).show();
+					//					Toast.makeText(c, "One upvote for Shout ID " + 
+					//							map.get(DisplayShoutListTask.ID), Toast.LENGTH_SHORT).show();
 				}
 			});
 

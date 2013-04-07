@@ -178,6 +178,7 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 			map.put(DisplayShoutListTask.NAME, o.get(DisplayShoutListTask.NAME));
 			map.put(DisplayShoutListTask.TAG, o.get(DisplayShoutListTask.TAG));
 			map.put(DisplayShoutListTask.MESSAGE, o.get(DisplayShoutListTask.MESSAGE));
+			map.put(com.example.soapbox.ListAdapter.USERRATING, o.get(com.example.soapbox.ListAdapter.USERRATING));
 			list.addFirst(map);
 		} 
 		catch (JSONException e) 

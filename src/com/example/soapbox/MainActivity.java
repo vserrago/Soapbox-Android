@@ -1,6 +1,8 @@
 package com.example.soapbox;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -29,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +43,7 @@ import com.example.soapbox.UpdateTask.UpdateCallbackInterface;
 
 
 public class MainActivity extends Activity implements ShoutListCallbackInterface, 
-	UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
+UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 {
 	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
 	public static final String SHOUTS = "shouts";
@@ -49,10 +52,16 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	public static final int SHOUT_LENGTH = 140;
 	public static final String RETURN_KEY= "returnedFromLoginScreen";
 
+	public static final String SORTBYKEY = "sort";
+	public static final int SORTBY_TIME = 0;
+	public static final int SORTBY_RATING = 1;
+
+
 	SharedPreferences prefs;
 	JSONArray shoutArray = null;
 	String username = null;
 	String location = null;
+	int sortType = SORTBY_TIME;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -70,7 +79,7 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	{
 		super.onResume();
 		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
-		
+
 		if (prefs.getBoolean(RETURN_KEY, false) == true)
 		{
 			View v = (View)findViewById(R.layout.activity_main);
@@ -131,6 +140,8 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 
 		location = prefs.getString(LoginTask.TAG, LoginTask.DEFAULT_TAG_VALUE);
 		username = prefs.getString(LoginTask.NAME, null);
+		sortType = prefs.getInt(SORTBYKEY, SORTBY_TIME);
+
 		Boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
 
 		TextView usernameLabel = (TextView) findViewById(R.id.username_label_register);
@@ -152,23 +163,23 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		//Intent intent = new Intent(this, PostShoutActivity.class);
 		//startActivity(intent);
 		prefs = this.getSharedPreferences(
-			      "com.example.soapbox", Context.MODE_PRIVATE);
+				"com.example.soapbox", Context.MODE_PRIVATE);
 		final MainActivity context = this;
 		final Dialog dialog = new Dialog(this);
-		
+
 		dialog.setContentView(R.layout.activity_post_shout);
 		dialog.setTitle("Post Shout");
-		
+
 		Button cancelShout = (Button)dialog.findViewById(R.id.cancelShout);
 		Button postShout = (Button)dialog.findViewById(R.id.postShout);
 		final EditText shoutbox = (EditText)dialog.findViewById(R.id.shoutbox);
-		
+
 		cancelShout.setOnClickListener(new OnClickListener()
 		{
-				@Override
-				public void onClick(View v) { dialog.dismiss(); }
+			@Override
+			public void onClick(View v) { dialog.dismiss(); }
 		});
-		
+
 		postShout.setOnClickListener(new OnClickListener()
 		{
 
@@ -177,11 +188,11 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 				// TODO Auto-generated method stub
 				String url ="http://acx0.dyndns.org:3000/shouts.json";
 				String name = (prefs.getString(LoginTask.NAME, ""));
-				
+
 				ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 				System.out.println(name);
 				String message = shoutbox.getText().toString();
-				
+
 				if (message.isEmpty())
 				{
 					Toast.makeText(context, "Shout cannot be empty.", Toast.LENGTH_SHORT).show();
@@ -199,17 +210,17 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 				System.out.println(tag);
 				params.add(new BasicNameValuePair(PostShoutTask.TAG, tag));
 				params.add(new BasicNameValuePair(PostShoutTask.NAME, name));
-				
-				
+
+
 				PostShoutTask task = new PostShoutTask(url, PostShoutTask.POST, params, context, context);
 				task.execute();
 				dialog.dismiss();
 				View v = (View)findViewById(R.layout.activity_main);
 				context.refreshShouts(v);
 			}
-			
+
 		});
-		
+
 		dialog.show();
 	}
 
@@ -228,6 +239,9 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		case R.id.main_menu_sign_out:
 			openLogin(v);
 			break;
+		case R.id.main_menu_sortby:
+			sortby(v);
+			break;
 		case R.id.main_menu_action_refresh:
 			refreshShouts(v);
 			break;
@@ -241,6 +255,49 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			return super.onOptionsItemSelected(item);
 		}
 		return true;
+	}
+
+	public void sortby(View view)
+	{
+		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		final MainActivity context = this;
+		// custom dialog
+		final Dialog dialog = new Dialog(this);
+		dialog.setContentView(R.layout.sortby);
+		dialog.setTitle("Sort By");
+
+		// set the custom dialog components - text, image and button
+		final RadioGroup sortgroup = (RadioGroup) dialog.findViewById(R.id.sortby_radiogroup);
+
+		Button dialogButton = (Button) dialog.findViewById(R.id.sortby_ok);
+		// if button is clicked, close the custom dialog
+		dialogButton.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) 
+			{
+				int selectedId = sortgroup.getCheckedRadioButtonId();
+
+				if(selectedId == R.id.sortby_time)
+				{
+					prefs.edit().putInt(SORTBYKEY, SORTBY_TIME).commit();
+				}
+				else if(selectedId == R.id.sortby_rating)
+				{
+					prefs.edit().putInt(SORTBYKEY, SORTBY_RATING).commit();
+				}
+				dialog.dismiss();
+			}
+		});
+
+		Button cancelButton = (Button) dialog.findViewById(R.id.sortby_cancel);
+		cancelButton.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) {dialog.dismiss();}
+		});
+
+		dialog.show();
 	}
 
 	public void changeUsername(View view)
@@ -264,12 +321,12 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 			{
 				username = text.getText().toString();
 				System.out.println(username);
-				
+
 				int id = prefs.getInt(LoginTask.ID, -1);
-				
+
 				String url = HOSTNAME + USERS + SLASH + id;
 				String method = UpdateTask.PUT;
-				
+
 				ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 				BasicNameValuePair tag = new BasicNameValuePair(LoginTask.NAME, username);
 				params.add(tag);
@@ -315,19 +372,19 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 				String spinnerText = spinner.getSelectedItem().toString();
 				location = m.get(spinnerText);
 				System.out.println(location);
-				
+
 				int id = prefs.getInt(LoginTask.ID, -1);
-				
+
 				String url = HOSTNAME + USERS + SLASH + id;
 				String method = UpdateTask.PUT;
-				
+
 				ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 				BasicNameValuePair tag = new BasicNameValuePair(LoginTask.TAG, location);
 				params.add(tag);
 
 				UpdateTask t = new UpdateTask(url, method, params, context, context);
 				t.execute();
-				
+
 				dialog.dismiss();
 			}
 		});
@@ -408,10 +465,12 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 				JSONObject o = shoutArray.getJSONObject(i);
 				HashMap<String, String> map = new HashMap<String, String>();
 
+				map.put(DisplayShoutListTask.RATING, o.getString(DisplayShoutListTask.RATING));
 				map.put(DisplayShoutListTask.ID, o.getString(DisplayShoutListTask.ID));
 				map.put(DisplayShoutListTask.NAME, o.getString(DisplayShoutListTask.NAME));
 				map.put(DisplayShoutListTask.TAG, o.getString(DisplayShoutListTask.TAG));
 				map.put(DisplayShoutListTask.MESSAGE, o.getString(DisplayShoutListTask.MESSAGE));
+				map.put(com.example.soapbox.ListAdapter.USERRATING, com.example.soapbox.ListAdapter.RATEDNEUTRAL);
 				list.addFirst(map);
 			}
 		} 
@@ -419,6 +478,22 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+
+		if(sortType == SORTBY_RATING)
+		{
+			class RatingComparator implements Comparator<HashMap<String, String>>
+			{ 
+				@Override
+				public int compare(HashMap<String, String> map1, HashMap<String, String> map2) 
+				{
+					Integer r1 = Integer.parseInt(map1.get(DisplayShoutListTask.RATING));
+					Integer r2 = Integer.parseInt(map2.get(DisplayShoutListTask.RATING));
+					return r2.compareTo(r1);
+				}
+			}
+			
+			Collections.sort(list, new RatingComparator());
 		}
 
 		final ListView listView = (ListView) findViewById(R.id.list);
@@ -432,18 +507,18 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 		listView.setAdapter(adapter);
 
 		final MainActivity mainActivity = this;
-		
+
 		listView.setOnItemClickListener(new OnItemClickListener() 
 		{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 			{
 				@SuppressWarnings("unchecked")
 				HashMap<String, String> o = (HashMap<String, String>) listView.getItemAtPosition(position);	        		
-				//Toast.makeText(MainActivity.this, "ID '" + o.get("id") + "' was clicked.", Toast.LENGTH_SHORT).show(); 
 				Intent intent = new Intent(mainActivity, CommentActivity.class);
 				intent.putExtra(DisplayShoutListTask.ID, o.get(DisplayShoutListTask.ID));
 				intent.putExtra(CommentActivity.MAP,o);
 				startActivity(intent);
+				Toast.makeText(MainActivity.this, "ID '" + o.get("id") + " has " + o.get("rating") + ".", Toast.LENGTH_SHORT).show(); 
 			}
 		});
 	}
@@ -465,12 +540,12 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	@Override
 	public void onPostRequestComplete(JSONObject result) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onRatingComplete() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
