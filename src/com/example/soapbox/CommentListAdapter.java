@@ -64,12 +64,12 @@ public class CommentListAdapter extends SimpleAdapter {
 
 
 			System.out.println(map);
-			if(map.get(ListAdapter.USERRATING).equals(ListAdapter.RATEDUP))
+			if(map.get(ShoutListAdapter.USERRATING).equals(ShoutListAdapter.RATEDUP))
 			{
 				upvote.setSelected(true);
 				downvote.setSelected(false);
 			}
-			else if(map.get(ListAdapter.USERRATING).equals(ListAdapter.RATEDDOWN))
+			else if(map.get(ShoutListAdapter.USERRATING).equals(ShoutListAdapter.RATEDDOWN))
 			{
 				upvote.setSelected(false);
 				downvote.setSelected(true);
@@ -111,7 +111,7 @@ public class CommentListAdapter extends SimpleAdapter {
 						//Revoke upvote
 						voteType = RatingsTask.DONWVOTE;
 						upvote.setSelected(false);
-						map.put(ListAdapter.USERRATING, ListAdapter.RATEDNEUTRAL);
+						map.put(ShoutListAdapter.USERRATING, ShoutListAdapter.RATEDNEUTRAL);
 					}
 					else
 					{
@@ -123,7 +123,7 @@ public class CommentListAdapter extends SimpleAdapter {
 							twice = true;
 						}
 						upvote.setSelected(true);
-						map.put(ListAdapter.USERRATING, ListAdapter.RATEDUP);
+						map.put(ShoutListAdapter.USERRATING, ShoutListAdapter.RATEDUP);
 					}
 
 					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();

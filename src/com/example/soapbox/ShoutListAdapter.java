@@ -1,6 +1,7 @@
 package com.example.soapbox;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ListAdapter extends SimpleAdapter{
+public class ShoutListAdapter extends SimpleAdapter{
 
 	public static final String RATEDUP = "up";
 	public static final String RATEDDOWN = "down";
@@ -27,14 +28,17 @@ public class ListAdapter extends SimpleAdapter{
 
 	Context c;
 	List<? extends Map<String, ?>> d;
+	HashMap<String, String> votedMap; 
+	
 
-	public ListAdapter(Context context, List<? extends Map<String, ?>> data,
-			int resource, String[] from, int[] to) 
+	public ShoutListAdapter(Context context, List<? extends Map<String, ?>> data,
+			int resource, String[] from, int[] to, HashMap<String, String> votedMap ) 
 	{
 		super(context, data, resource, from, to);
 		// TODO Auto-generated constructor stub
 		c = context;
 		d = data;
+		this.votedMap = votedMap;
 	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) 
@@ -60,21 +64,30 @@ public class ListAdapter extends SimpleAdapter{
 			TextView locationComp = (TextView) view.findViewById(R.id.location_component);
 			final ImageButton upvote = (ImageButton) view.findViewById(R.id.upvote_component);
 			final ImageButton downvote = (ImageButton) view.findViewById(R.id.downvote_component);
+			final String id = (String) map.get(DisplayShoutListTask.ID);
 
 			//			if("1".equals(map.get(DisplayShoutListTask.ID)))
 			//			{
 			//				upvote.setVisibility(upvote.INVISIBLE);
 			//				this.notifyDataSetChanged();
 			//			}
-			if(map.get(USERRATING).equals(RATEDUP))
+			if(votedMap.containsKey(id))
 			{
-				upvote.setSelected(true);
-				downvote.setSelected(false);
-			}
-			else if(map.get(USERRATING).equals(RATEDDOWN))
-			{
-				upvote.setSelected(false);
-				downvote.setSelected(true);
+				if(votedMap.get(id).equals(RATEDUP))
+				{
+					upvote.setSelected(true);
+					downvote.setSelected(false);
+				}
+				else if(votedMap.get(id).equals(RATEDDOWN))
+				{
+					upvote.setSelected(false);
+					downvote.setSelected(true);
+				}
+				else
+				{
+					upvote.setSelected(false);
+					downvote.setSelected(false);
+				}
 			}
 			//Rated Neutral
 			else
@@ -100,7 +113,7 @@ public class ListAdapter extends SimpleAdapter{
 				public void onClick(View v)
 				{
 					SharedPreferences prefs = c.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
-					String id = (String) map.get(DisplayShoutListTask.ID);
+//					String id = (String) map.get(DisplayShoutListTask.ID);
 
 					// PUT /shouts/id?vote=add
 					String url = MainActivity.HOSTNAME + MainActivity.SHOUTS + MainActivity.SLASH + id;
@@ -115,6 +128,7 @@ public class ListAdapter extends SimpleAdapter{
 						voteType = RatingsTask.DONWVOTE;
 						upvote.setSelected(false);
 						map.put(USERRATING, RATEDNEUTRAL);
+						votedMap.put(id, RATEDNEUTRAL);
 					}
 					else
 					{
@@ -127,6 +141,7 @@ public class ListAdapter extends SimpleAdapter{
 						}
 						upvote.setSelected(true);
 						map.put(USERRATING, RATEDUP);
+						votedMap.put(id, RATEDUP);
 					}
 
 					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -168,6 +183,7 @@ public class ListAdapter extends SimpleAdapter{
 						voteType = RatingsTask.UPVOTE;
 						downvote.setSelected(false);
 						map.put(USERRATING, RATEDNEUTRAL);
+						votedMap.put(id, RATEDNEUTRAL);
 					}
 					else
 					{
@@ -180,6 +196,7 @@ public class ListAdapter extends SimpleAdapter{
 						}
 						downvote.setSelected(true);
 						map.put(USERRATING, RATEDDOWN);
+						votedMap.put(id, RATEDDOWN);
 					}
 
 					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();

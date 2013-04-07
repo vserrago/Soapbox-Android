@@ -1,5 +1,11 @@
 package com.example.soapbox;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -53,6 +59,8 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 	public static final String SORTBYKEY = "sort";
 	public static final int SORTBY_TIME = 0;
 	public static final int SORTBY_RATING = 1;
+	
+	public static final String VOTEMAPNAME = "votemap";
 
 
 	SharedPreferences prefs;
@@ -60,7 +68,10 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 	String username = null;
 	String location = null;
 	int sortType = SORTBY_TIME;
+	LinkedList<HashMap<String, String>> shoutList;
+	HashMap<String, String> votedMap; 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -69,7 +80,54 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 
 		//Refresh shout list on MainActivity creation
 		View v = (View)findViewById(R.layout.activity_main);
-		refreshShouts(v);
+		
+		FileInputStream fis;
+		try 
+		{
+			fis = this.openFileInput(VOTEMAPNAME);
+			ObjectInputStream is = new ObjectInputStream(fis);
+			votedMap = (HashMap<String, String>) is.readObject();
+			is.close();
+		} 
+		catch (FileNotFoundException e) 
+		{
+			votedMap = new HashMap<String, String>();
+			System.out.println("File Not Found");
+		} 
+		catch (IOException e) 
+		{
+			votedMap = new HashMap<String, String>();
+			System.out.println("IO Exception");
+		} 
+		catch (ClassNotFoundException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		refreshAllShouts(v);
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		FileOutputStream fos;
+		try 
+		{
+			fos = this.openFileOutput(VOTEMAPNAME, Context.MODE_PRIVATE);
+			ObjectOutputStream os = new ObjectOutputStream(fos);
+			os.writeObject(votedMap);
+			os.close();
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -81,7 +139,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		if (prefs.getBoolean(RETURN_KEY, false) == true)
 		{
 			View v = (View)findViewById(R.layout.activity_main);
-			refreshShouts(v);
+			refreshAllShouts(v);
 			prefs.edit().putBoolean(RETURN_KEY, false);
 		}
 		else
@@ -214,7 +272,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 				task.execute();
 				dialog.dismiss();
 				View v = (View)findViewById(R.layout.activity_main);
-				context.refreshShouts(v);
+				context.refreshAllShouts(v);
 			}
 
 		});
@@ -241,7 +299,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 			sortby(v);
 			break;
 		case R.id.main_menu_action_refresh:
-			refreshShouts(v);
+			refreshAllShouts(v);
 			break;
 		case R.id.main_menu_action_post:
 			makePost(v);
@@ -421,11 +479,11 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 			retrieveUserInfo();
 			this.invalidateOptionsMenu();	//Reset Action bar
 			View v = (View)findViewById(R.layout.activity_main);
-			refreshShouts(v);
+			refreshAllShouts(v);
 		}
 	}
 
-	public void refreshShouts(View view)
+	public void refreshAllShouts(View view)
 	{
 		String url = HOSTNAME + SHOUTS;
 		String method = DisplayShoutListTask.GET;
@@ -455,7 +513,8 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		System.out.println(result);
 		shoutArray = result;
 
-		LinkedList<HashMap<String, String>> list = new LinkedList<HashMap<String,String>>();
+		//LinkedList<HashMap<String, String>> list = new LinkedList<HashMap<String,String>>();
+		shoutList = new LinkedList<HashMap<String,String>>();
 		try 
 		{
 			for(int i=0; i<shoutArray.length(); i++)
@@ -468,8 +527,15 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 				map.put(DisplayShoutListTask.NAME, o.getString(DisplayShoutListTask.NAME));
 				map.put(DisplayShoutListTask.TAG, o.getString(DisplayShoutListTask.TAG));
 				map.put(DisplayShoutListTask.MESSAGE, o.getString(DisplayShoutListTask.MESSAGE));
-				map.put(com.example.soapbox.ListAdapter.USERRATING, com.example.soapbox.ListAdapter.RATEDNEUTRAL);
-				list.addFirst(map);
+				if(map.containsKey(o.getString(DisplayShoutListTask.ID)))
+				{
+					map.put(ShoutListAdapter.USERRATING, votedMap.get(o.getString(DisplayShoutListTask.ID)));
+				}
+				else
+				{
+					map.put(ShoutListAdapter.USERRATING, ShoutListAdapter.RATEDNEUTRAL);
+				}
+				shoutList.addFirst(map);
 			}
 		} 
 		catch (JSONException e) 
@@ -491,16 +557,17 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 				}
 			}
 
-			Collections.sort(list, new RatingComparator());
+			Collections.sort(shoutList, new RatingComparator());
 		}
 
 		final ListView listView = (ListView) findViewById(R.id.list);
 
 		// get data from the table by the ListAdapter
-		ListAdapter adapter = new com.example.soapbox.ListAdapter
-				(this, list , R.layout.shout_list_component,
+		ListAdapter adapter = new com.example.soapbox.ShoutListAdapter
+				(this, shoutList , R.layout.shout_list_component,
 						new String[] {DisplayShoutListTask.MESSAGE},
-						new int[] { R.id.message_component });
+						new int[] { R.id.message_component },
+				votedMap);
 
 		listView.setAdapter(adapter);
 
@@ -531,7 +598,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		prefs.edit().putString(LoginTask.NAME, username).commit();
 		retrieveUserInfo();
 		View v = (View)findViewById(R.layout.activity_main);
-		refreshShouts(v);
+		refreshAllShouts(v);
 	}
 
 	//called after post task is finished
