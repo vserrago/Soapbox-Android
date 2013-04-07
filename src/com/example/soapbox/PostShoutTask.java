@@ -18,7 +18,6 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -29,15 +28,15 @@ public class PostShoutTask extends AsyncTask<String, String, JSONObject>
 	public static final String GET = "GET";
 	public static final String POST = "POST";
 	public static final String SUCCESS = "success";
-	
+
 	//json post names
 	public static final String AUTH = "auth_token";
 	public static final String MESSAGE = "[shout][message]";
 	public static final String NAME = "[shout][name]";
 	public static final String TAG = "[shout][tag]";
 	public static final String TITLE = "[shout][title]";
-	
-	
+
+
 	//Instance Vars
 	ProgressDialog mDialog;
 	List<NameValuePair> postparams= new ArrayList<NameValuePair>();
@@ -46,14 +45,14 @@ public class PostShoutTask extends AsyncTask<String, String, JSONObject>
 	String json = null;
 	Context context;
 	PostShoutCallbackInterface callBack;
-	
+
 	JSONObject jObj = null;
-	
+
 	public interface PostShoutCallbackInterface 
 	{
-        public void onPostRequestComplete(JSONObject result);
-    }
-	
+		public void onPostRequestComplete(JSONObject result);
+	}
+
 	public PostShoutTask(String url, String method, ArrayList<NameValuePair> params, Context context, PostShoutCallbackInterface callBack) 
 	{
 		this.context = context;
@@ -62,7 +61,7 @@ public class PostShoutTask extends AsyncTask<String, String, JSONObject>
 		this.method = method;
 		this.callBack = callBack;
 	}
-	
+
 	@Override
 	protected JSONObject doInBackground(String... arg0) {
 		// TODO Auto-generated method stub
@@ -79,7 +78,7 @@ public class PostShoutTask extends AsyncTask<String, String, JSONObject>
 
 				HttpResponse httpResponse = httpClient.execute(httpPost);
 				httpEntity = httpResponse.getEntity();
-			//	is = httpEntity.getContent();
+				//	is = httpEntity.getContent();
 
 			}else if(method.equals(GET)){
 				// request method is GET
@@ -92,7 +91,7 @@ public class PostShoutTask extends AsyncTask<String, String, JSONObject>
 				httpEntity = httpResponse.getEntity();
 				//is = httpEntity.getContent();
 			}      
-			
+
 			json = EntityUtils.toString(httpEntity);
 
 		} catch (UnsupportedEncodingException e) {
@@ -112,22 +111,22 @@ public class PostShoutTask extends AsyncTask<String, String, JSONObject>
 		// return JSON String
 		return jObj;
 	}
-	
-    @Override
-    protected void onPreExecute()
-    {
-    	super.onPreExecute();
 
-    	mDialog = new ProgressDialog(context);
-    	mDialog.setMessage("Please wait...");
-    	mDialog.show();
-    }
-	
-    @Override
-    protected void onPostExecute(JSONObject result)
-    {
-    	super.onPostExecute(result);
-       	callBack.onPostRequestComplete(result);
-       	mDialog.dismiss();
-    }
+	@Override
+	protected void onPreExecute()
+	{
+		super.onPreExecute();
+
+		mDialog = new ProgressDialog(context);
+		mDialog.setMessage("Please wait...");
+		mDialog.show();
+	}
+
+	@Override
+	protected void onPostExecute(JSONObject result)
+	{
+		super.onPostExecute(result);
+		callBack.onPostRequestComplete(result);
+		mDialog.dismiss();
+	}
 }

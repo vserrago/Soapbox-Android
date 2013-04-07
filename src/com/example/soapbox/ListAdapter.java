@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -25,7 +24,7 @@ public class ListAdapter extends SimpleAdapter{
 	public static final String RATEDDOWN = "down";
 	public static final String RATEDNEUTRAL = "neutral";
 	public static final String USERRATING = "rated";
-	
+
 	Context c;
 	List<? extends Map<String, ?>> d;
 

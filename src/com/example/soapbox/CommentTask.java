@@ -22,8 +22,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
-
 public class CommentTask extends AsyncTask<String, String, JSONArray>
 {
 	//HTTP Code names
@@ -40,7 +38,7 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
 	public static final String UPDATEDAT = "updated_at";
 	public static final String NAME_CREATE = "[comment][commenter]";
 	public static final String BODY_CREATE = "[comment][body]";
-	
+
 	//Instance Vars
 	ProgressDialog mDialog;
 	List<NameValuePair> postparams= new ArrayList<NameValuePair>();
@@ -49,14 +47,14 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
 	String json = null;
 	Context context;
 	CommentCallbackInterface callBack;
-	
+
 	JSONArray jArray = null;
-	
+
 	public interface CommentCallbackInterface 
 	{
-        public void onCommentRequestComplete(JSONArray result);
-    }
-	
+		public void onCommentRequestComplete(JSONArray result);
+	}
+
 	public CommentTask(String url, String method, ArrayList<NameValuePair> params, Context context, CommentCallbackInterface callBack) 
 	{
 		this.context = context;
@@ -65,7 +63,7 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
 		this.method = method;
 		this.callBack = callBack;
 	}
-	
+
 	@Override
 	protected JSONArray doInBackground(String... params) 
 	{
@@ -84,7 +82,7 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
 
 				HttpResponse httpResponse = httpClient.execute(httpPost);
 				httpEntity = httpResponse.getEntity();
-			//	is = httpEntity.getContent();
+				//	is = httpEntity.getContent();
 
 			}
 			else if(method.equals(GET))
@@ -92,33 +90,33 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
 				System.out.println("Pre Execute TASK");
 				try
 				{
-				// request method is GET
-				DefaultHttpClient httpClient = new DefaultHttpClient();
-				
-				URL += ".json";	//Retrieve json
-				
-				//Encode params
-				String paramString = URLEncodedUtils.format(postparams, "utf-8");
-				URL += "?" + paramString;
-				
-				HttpGet httpGet = new HttpGet(URL);
+					// request method is GET
+					DefaultHttpClient httpClient = new DefaultHttpClient();
 
-				HttpResponse httpResponse = httpClient.execute(httpGet);
-				httpEntity = httpResponse.getEntity();
-				//is = httpEntity.getContent();
+					URL += ".json";	//Retrieve json
+
+					//Encode params
+					String paramString = URLEncodedUtils.format(postparams, "utf-8");
+					URL += "?" + paramString;
+
+					HttpGet httpGet = new HttpGet(URL);
+
+					HttpResponse httpResponse = httpClient.execute(httpGet);
+					httpEntity = httpResponse.getEntity();
+					//is = httpEntity.getContent();
 				}
 				catch(Exception e)
 				{
 					e.printStackTrace();
 				}
 			}      
-			
+
 			json = EntityUtils.toString(httpEntity);
 			try 
 			{
 				//TODO String json is a JSON array, not a single object
 				jArray = new JSONArray(json);
-//				jObj = new JSONObject(json);
+				//				jObj = new JSONObject(json);
 			} 
 			catch (JSONException e) 
 			{
@@ -127,7 +125,7 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
 			}
 			System.out.println(json.toString());
 			System.out.println("Post Execute TASK");
-			
+
 		} 
 		catch (UnsupportedEncodingException e) 
 		{
@@ -141,28 +139,28 @@ public class CommentTask extends AsyncTask<String, String, JSONArray>
 		{
 			e.printStackTrace();
 		}
-		
+
 		// return JSON String
 		return jArray;
 	}
-	
-    @Override
-    protected void onPreExecute()
-    {
-    	super.onPreExecute();
-    	
-    	mDialog = new ProgressDialog(context);
-    	mDialog.setMessage("Please wait...");
-    	mDialog.show();
-    }
-    
-    @Override
-    protected void onPostExecute(JSONArray result)
-    {
-    	super.onPostExecute(result);
-    	
-    	if (method.equals(GET))
-    		callBack.onCommentRequestComplete(result);
-       	mDialog.dismiss();
-    }
+
+	@Override
+	protected void onPreExecute()
+	{
+		super.onPreExecute();
+
+		mDialog = new ProgressDialog(context);
+		mDialog.setMessage("Please wait...");
+		mDialog.show();
+	}
+
+	@Override
+	protected void onPostExecute(JSONArray result)
+	{
+		super.onPostExecute(result);
+
+		if (method.equals(GET))
+			callBack.onCommentRequestComplete(result);
+		mDialog.dismiss();
+	}
 }

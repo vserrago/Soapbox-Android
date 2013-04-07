@@ -13,10 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -492,7 +490,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 					return r2.compareTo(r1);
 				}
 			}
-			
+
 			Collections.sort(list, new RatingComparator());
 		}
 

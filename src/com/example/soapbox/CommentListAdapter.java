@@ -11,9 +11,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -62,8 +61,8 @@ public class CommentListAdapter extends SimpleAdapter {
 			TextView locationComp = (TextView) view.findViewById(R.id.location_component);
 			final ImageButton upvote = (ImageButton) view.findViewById(R.id.upvote_component);
 			final ImageButton downvote = (ImageButton) view.findViewById(R.id.downvote_component);
-			
-			
+
+
 			System.out.println(map);
 			if(map.get(ListAdapter.USERRATING).equals(ListAdapter.RATEDUP))
 			{
