@@ -35,10 +35,12 @@ import android.widget.Toast;
 
 import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
 import com.example.soapbox.PostShoutTask.PostShoutCallbackInterface;
+import com.example.soapbox.RatingsTask.RatingsCallbackInterface;
 import com.example.soapbox.UpdateTask.UpdateCallbackInterface;
 
 
-public class MainActivity extends Activity implements ShoutListCallbackInterface, UpdateCallbackInterface, PostShoutCallbackInterface
+public class MainActivity extends Activity implements ShoutListCallbackInterface, 
+	UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 {
 	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
 	public static final String SHOUTS = "shouts";
@@ -462,6 +464,12 @@ public class MainActivity extends Activity implements ShoutListCallbackInterface
 	//called after post task is finished
 	@Override
 	public void onPostRequestComplete(JSONObject result) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRatingComplete() {
 		// TODO Auto-generated method stub
 		
 	}

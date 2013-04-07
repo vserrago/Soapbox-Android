@@ -108,9 +108,9 @@ public class RatingsTask extends AsyncTask<String, String, JSONObject>
 	{
 		super.onPreExecute();
 
-		mDialog = new ProgressDialog(context);
-		mDialog.setMessage("Please wait...");
-		mDialog.show();
+//		mDialog = new ProgressDialog(context);
+//		mDialog.setMessage("Please wait...");
+//		mDialog.show();
 	}
 
 	@Override
@@ -119,6 +119,7 @@ public class RatingsTask extends AsyncTask<String, String, JSONObject>
 		super.onPostExecute(result);
 
 		callBack.onRatingComplete();
-		mDialog.dismiss();
+//		mDialog.dismiss();
+		System.out.println("Rating complete");
 	}
 }

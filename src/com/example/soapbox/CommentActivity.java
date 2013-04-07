@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.soapbox.CommentTask.CommentCallbackInterface;
+import com.example.soapbox.RatingsTask.RatingsCallbackInterface;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -29,7 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CommentActivity extends Activity implements CommentCallbackInterface
+public class CommentActivity extends Activity implements CommentCallbackInterface, RatingsCallbackInterface
 {
 	public static final String MAP = "object";
 	
@@ -191,5 +192,12 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 		CommentListAdapter adapter = new CommentListAdapter(this, list, R.layout.activity_comment, null, null);
 
 		listView.setAdapter(adapter);
+	}
+
+	@Override
+	public void onRatingComplete() 
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
