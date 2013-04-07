@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,8 +54,8 @@ public class CommentListAdapter extends SimpleAdapter {
 		{
 			TextView messageComp = (TextView) view.findViewById(R.id.message_component);
 			TextView locationComp = (TextView) view.findViewById(R.id.location_component);
-			Button upvote = (Button) view.findViewById(R.id.upvote_component);
-			Button downvote = (Button) view.findViewById(R.id.downvote_component);
+			final ImageButton upvote = (ImageButton) view.findViewById(R.id.upvote_component);
+			final ImageButton downvote = (ImageButton) view.findViewById(R.id.downvote_component);
 			
 			if(messageComp != null)
 			{
@@ -72,6 +73,15 @@ public class CommentListAdapter extends SimpleAdapter {
 				  @Override
 				  public void onClick(View v)
 				   {
+					  if(upvote.isSelected())
+					  {
+						  upvote.setSelected(false);
+					  }
+					  else
+					  {
+						  upvote.setSelected(true);
+						  downvote.setSelected(false);
+					  }
 					  Toast.makeText(c, "One upvote for Shout ID " + 
 							  map.get(DisplayShoutListTask.ID), Toast.LENGTH_SHORT).show();
 				   }
@@ -82,6 +92,15 @@ public class CommentListAdapter extends SimpleAdapter {
 				  @Override
 				  public void onClick(View v)
 				   {
+					  if(downvote.isSelected())
+					  {
+						  downvote.setSelected(false);
+					  }
+					  else
+					  {
+						  upvote.setSelected(false);
+						  downvote.setSelected(true);
+					  }
 				     //  Use position parameter of your getView() in this method it will current position of Clicked row button
 				    // code for current Row deleted...  
 					  Toast.makeText(c, "One downvote for Shout ID " + 

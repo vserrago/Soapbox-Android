@@ -3,6 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:columnCount="2"
+    android:descendantFocusability="blocksDescendants"
     android:rowCount="4" >
 
     <TextView
@@ -14,7 +15,7 @@
         android:layout_row="0"
         android:layout_rowSpan="3"
         android:focusable="false"
-        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only" />
+        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only" />
 
     <TextView
         android:id="@+id/location_component"
@@ -25,20 +26,24 @@
         android:focusable="false"
         android:text="Location tag" />
 
-    <Button
+    <ImageButton
         android:id="@+id/upvote_component"
         android:layout_column="0"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="left|center_vertical"
         android:layout_row="0"
+        android:background="@null"
+        android:padding="10dp"
         android:focusable="false"
-        android:text="^" />
+        android:src="@drawable/upvote_button_selector" />
 
-    <Button
+    <ImageButton
         android:id="@+id/downvote_component"
         android:layout_column="0"
-        android:layout_gravity="left|top"
+        android:layout_gravity="left|center_vertical"
         android:layout_row="1"
+        android:background="@null"
+        android:padding="10dp"
         android:focusable="false"
-        android:text="v" />
+        android:src="@drawable/downvote_button_selector" />
 
 </GridLayout>
