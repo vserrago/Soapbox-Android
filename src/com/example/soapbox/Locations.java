@@ -68,15 +68,29 @@ public class Locations
 		"Yellowknife, North West Territories"
 		};
 	
-	public static HashMap<String,String> constructCityMap()
+	//Names are the value
+	public static final HashMap<String,String> nameValueMap = constructNameValueMap();
+	//Tags are the value
+	public static final HashMap<String,String> tagValueMap = constructTagValueMap();
+	
+	public static HashMap<String,String> constructNameValueMap()
 	{
-		HashMap<String,String> cityMap = new HashMap<String, String>();
-		
+		HashMap<String,String> map = new HashMap<String, String>();
 		for(int i=0; i< cityNames.length; i++)
 		{
-			cityMap.put(cityNames[i], cityTags[i]);
+			map.put(cityTags[i],cityNames[i]);
 		}
-		
-		return cityMap;
+		return map;
+	}
+	
+	public static HashMap<String,String> constructTagValueMap()
+	{
+		HashMap<String,String> map = new HashMap<String, String>();
+		for(int i=0; i< cityNames.length; i++)
+		{
+
+			map.put(cityNames[i], cityTags[i]);
+		}
+		return map;
 	}
 }

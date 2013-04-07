@@ -99,7 +99,8 @@ public class ShoutListAdapter extends SimpleAdapter{
 
 			if(locationComp != null)
 			{
-				locationComp.setText((String) map.get(DisplayShoutListTask.TAG));
+				locationComp.setText((String) Locations.nameValueMap.get(map.get(DisplayShoutListTask.TAG))
+						+ ",  " + map.get(DisplayShoutListTask.CREATEDAT).replace('T', ' ').replace('Z', ' '));
 			}
 
 			upvote.setOnClickListener(new OnClickListener()

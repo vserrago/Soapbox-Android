@@ -34,8 +34,6 @@ import com.example.soapbox.LoginTask.MyCallbackInterface;
 public class LoginActivity extends FragmentActivity implements
 		ActionBar.TabListener, MyCallbackInterface {
 	
-	static HashMap<String,String> m;
-	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -178,7 +176,7 @@ public class LoginActivity extends FragmentActivity implements
 		BasicNameValuePair passwordC = new BasicNameValuePair(LoginTask.PASSWORD_CKEY, password2);
 		
 		Spinner spinner = (Spinner)findViewById(R.id.register_location_spinner);
-		String tag = m.get(spinner.getSelectedItem().toString());
+		String tag = Locations.tagValueMap.get(spinner.getSelectedItem().toString());
 		
 		BasicNameValuePair location = new BasicNameValuePair(LoginTask.TAGKEY, tag);
 		
@@ -263,8 +261,6 @@ public class LoginActivity extends FragmentActivity implements
 				currentView = register;
 				
 //				View headerView = inflater.inflate(R.layout.fragment_register, container);
-				
-				m = Locations.constructCityMap();
 
 				final Spinner spinner = (Spinner)register.findViewById(R.id.register_location_spinner);
 				ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(register.getContext(), android.R.layout.simple_spinner_dropdown_item, Locations.cityNames);

@@ -413,8 +413,6 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		dialog.setContentView(R.layout.change_location);
 		dialog.setTitle("Change Location");
 
-		final HashMap<String,String> m = Locations.constructCityMap();
-
 		final Spinner spinner = (Spinner)dialog.findViewById(R.id.change_location_spinner);
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Locations.cityNames);
 		spinner.setAdapter(spinnerArrayAdapter);
@@ -426,7 +424,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 			public void onClick(View v) 
 			{
 				String spinnerText = spinner.getSelectedItem().toString();
-				location = m.get(spinnerText);
+				location = Locations.tagValueMap.get(spinnerText);
 				System.out.println(location);
 
 				int id = prefs.getInt(LoginTask.ID, -1);
@@ -532,6 +530,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 				map.put(DisplayShoutListTask.NAME, o.getString(DisplayShoutListTask.NAME));
 				map.put(DisplayShoutListTask.TAG, o.getString(DisplayShoutListTask.TAG));
 				map.put(DisplayShoutListTask.MESSAGE, o.getString(DisplayShoutListTask.MESSAGE));
+				map.put(DisplayShoutListTask.CREATEDAT, o.getString(DisplayShoutListTask.CREATEDAT));
 				shoutList.addFirst(map);
 			}
 		} 
