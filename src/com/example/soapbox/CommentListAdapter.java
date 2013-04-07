@@ -100,8 +100,16 @@ public class CommentListAdapter extends SimpleAdapter {
 
 			if(locationComp != null)
 			{
+				if(Locations.nameValueMap.containsKey(map.get(DisplayShoutListTask.TAG)))
+				{
 				locationComp.setText((String) Locations.nameValueMap.get(map.get(DisplayShoutListTask.TAG))
 						+ ",  " + map.get(DisplayShoutListTask.CREATEDAT).replace('T', ' ').replace('Z', ' '));
+				}
+				else
+				{
+					locationComp.setText(Locations.globalName + ",  " + 
+							map.get(DisplayShoutListTask.CREATEDAT).replace('T', ' ').replace('Z', ' '));
+				}
 			}
 
 			upvote.setOnClickListener(new OnClickListener()

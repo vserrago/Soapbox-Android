@@ -4,9 +4,11 @@ import java.util.HashMap;
 
 public class Locations 
 {
-	public static String [] cityTags = 
+	public static final String globalTag = "global";
+	public static final String globalName = "All Locations";
+	
+	public static final String [] cityTags = 
 		{
-		"global",
 		"barrie",
 		"calgary",
 		"charlottetown",
@@ -36,9 +38,8 @@ public class Locations
 		"yellowknife"
 		};
 
-	public static String [] cityNames = 
+	public static final String [] cityNames = 
 		{
-		"All Locations",
 		"Barrie, Ontario",
 		"Calgary, Alberta",
 		"Charlottetown, PEI",

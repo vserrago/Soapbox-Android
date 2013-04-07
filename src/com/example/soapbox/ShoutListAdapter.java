@@ -99,8 +99,16 @@ public class ShoutListAdapter extends SimpleAdapter{
 
 			if(locationComp != null)
 			{
+				if(Locations.nameValueMap.containsKey(map.get(DisplayShoutListTask.TAG)))
+				{
 				locationComp.setText((String) Locations.nameValueMap.get(map.get(DisplayShoutListTask.TAG))
 						+ ",  " + map.get(DisplayShoutListTask.CREATEDAT).replace('T', ' ').replace('Z', ' '));
+				}
+				else
+				{
+					locationComp.setText(Locations.globalName + ",  " + 
+							map.get(DisplayShoutListTask.CREATEDAT).replace('T', ' ').replace('Z', ' '));
+				}	
 			}
 
 			upvote.setOnClickListener(new OnClickListener()
@@ -141,6 +149,10 @@ public class ShoutListAdapter extends SimpleAdapter{
 					ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 					BasicNameValuePair tag = new BasicNameValuePair(RatingsTask.VOTE, voteType);
 					params.add(tag);
+					
+//					String id = Integer.toString(prefs.getInt(LoginTask.ID, -1));
+//					BasicNameValuePair userid = new BasicNameValuePair("userid", id);
+//					params.add(userid);
 
 					MainActivity mainActivity = (MainActivity) c;
 
