@@ -263,7 +263,7 @@ public class LoginActivity extends FragmentActivity implements
 //				View headerView = inflater.inflate(R.layout.fragment_register, container);
 
 				Spinner spinner = (Spinner)register.findViewById(R.id.register_fragment_location_spinner);
-				ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(register.getContext(), android.R.layout.simple_spinner_dropdown_item, Locations.cityNames);
+				ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(register.getContext(), android.R.layout.simple_list_item_single_choice, Locations.cityNames);
 				spinner.setAdapter(spinnerArrayAdapter);
 			}
 			

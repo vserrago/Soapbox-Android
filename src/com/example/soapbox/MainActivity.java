@@ -416,7 +416,7 @@ VoteTaskCallbackInterface
 		dialog.setTitle("Change Location");
 
 		final Spinner spinner = (Spinner)dialog.findViewById(R.id.change_location_spinner);
-		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Locations.cityNames);
+		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, Locations.cityNames);
 		spinner.setAdapter(spinnerArrayAdapter);
 
 		Button okButton = (Button) dialog.findViewById(R.id.change_location_ok);
