@@ -16,7 +16,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/register_fragment_email_textview"
+        android:id="@+id/register_fragment_email_textbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
@@ -37,7 +37,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/register_fragment_username_textview"
+        android:id="@+id/register_fragment_username_textbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
@@ -58,7 +58,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/register_fragment_password1_textview"
+        android:id="@+id/register_fragment_password1_textbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
@@ -79,7 +79,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/register_fragment_password2_textview"
+        android:id="@+id/register_fragment_password2_textbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"

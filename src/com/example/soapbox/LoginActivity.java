@@ -122,10 +122,10 @@ public class LoginActivity extends FragmentActivity implements
 		String method = "POST";
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		
-		EditText editText = (EditText) findViewById(R.id.usernamelogin);
+		EditText editText = (EditText) findViewById(R.id.login_fragment_email_textbox);
 		BasicNameValuePair email = new BasicNameValuePair(LoginTask.EMAILKEY,editText.getText().toString());
 		
-		editText = (EditText) findViewById(R.id.passwordlogin);
+		editText = (EditText) findViewById(R.id.login_fragment_password_textbox);
 		BasicNameValuePair password = new BasicNameValuePair(LoginTask.PASSWORDKEY,editText.getText().toString());
 		params.add(email);
 		params.add(password);
@@ -142,10 +142,10 @@ public class LoginActivity extends FragmentActivity implements
 		String method = LoginTask.POST;
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		
-		EditText editText = (EditText)findViewById(R.id.register_fragment_password1_textview);
+		EditText editText = (EditText)findViewById(R.id.register_fragment_password1_textbox);
 		String password1 = editText.getText().toString();
 		
-		editText = (EditText)findViewById(R.id.register_fragment_password2_textview);
+		editText = (EditText)findViewById(R.id.register_fragment_password2_textbox);
 		String password2 = editText.getText().toString();
 		
 		if (!password1.equals(password2))
@@ -166,10 +166,10 @@ public class LoginActivity extends FragmentActivity implements
 			return;
 		}
 		
-		editText = (EditText) findViewById(R.id.register_fragment_username_textview);
+		editText = (EditText) findViewById(R.id.register_fragment_username_textbox);
 		BasicNameValuePair name = new BasicNameValuePair(LoginTask.USERNAMEKEY, editText.getText().toString());
 		
-		editText = (EditText)findViewById(R.id.register_fragment_email_textview);
+		editText = (EditText)findViewById(R.id.register_fragment_email_textbox);
 		BasicNameValuePair email = new BasicNameValuePair(LoginTask.EMAILKEY, editText.getText().toString());
 		
 		BasicNameValuePair password = new BasicNameValuePair(LoginTask.PASSWORDKEY, password1);
@@ -295,7 +295,7 @@ public class LoginActivity extends FragmentActivity implements
 			//else logged in
 			else
 			{
-				EditText editText = (EditText) findViewById(R.id.usernamelogin);
+				EditText editText = (EditText) findViewById(R.id.login_fragment_email_textbox);
 				prefs.edit().putString(LoginTask.EMAIL, editText.getText().toString()).commit();
 				prefs.edit().putInt(LoginTask.ID, result.getJSONObject(LoginTask.DATA).getInt(LoginTask.ID)).commit();
 				prefs.edit().putString(LoginTask.TAG, result.getJSONObject(LoginTask.DATA).getString(LoginTask.TAG)).commit();
