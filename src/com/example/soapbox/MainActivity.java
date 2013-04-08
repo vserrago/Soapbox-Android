@@ -228,9 +228,9 @@ VoteTaskCallbackInterface
 		dialog.setContentView(R.layout.activity_post_shout);
 		dialog.setTitle("Post Shout");
 
-		Button cancelShout = (Button)dialog.findViewById(R.id.cancelShout);
-		Button postShout = (Button)dialog.findViewById(R.id.postShout);
-		final EditText shoutbox = (EditText)dialog.findViewById(R.id.shoutbox);
+		Button cancelShout = (Button)dialog.findViewById(R.id.post_shout_cancel);
+		Button postShout = (Button)dialog.findViewById(R.id.post_shout_ok);
+		final EditText shoutbox = (EditText)dialog.findViewById(R.id.post_shout_textbox);
 
 		cancelShout.setOnClickListener(new OnClickListener()
 		{
