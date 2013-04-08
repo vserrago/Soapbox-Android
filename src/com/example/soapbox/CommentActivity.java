@@ -102,9 +102,9 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 		
 		dialog.setContentView(R.layout.comment_reply);
 		dialog.setTitle("Reply");
-		Button cancelReply = (Button)dialog.findViewById(R.id.cancelReply);
-		Button postReply = (Button)dialog.findViewById(R.id.postReply);
-		final EditText commentReply = (EditText)dialog.findViewById(R.id.commentReply);
+		Button cancelReply = (Button)dialog.findViewById(R.id.comment_reply_cancel);
+		Button postReply = (Button)dialog.findViewById(R.id.comment_reply_ok);
+		final EditText commentReply = (EditText)dialog.findViewById(R.id.comment_reply_textbox);
 		
 		cancelReply.setOnClickListener(new OnClickListener()
 		{
