@@ -59,7 +59,7 @@ public class PostShoutActivity extends Activity implements PostShoutCallbackInte
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		
 		
-		EditText editText = (EditText) findViewById(R.id.shoutbox);
+		EditText editText = (EditText) findViewById(R.id.post_shout_textbox);
 		//params.add(new BasicNameValuePair("?auth_token", prefs.getString(LoginTask.AUTH,"")));
 		System.out.println(name);
 		//params.add(new BasicNameValuePair("auth_token", prefs.getString(LoginTask.AUTH, "")));
