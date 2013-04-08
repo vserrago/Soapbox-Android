@@ -7,5 +7,11 @@
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 11 theme customizations can go here. -->
     </style>
+    <style name="MyTheme" parent="AppBaseTheme">
+        <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
+    </style>
 
+    <style name="MyActionBarStyle" parent="@android:style/Widget.Holo.ActionBar.Solid">
+        <item name="android:displayOptions">showHome</item>
+    </style>
 </resources>
