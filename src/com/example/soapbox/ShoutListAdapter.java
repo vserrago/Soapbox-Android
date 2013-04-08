@@ -21,9 +21,9 @@ import android.widget.Toast;
 
 public class ShoutListAdapter extends SimpleAdapter{
 
-	public static final String RATEDUP = "up";
-	public static final String RATEDDOWN = "down";
-	public static final String RATEDNEUTRAL = "neutral";
+	public static final String RATEDUP = "1";
+	public static final String RATEDDOWN = "-1";
+	public static final String RATEDNEUTRAL = "0";
 	public static final String USERRATING = "rated";
 
 	Context c;
@@ -115,8 +115,11 @@ public class ShoutListAdapter extends SimpleAdapter{
 			}
 			else
 			{
+//				System.out.println("ID: " + id);
+//				System.out.println("Outside if: " + votedMap.get(id));
 				if(votedMap.containsKey(id))
 				{
+//					System.out.println("Inside if: " + votedMap.get(id));
 					if(votedMap.get(id).equals(RATEDUP))
 					{
 						upvote.setSelected(true);
@@ -146,7 +149,7 @@ public class ShoutListAdapter extends SimpleAdapter{
 					public void onClick(View v)
 					{
 						SharedPreferences prefs = c.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
-						//					String id = (String) map.get(DisplayShoutListTask.ID);
+						String id = (String) map.get(DisplayShoutListTask.ID);
 
 						// PUT /shouts/id?vote=add
 						String url = MainActivity.HOSTNAME + MainActivity.SHOUTS + MainActivity.SLASH + id;
@@ -179,9 +182,9 @@ public class ShoutListAdapter extends SimpleAdapter{
 						BasicNameValuePair tag = new BasicNameValuePair(RatingsTask.VOTE, voteType);
 						params.add(tag);
 
-						//					String id = Integer.toString(prefs.getInt(LoginTask.ID, -1));
-						//					BasicNameValuePair userid = new BasicNameValuePair("userid", id);
-						//					params.add(userid);
+						String uid = Integer.toString(prefs.getInt(LoginTask.ID, -1));
+						BasicNameValuePair userid = new BasicNameValuePair("userid", uid);
+						params.add(userid);
 
 						MainActivity mainActivity = (MainActivity) c;
 
@@ -236,6 +239,10 @@ public class ShoutListAdapter extends SimpleAdapter{
 						ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 						BasicNameValuePair tag = new BasicNameValuePair(RatingsTask.VOTE, voteType);
 						params.add(tag);
+						
+						String uid = Integer.toString(prefs.getInt(LoginTask.ID, -1));
+						BasicNameValuePair userid = new BasicNameValuePair("userid", uid);
+						params.add(userid);
 
 						MainActivity mainActivity = (MainActivity) c;
 

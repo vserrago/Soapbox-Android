@@ -41,13 +41,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.soapbox.DisplayShoutListTask.ShoutListCallbackInterface;
+import com.example.soapbox.GetUserVoteTask.VoteTaskCallbackInterface;
 import com.example.soapbox.PostShoutTask.PostShoutCallbackInterface;
 import com.example.soapbox.RatingsTask.RatingsCallbackInterface;
 import com.example.soapbox.UpdateTask.UpdateCallbackInterface;
 
 
 public class MainActivity extends Activity implements ShoutListCallbackInterface, 
-UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
+UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface,
+VoteTaskCallbackInterface
 {
 	public static final String HOSTNAME = "http://acx0.dyndns.org:3000/";
 	public static final String SHOUTS = "shouts";
@@ -81,29 +83,29 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		//Refresh shout list on MainActivity creation
 		View v = (View)findViewById(R.layout.activity_main);
 		
-		FileInputStream fis;
-		try 
-		{
-			fis = this.openFileInput(VOTEMAPFILENAME);
-			ObjectInputStream is = new ObjectInputStream(fis);
-			votedMap = (HashMap<String, String>) is.readObject();
-			is.close();
-		} 
-		catch (FileNotFoundException e) 
-		{
-			votedMap = new HashMap<String, String>();
-			System.out.println("File Not Found");
-		} 
-		catch (IOException e) 
-		{
-			votedMap = new HashMap<String, String>();
-			System.out.println("IO Exception");
-		} 
-		catch (ClassNotFoundException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		FileInputStream fis;
+//		try 
+//		{
+//			fis = this.openFileInput(VOTEMAPFILENAME);
+//			ObjectInputStream is = new ObjectInputStream(fis);
+//			votedMap = (HashMap<String, String>) is.readObject();
+//			is.close();
+//		} 
+//		catch (FileNotFoundException e) 
+//		{
+//			votedMap = new HashMap<String, String>();
+//			System.out.println("File Not Found");
+//		} 
+//		catch (IOException e) 
+//		{
+//			votedMap = new HashMap<String, String>();
+//			System.out.println("IO Exception");
+//		} 
+//		catch (ClassNotFoundException e) 
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		refreshAllShouts(v);
 	}
@@ -112,22 +114,22 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 	protected void onStop()
 	{
 		super.onStop();
-		FileOutputStream fos;
-		try 
-		{
-			fos = this.openFileOutput(VOTEMAPFILENAME, Context.MODE_PRIVATE);
-			ObjectOutputStream os = new ObjectOutputStream(fos);
-			os.writeObject(votedMap);
-			os.close();
-		} 
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
+//		FileOutputStream fos;
+//		try 
+//		{
+//			fos = this.openFileOutput(VOTEMAPFILENAME, Context.MODE_PRIVATE);
+//			ObjectOutputStream os = new ObjectOutputStream(fos);
+//			os.writeObject(votedMap);
+//			os.close();
+//		} 
+//		catch (FileNotFoundException e) 
+//		{
+//			e.printStackTrace();
+//		} 
+//		catch (IOException e) 
+//		{
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
@@ -478,7 +480,7 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 			this.invalidateOptionsMenu();	//Reset Action bar
 			
 			//Delete vote history
-			this.deleteFile(VOTEMAPFILENAME);
+//			this.deleteFile(VOTEMAPFILENAME);
 			votedMap.clear();
 			
 			View v = (View)findViewById(R.layout.activity_main);
@@ -493,6 +495,8 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 
 		retrieveUserInfo(); //Get the latest values
+		
+		getUserVote();
 
 		//If the location tag is not global
 		if(!location.equals(LoginTask.DEFAULT_TAG_VALUE))
@@ -506,6 +510,32 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 		DisplayShoutListTask t = new DisplayShoutListTask(url,method,params,this,this);
 		t.execute();
 		System.out.println("Post Execute");
+	}
+	
+	public void getUserVote()
+	{
+		SharedPreferences prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
+//		http://acx0.dyndns.org:3000/shouts.json?userid=1
+		if(!loggedIn)
+		{
+			return;
+		}
+			
+		String url = HOSTNAME + SHOUTS;
+		String method = DisplayShoutListTask.GET;
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+
+		String uid = Integer.toString(prefs.getInt(LoginTask.ID, -1));
+		BasicNameValuePair userid = new BasicNameValuePair(GetUserVoteTask.USER_ID_GET_PARAM, uid);
+		params.add(userid);
+
+		System.out.println("Pre Execute");
+
+		GetUserVoteTask t = new GetUserVoteTask(url,method,params,this,this);
+		t.execute();
+		System.out.println("Post Execute");
+		
 	}
 
 	//called after shout list task is finished
@@ -601,14 +631,32 @@ UpdateCallbackInterface, PostShoutCallbackInterface, RatingsCallbackInterface
 
 	//called after post task is finished
 	@Override
-	public void onPostRequestComplete(JSONObject result) {
-		// TODO Auto-generated method stub
-
-	}
+	public void onPostRequestComplete(JSONObject result) {}
 
 	@Override
-	public void onRatingComplete() {
-		// TODO Auto-generated method stub
+	public void onRatingComplete() {}
 
+	@Override
+	public void onVoteRequestComplete(JSONArray result) 
+	{
+		System.out.println("Result: " + result);
+		votedMap = new HashMap<String, String>();
+		try 
+		{
+			for(int i=0; i<result.length(); i++)
+			{
+				JSONObject o = result.getJSONObject(i);
+				
+//				System.out.println(GetUserVoteTask.SHOUTID);
+//				System.out.println("Shout_id value: " + o.getInt(GetUserVoteTask.VOTE));
+				votedMap.put(o.getString(GetUserVoteTask.SHOUTID),
+						Integer.toString(o.getInt(GetUserVoteTask.VOTE)));
+			}
+		} 
+		catch (JSONException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
