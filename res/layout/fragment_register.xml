@@ -1,113 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:columnCount="2"
+    android:rowCount="6" >
 
     <TextView
-        android:id="@+id/username_label_register"
+        android:id="@+id/register_fragment_email_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="25dp"
-        android:text="@string/label_username"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/password1_label_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/username_label_register"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="25dp"
-        android:text="@string/label_password"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/password2_label_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/password1_label_register"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="25dp"
-        android:text="@string/label_verify_pass"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/email_label_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/password2_label_register"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="25dp"
+        android:layout_column="0"
+        android:layout_marginLeft="10dp"
+        android:layout_row="0"
         android:text="@string/label_email"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/emailregister"
+        android:id="@+id/register_fragment_email_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/email_label_register"
-        android:layout_alignBottom="@+id/email_label_register"
-        android:layout_alignLeft="@+id/password2register"
-        android:layout_alignParentRight="true"
-        android:inputType="textEmailAddress"
-        android:ems="10" />
+        android:layout_column="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginRight="10dp"
+        android:layout_row="0"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:id="@+id/register_fragment_username_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_marginLeft="10dp"
+        android:layout_row="1"
+        android:text="@string/label_username"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/password1register"
+        android:id="@+id/register_fragment_username_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/password1_label_register"
-        android:layout_alignBottom="@+id/password1_label_register"
-        android:layout_alignLeft="@+id/password2register"
-        android:layout_alignParentRight="true"
+        android:layout_column="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginRight="10dp"
+        android:layout_row="1"
+        android:ems="10"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/register_fragment_password1_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_marginLeft="10dp"
+        android:layout_row="2"
+        android:text="@string/label_password"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/register_fragment_password1_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginRight="10dp"
+        android:layout_row="2"
         android:ems="10"
         android:inputType="textPassword" />
 
-    <EditText
-        android:id="@+id/password2register"
+    <TextView
+        android:id="@+id/register_fragment_password2_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/password2_label_register"
-        android:layout_alignBottom="@+id/password2_label_register"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/password2_label_register"
+        android:layout_column="0"
+        android:layout_marginLeft="10dp"
+        android:layout_row="3"
+        android:text="@string/label_verify_pass"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/register_fragment_password2_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginRight="10dp"
+        android:layout_row="3"
         android:ems="10"
-        android:inputType="textPassword" >
+        android:inputType="textPassword" />
 
-        <requestFocus />
-    </EditText>
-
-    <EditText
-        android:id="@+id/usernameregister"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/register_fragment_location_spinner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/username_label_register"
-        android:layout_alignLeft="@+id/password1register"
-        android:layout_alignParentRight="true"
-        android:inputType="text"
-        android:ems="10" />
+        android:layout_column="0"
+        android:layout_columnSpan="2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_row="4"
+        android:gravity="center" />
 
     <Button
-        android:id="@+id/registerbutton"
+        android:id="@+id/register_fragment_ok_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/emailregister"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="25dp"
+        android:layout_column="0"
+        android:layout_marginLeft="10dp"
+        android:layout_row="5"
         android:onClick="register"
         android:text="@string/register" />
 
-    <Spinner
-        android:id="@+id/register_location_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/registerbutton" />
-
-</RelativeLayout>
+</GridLayout>

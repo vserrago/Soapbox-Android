@@ -142,10 +142,10 @@ public class LoginActivity extends FragmentActivity implements
 		String method = LoginTask.POST;
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		
-		EditText editText = (EditText)findViewById(R.id.password1register);
+		EditText editText = (EditText)findViewById(R.id.register_fragment_password1_textview);
 		String password1 = editText.getText().toString();
 		
-		editText = (EditText)findViewById(R.id.password2register);
+		editText = (EditText)findViewById(R.id.register_fragment_password2_textview);
 		String password2 = editText.getText().toString();
 		
 		if (!password1.equals(password2))
@@ -166,16 +166,16 @@ public class LoginActivity extends FragmentActivity implements
 			return;
 		}
 		
-		editText = (EditText) findViewById(R.id.usernameregister);
+		editText = (EditText) findViewById(R.id.register_fragment_username_textview);
 		BasicNameValuePair name = new BasicNameValuePair(LoginTask.USERNAMEKEY, editText.getText().toString());
 		
-		editText = (EditText)findViewById(R.id.emailregister);
+		editText = (EditText)findViewById(R.id.register_fragment_email_textview);
 		BasicNameValuePair email = new BasicNameValuePair(LoginTask.EMAILKEY, editText.getText().toString());
 		
 		BasicNameValuePair password = new BasicNameValuePair(LoginTask.PASSWORDKEY, password1);
 		BasicNameValuePair passwordC = new BasicNameValuePair(LoginTask.PASSWORD_CKEY, password2);
 		
-		Spinner spinner = (Spinner)findViewById(R.id.register_location_spinner);
+		Spinner spinner = (Spinner)findViewById(R.id.register_fragment_location_spinner);
 		String tag = Locations.tagValueMap.get(spinner.getSelectedItem().toString());
 		
 		BasicNameValuePair location = new BasicNameValuePair(LoginTask.TAGKEY, tag);
@@ -262,7 +262,7 @@ public class LoginActivity extends FragmentActivity implements
 				
 //				View headerView = inflater.inflate(R.layout.fragment_register, container);
 
-				final Spinner spinner = (Spinner)register.findViewById(R.id.register_location_spinner);
+				Spinner spinner = (Spinner)register.findViewById(R.id.register_fragment_location_spinner);
 				ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(register.getContext(), android.R.layout.simple_spinner_dropdown_item, Locations.cityNames);
 				spinner.setAdapter(spinnerArrayAdapter);
 			}
