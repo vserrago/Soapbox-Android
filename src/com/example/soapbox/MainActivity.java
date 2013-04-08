@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,7 +75,7 @@ VoteTaskCallbackInterface
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		//Refresh shout list on MainActivity creation
 		View v = (View)findViewById(R.layout.activity_main);
 		votedMap = new HashMap<String, String>();		
@@ -368,6 +369,31 @@ VoteTaskCallbackInterface
 		dialog.setTitle("Change Location");
 
 		final Spinner spinner = (Spinner)dialog.findViewById(R.id.change_location_spinner);
+
+//		final boolean defaultFlag = false;
+		
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener()
+		{
+			boolean defaultFlag = false;
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3)
+			{
+				for(int i=0; i<Locations.cityTags.length; i++)
+				{
+					System.out.printf("Bool: %b, Location: %s, CityTags[%d]: %s",
+							location.equals(Locations.cityTags[i]), location, i, Locations.cityTags[i]);
+					if(defaultFlag == false && location.equals(Locations.cityTags[i]))
+					{
+						spinner.setSelection(i);
+						defaultFlag = true;
+					}
+				}
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0){}
+		});
+
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, Locations.cityNames);
 		spinner.setAdapter(spinnerArrayAdapter);
 
