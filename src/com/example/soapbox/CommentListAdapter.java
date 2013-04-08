@@ -10,6 +10,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -61,6 +62,7 @@ public class CommentListAdapter extends SimpleAdapter {
 
 		if(position == 0 && map != null)
 		{
+			TextView userNameComp = (TextView)view.findViewById(R.id.username_component);
 			TextView messageComp = (TextView) view.findViewById(R.id.message_component);
 			TextView locationComp = (TextView) view.findViewById(R.id.location_component);
 			final ImageButton upvote = (ImageButton) view.findViewById(R.id.upvote_component);
@@ -70,14 +72,22 @@ public class CommentListAdapter extends SimpleAdapter {
 			SharedPreferences prefs = c.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
 			boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
 			
-			if(messageComp != null)
+			if (messageComp != null)
 			{
-				messageComp.setText((String) map.get(DisplayShoutListTask.NAME) 
-						+ ": " + (String) map.get(DisplayShoutListTask.MESSAGE));
+				
+				messageComp.setText((String) map.get(DisplayShoutListTask.MESSAGE));
+				
+			}
+			if (userNameComp != null)
+			{
+				
+				userNameComp.setTextColor(Color.parseColor("#4275CF"));
+				userNameComp.setText((String) map.get(DisplayShoutListTask.NAME));
 			}
 
 			if(locationComp != null)
 			{
+				locationComp.setTextColor(Color.GRAY);
 				if(Locations.nameValueMap.containsKey(map.get(DisplayShoutListTask.TAG)))
 				{
 				locationComp.setText((String) Locations.nameValueMap.get(map.get(DisplayShoutListTask.TAG))
@@ -245,8 +255,6 @@ public class CommentListAdapter extends SimpleAdapter {
 						}
 						//  Use position parameter of your getView() in this method it will current position of Clicked row button
 						// code for current Row deleted...  
-						Toast.makeText(c, "One downvote for Shout ID " + 
-								map.get(DisplayShoutListTask.ID), Toast.LENGTH_SHORT).show();
 					}
 				});
 			}
@@ -254,11 +262,23 @@ public class CommentListAdapter extends SimpleAdapter {
 		else if(map != null)
 		{
 			TextView messageComp = (TextView) view.findViewById(R.id.comment_textview);
-
+			TextView userNameComp = (TextView) view.findViewById(R.id.username_textview);
+			TextView timestampComp = (TextView) view.findViewById(R.id.timestamp_textview);
+			
 			if(messageComp != null)
 			{
-				messageComp.setText((String) map.get(CommentTask.NAME) 
-						+ ": " + (String) map.get(CommentTask.BODY));
+				messageComp.setText((String) map.get(CommentTask.BODY));
+			}
+			if(userNameComp != null)
+			{
+				userNameComp.setTextColor(Color.parseColor("#4275CF"));
+				userNameComp.setText((String)map.get(CommentTask.NAME));
+			}
+			
+			if(timestampComp != null)
+			{
+				timestampComp.setTextColor(Color.GRAY);
+				timestampComp.setText((String)map.get(DisplayShoutListTask.CREATEDAT).replace('T', ' ').replace('Z', ' ') + '\n');
 			}
 		}
 		return view;

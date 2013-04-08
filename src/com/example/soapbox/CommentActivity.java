@@ -168,7 +168,8 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 				map.put(CommentTask.COMMENTID, o.getString(CommentTask.COMMENTID));
 				map.put(CommentTask.NAME, o.getString(CommentTask.NAME));
 				map.put(CommentTask.BODY, o.getString(CommentTask.BODY));
-				list.addFirst(map);
+				map.put(DisplayShoutListTask.CREATEDAT, o.getString(DisplayShoutListTask.CREATEDAT));
+				list.addLast(map);
 			}
 			
 			//Add OP

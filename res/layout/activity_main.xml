@@ -18,6 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Welcome Message"
+            android:textColor="@color/titleColor"
+            android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 

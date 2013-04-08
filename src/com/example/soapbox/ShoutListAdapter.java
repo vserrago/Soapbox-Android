@@ -79,7 +79,8 @@ public class ShoutListAdapter extends SimpleAdapter{
 			
 			if (usernameComp != null)
 			{
-				usernameComp.setTextColor(Color.BLUE);
+				//#4280A7
+				usernameComp.setTextColor(Color.parseColor("#4275CF"));
 				usernameComp.setText((String) map.get(DisplayShoutListTask.NAME));
 			}
 

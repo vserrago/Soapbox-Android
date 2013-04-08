@@ -561,7 +561,6 @@ VoteTaskCallbackInterface
 				intent.putExtra(CommentActivity.MAP,o);
 				intent.putExtra(CommentActivity.VOTEDMAP, votedMap);
 				startActivity(intent);
-				Toast.makeText(MainActivity.this, "ID '" + o.get("id") + " has " + o.get("rating") + ".", Toast.LENGTH_SHORT).show(); 
 			}
 		});
 	}
