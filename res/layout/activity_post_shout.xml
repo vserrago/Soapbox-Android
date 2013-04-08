@@ -19,17 +19,19 @@
 
         <Button
             android:id="@+id/post_shout_ok"
+            style="@android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="postShout"
-            android:text="Post" />
+            android:text="@string/button_post" />
 
         <Button
             android:id="@+id/post_shout_cancel"
+            style="@android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="cancel"
-            android:text="Cancel" >
+            android:text="@string/button_cancel" >
         </Button>
     </LinearLayout>
 
