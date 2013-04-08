@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,6 +49,12 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 		View v = (View)findViewById(R.layout.activity_comment);
 		refreshComments(v);
 	}
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		this.invalidateOptionsMenu();
+	}
 	
 	public void refreshComments(View view)
 	{
@@ -75,6 +82,27 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 	}
 
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
+		
+		MenuItem loginActionItem =  menu.findItem(R.id.comment_menu_login);
+		MenuItem postShoutActionItem =  menu.findItem(R.id.comment_menu_action_reply);
+		
+		if (!loggedIn)
+		{
+			loginActionItem.setVisible(true);
+			postShoutActionItem.setVisible(false);
+		}
+		else
+		{
+			loginActionItem.setVisible(false);
+			postShoutActionItem.setVisible(true);
+		}
+		return true;
+	}
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{
 		View v = (View)findViewById(R.layout.activity_comment);
@@ -86,12 +114,21 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 		case R.id.comment_menu_action_reply:
 			makeReply(v);
 			break;
+		case R.id.comment_menu_login:
+			openLogin(v);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 		return true;
 	}
 		
+	private void openLogin(View view) {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
+		View v = (View)findViewById(R.layout.activity_main);
+	}
+
 	public void makeReply(View v) {
 		// TODO Auto-generated method stub
 		
@@ -106,13 +143,6 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 		Button cancelReply = (Button)dialog.findViewById(R.id.comment_reply_cancel);
 		Button postReply = (Button)dialog.findViewById(R.id.comment_reply_ok);
 		final EditText commentReply = (EditText)dialog.findViewById(R.id.comment_reply_textbox);
-		
-		if (auth.isEmpty())
-		{
-			Toast.makeText(context, "You must be logged in to complete this action", Toast.LENGTH_SHORT).show();
-			return;
-
-		}
 		
 		cancelReply.setOnClickListener(new OnClickListener()
 		{

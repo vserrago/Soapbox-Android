@@ -17,5 +17,11 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="Reply"/>
+    
+    <item
+        android:id="@+id/comment_menu_login"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="Login"/>
 
 </menu>
