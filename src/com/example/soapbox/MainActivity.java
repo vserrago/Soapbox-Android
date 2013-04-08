@@ -339,10 +339,12 @@ VoteTaskCallbackInterface
 				if(selectedId == R.id.sortby_time)
 				{
 					prefs.edit().putInt(SORTBYKEY, SORTBY_TIME).commit();
+					refreshAllShouts(v);
 				}
 				else if(selectedId == R.id.sortby_rating)
 				{
 					prefs.edit().putInt(SORTBYKEY, SORTBY_RATING).commit();
+					refreshAllShouts(v);
 				}
 				dialog.dismiss();
 			}
