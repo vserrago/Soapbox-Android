@@ -96,7 +96,8 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 		// TODO Auto-generated method stub
 		
 		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
-		
+		final String auth = prefs.getString(LoginTask.AUTH, "");
+
 		final Dialog dialog = new Dialog(this);
 		final CommentActivity context = this;
 		
@@ -105,6 +106,13 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 		Button cancelReply = (Button)dialog.findViewById(R.id.comment_reply_cancel);
 		Button postReply = (Button)dialog.findViewById(R.id.comment_reply_ok);
 		final EditText commentReply = (EditText)dialog.findViewById(R.id.comment_reply_textbox);
+		
+		if (auth.isEmpty())
+		{
+			Toast.makeText(context, "You must be logged in to complete this action", Toast.LENGTH_SHORT).show();
+			return;
+
+		}
 		
 		cancelReply.setOnClickListener(new OnClickListener()
 		{
@@ -117,6 +125,7 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+		
 				String reply = commentReply.getText().toString();
 				if (reply.isEmpty())
 				{
@@ -131,6 +140,8 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 				}
 				
 				String name = prefs.getString(LoginTask.NAME, "");
+				
+				
 				String id = getIntent().getExtras().getString(DisplayShoutListTask.ID);
 				
 				String url = HOSTNAME + SHOUTS + SLASH + id + SLASH + COMMENTS;
@@ -138,6 +149,8 @@ public class CommentActivity extends Activity implements CommentCallbackInterfac
 				ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 				BasicNameValuePair user = new BasicNameValuePair(CommentTask.NAME_CREATE, name);
 				BasicNameValuePair body = new BasicNameValuePair(CommentTask.BODY_CREATE, reply);
+				BasicNameValuePair authToken = new BasicNameValuePair(LoginTask.AUTH, auth);
+				params.add(authToken);
 				params.add(user);
 				params.add(body);
 
