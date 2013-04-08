@@ -24,7 +24,6 @@
         android:layout_gravity="fill_horizontal"
         android:layout_marginRight="10dp"
         android:layout_row="0"
-        android:ems="10"
         android:inputType="textEmailAddress" >
     </EditText>
 
@@ -46,7 +45,6 @@
         android:layout_gravity="fill_horizontal"
         android:layout_marginRight="10dp"
         android:layout_row="1"
-        android:ems="10"
         android:inputType="textPassword" />
 
     <Button
