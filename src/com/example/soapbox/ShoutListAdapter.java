@@ -10,6 +10,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -62,6 +63,7 @@ public class ShoutListAdapter extends SimpleAdapter{
 		{
 			TextView messageComp = (TextView) view.findViewById(R.id.message_component);
 			TextView locationComp = (TextView) view.findViewById(R.id.location_component);
+			TextView usernameComp = (TextView) view.findViewById(R.id.username_component);
 			final ImageButton upvote = (ImageButton) view.findViewById(R.id.upvote_component);
 			final ImageButton downvote = (ImageButton) view.findViewById(R.id.downvote_component);
 			final String id = (String) map.get(DisplayShoutListTask.ID);
@@ -71,8 +73,14 @@ public class ShoutListAdapter extends SimpleAdapter{
 			
 			if(messageComp != null)
 			{
-				messageComp.setText((String) map.get(DisplayShoutListTask.NAME) 
-						+ ": " + (String) map.get(DisplayShoutListTask.MESSAGE));
+				
+				messageComp.setText((String) map.get(DisplayShoutListTask.MESSAGE));
+			}
+			
+			if (usernameComp != null)
+			{
+				usernameComp.setTextColor(Color.BLUE);
+				usernameComp.setText((String) map.get(DisplayShoutListTask.NAME));
 			}
 
 			if(locationComp != null)
@@ -81,11 +89,13 @@ public class ShoutListAdapter extends SimpleAdapter{
 				{
 					locationComp.setText((String) Locations.nameValueMap.get(map.get(DisplayShoutListTask.TAG))
 							+ ",  " + map.get(DisplayShoutListTask.CREATEDAT).replace('T', ' ').replace('Z', ' '));
+					locationComp.setTextColor(Color.GRAY);
 				}
 				else
 				{
 					locationComp.setText(Locations.globalName + ",  " + 
 							map.get(DisplayShoutListTask.CREATEDAT).replace('T', ' ').replace('Z', ' '));
+					locationComp.setTextColor(Color.GRAY);
 				}	
 			}
 			

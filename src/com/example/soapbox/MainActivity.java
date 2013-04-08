@@ -23,6 +23,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -79,7 +80,7 @@ VoteTaskCallbackInterface
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
 		//Refresh shout list on MainActivity creation
 		View v = (View)findViewById(R.layout.activity_main);
 		votedMap = new HashMap<String, String>();
@@ -203,6 +204,7 @@ VoteTaskCallbackInterface
 		boolean loggedIn = prefs.getBoolean(LoginTask.LOGINSTATUSKEY, false);
 
 		TextView usernameLabel = (TextView) findViewById(R.id.username_label_register);
+
 		if(!loggedIn)
 		{
 			usernameLabel.setText("Please sign in");	
