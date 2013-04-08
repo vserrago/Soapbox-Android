@@ -82,7 +82,7 @@ VoteTaskCallbackInterface
 
 		//Refresh shout list on MainActivity creation
 		View v = (View)findViewById(R.layout.activity_main);
-		
+		votedMap = new HashMap<String, String>();
 //		FileInputStream fis;
 //		try 
 //		{
