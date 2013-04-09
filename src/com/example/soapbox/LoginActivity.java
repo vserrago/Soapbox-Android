@@ -147,14 +147,32 @@ public class LoginActivity extends FragmentActivity implements
 		
 		editText = (EditText)findViewById(R.id.register_fragment_password2_textbox);
 		String password2 = editText.getText().toString();
+		Spinner spinner = (Spinner)findViewById(R.id.register_fragment_location_spinner);
 		
 		if (!password1.equals(password2))
-		{
-			
+		{			
 			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
 			
 			dlgAlert.setTitle("Error registering");
 			dlgAlert.setMessage("Passwords do not match.");
+			dlgAlert.setPositiveButton("Ok",
+				    new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int which) {
+				          //dismiss the dialog  
+				        }
+				    });
+			dlgAlert.setCancelable(true);
+			dlgAlert.create().show();
+			return;
+		}
+		
+		//If the spinner's selected item is "Choose a location"
+		if(spinner.getSelectedItem().toString().equals(Locations.CHOOSESTATEMENT))
+		{
+			AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+			
+			dlgAlert.setTitle("Error registering");
+			dlgAlert.setMessage("Please select a location");
 			dlgAlert.setPositiveButton("Ok",
 				    new DialogInterface.OnClickListener() {
 				        public void onClick(DialogInterface dialog, int which) {
@@ -175,7 +193,7 @@ public class LoginActivity extends FragmentActivity implements
 		BasicNameValuePair password = new BasicNameValuePair(LoginTask.PASSWORDKEY, password1);
 		BasicNameValuePair passwordC = new BasicNameValuePair(LoginTask.PASSWORD_CKEY, password2);
 		
-		Spinner spinner = (Spinner)findViewById(R.id.register_fragment_location_spinner);
+
 		String tag = Locations.tagValueMap.get(spinner.getSelectedItem().toString());
 		
 		BasicNameValuePair location = new BasicNameValuePair(LoginTask.TAGKEY, tag);
@@ -263,7 +281,12 @@ public class LoginActivity extends FragmentActivity implements
 //				View headerView = inflater.inflate(R.layout.fragment_register, container);
 
 				Spinner spinner = (Spinner)register.findViewById(R.id.register_fragment_location_spinner);
-				ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(register.getContext(), android.R.layout.simple_list_item_single_choice, Locations.cityNames);
+				
+				String [] namesAndDefault = new String [Locations.cityNames.length + 1];
+				namesAndDefault[0] = Locations.CHOOSESTATEMENT;
+				System.arraycopy(Locations.cityNames, 0, namesAndDefault, 1, Locations.cityNames.length);
+				
+				ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(register.getContext(), android.R.layout.simple_list_item_single_choice, namesAndDefault);
 				spinner.setAdapter(spinnerArrayAdapter);
 			}
 			
