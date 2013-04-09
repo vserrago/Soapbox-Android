@@ -59,7 +59,6 @@ VoteTaskCallbackInterface
 	public static final int SORTBY_RATING = 1;
 
 	public static final String VOTEMAPFILENAME = "votemap";
-
 	SharedPreferences prefs;
 	JSONArray shoutArray = null;
 	String username = null;
@@ -342,10 +341,8 @@ VoteTaskCallbackInterface
 				BasicNameValuePair tag = new BasicNameValuePair(LoginTask.NAME, username);
 				params.add(tag);
 
-				UpdateTask t = new UpdateTask(url, method, params, context, context);
+				UpdateTask t = new UpdateTask(url, method, params, context, context,dialog);
 				t.execute();
-
-				dialog.dismiss();
 			}
 		});
 
@@ -416,10 +413,8 @@ VoteTaskCallbackInterface
 				BasicNameValuePair tag = new BasicNameValuePair(LoginTask.TAG, location);
 				params.add(tag);
 
-				UpdateTask t = new UpdateTask(url, method, params, context, context);
+				UpdateTask t = new UpdateTask(url, method, params, context, context, dialog);
 				t.execute();
-
-				dialog.dismiss();
 			}
 		});
 
@@ -593,10 +588,23 @@ VoteTaskCallbackInterface
 
 	//called after update task is finished
 	@Override
-	public void onUpdateComplete() 
+	public void onUpdateComplete(JSONObject result, Dialog dialog) 
 	{
 		//Store Location in sharedprefs
+		/*{"created_at":"2013-04-09T02:42:49Z","email":"valentin@gmail.com","id":1,"name":"Valentin","tag":"toronto","updated_at":"2013-04-09T03:35:08Z"}*/
 		prefs = this.getSharedPreferences("com.example.soapbox", Context.MODE_PRIVATE);
+		try {
+			if (result != null && !result.get(LoginTask.NAME).equals(username))
+			{
+				Toast.makeText(this, "UserName already taken!", Toast.LENGTH_SHORT).show();
+				return;
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dialog.dismiss();
+		
 		prefs.edit().putString(LoginTask.TAG, location).commit();
 		prefs.edit().putString(LoginTask.NAME, username).commit();
 		retrieveUserInfo();

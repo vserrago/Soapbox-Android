@@ -6,6 +6,7 @@ public class Locations
 {
 	public static final String globalTag = "global";
 	public static final String globalName = "All Locations";
+	public static final String CHOOSESTATEMENT = "Choose a location";
 	
 	public static final String [] cityTags = 
 		{
