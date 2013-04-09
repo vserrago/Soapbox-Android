@@ -188,6 +188,11 @@ public class CommentListAdapter extends SimpleAdapter {
 
 						ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 						BasicNameValuePair tag = new BasicNameValuePair(RatingsTask.VOTE, voteType);
+						
+						String uid = Integer.toString(prefs.getInt(LoginTask.ID, -1));
+						BasicNameValuePair userid = new BasicNameValuePair("userid", uid);
+						
+						params.add(userid);
 						params.add(tag);
 
 						CommentActivity commentActivity = (CommentActivity) c;
@@ -244,6 +249,9 @@ public class CommentListAdapter extends SimpleAdapter {
 						BasicNameValuePair tag = new BasicNameValuePair(RatingsTask.VOTE, voteType);
 						params.add(tag);
 
+						String uid = Integer.toString(prefs.getInt(LoginTask.ID, -1));
+						BasicNameValuePair userid = new BasicNameValuePair("userid", uid);
+						params.add(userid);
 						CommentActivity commentActivity = (CommentActivity) c;
 
 						RatingsTask t = new RatingsTask(url, method, params, commentActivity, commentActivity);
