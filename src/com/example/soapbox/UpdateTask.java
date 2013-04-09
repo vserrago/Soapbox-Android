@@ -12,8 +12,11 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -41,17 +44,19 @@ public class UpdateTask extends AsyncTask<String, String, JSONObject>
 	String json = null;
 	Context context;
 	UpdateCallbackInterface callBack;
+	Dialog dialog;
 
 	JSONObject jObj = null;
 	//	JSONArray jArray = null;
 
 	public interface UpdateCallbackInterface 
 	{
-		public void onUpdateComplete();
+		public void onUpdateComplete(JSONObject result, Dialog dialog);
 	}
 
-	public UpdateTask(String url, String method, ArrayList<NameValuePair> params, Context context, UpdateCallbackInterface callBack) 
+	public UpdateTask(String url, String method, ArrayList<NameValuePair> params, Context context, UpdateCallbackInterface callBack, Dialog dialog) 
 	{
+		this.dialog = dialog;
 		this.context = context;
 		URL=url;
 		postparams=params;
@@ -70,7 +75,9 @@ public class UpdateTask extends AsyncTask<String, String, JSONObject>
 			if(method.equals(PUT))
 			{
 				DefaultHttpClient httpClient = new DefaultHttpClient();
+				
 				HttpPut httpPut = new HttpPut(URL);
+				
 				httpPut.setEntity(new UrlEncodedFormEntity(postparams));
 
 				HttpResponse httpResponse = httpClient.execute(httpPut);
@@ -80,6 +87,7 @@ public class UpdateTask extends AsyncTask<String, String, JSONObject>
 			{
 				System.out.println("Error: Incorrect HTTP method");
 			}
+			json = EntityUtils.toString(httpEntity);
 		} 
 		catch (UnsupportedEncodingException e) 
 		{
@@ -91,6 +99,15 @@ public class UpdateTask extends AsyncTask<String, String, JSONObject>
 		} 
 		catch (IOException e) 
 		{
+			e.printStackTrace();
+		}
+		try {
+			
+			System.out.println(json);
+			System.out.println("------------");
+			jObj = new JSONObject(json);
+			
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
@@ -113,7 +130,7 @@ public class UpdateTask extends AsyncTask<String, String, JSONObject>
 	{
 		super.onPostExecute(result);
 
-		callBack.onUpdateComplete();
+		callBack.onUpdateComplete(result, dialog);
 		mDialog.dismiss();
 	}
 }
